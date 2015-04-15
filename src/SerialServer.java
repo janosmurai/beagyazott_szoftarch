@@ -47,8 +47,8 @@ public class SerialServer extends Network {
 
 			try {
 				while (true) {
-					Point received = (Point) in.readObject();
-					//ctrl.clickReceived(received);
+					int received = (int) in.readObject();
+					ctrl.keyPressReceived(received);
 				}
 			} catch (Exception ex) {
 				System.out.println(ex.getMessage());
@@ -73,7 +73,7 @@ public class SerialServer extends Network {
 	}
 
 	@Override
-	void send(Point p) {
+	void send(int p) {
 		if (out == null)
 			return;
 		System.out.println("Sending point: " + p + " to Client");

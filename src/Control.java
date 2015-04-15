@@ -69,7 +69,7 @@ class Control extends JFrame {
 	
 				
 	
-
+/*
 	Control() {
 		
 		
@@ -79,6 +79,7 @@ class Control extends JFrame {
 
 		
 	}
+	*/
 	void setGUI(GUI g) {
 		gui = g;
 	}
@@ -100,12 +101,18 @@ class Control extends JFrame {
 		net = new SerialClient(this);
 		net.connect("localhost");
 	}
-
+/*
 	void sendClick(Point p) {
 		// gui.addPoint(p); //for drawing locally
 		if (net == null)
 			return;
 		net.send(p);
+	}
+*/	
+	void sendKeyPressed(int key_state){
+		if(net == null)
+			return;
+		net.send(key_state);
 	}
 
 	//void clickReceived(Point p) {
@@ -113,4 +120,10 @@ class Control extends JFrame {
 		//	return;
 		//gui.addPoint(p);
 	//}
+	
+	void keyPressReceived(int received){
+		if (gui == null)
+			return;
+		gui.addKey(received);
+	}
 }

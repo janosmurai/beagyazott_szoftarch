@@ -6,9 +6,12 @@ package zatacka;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
@@ -17,6 +20,7 @@ import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -24,7 +28,8 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.plaf.ProgressBarUI;
 
-import zatacka.Control;
+import java.awt.font.*;
+
 import zatacka.*;
 
 public class GUI extends JFrame {
@@ -35,8 +40,9 @@ public class GUI extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private Control ctrl;
 	private DrawPanel drawPanel;
-	int X = 250;
-	int Y = 250;
+	int X = 10;
+	int Y = 10;
+	int key_state = 0;
 	
 	Position position = new Position();
 	
@@ -45,7 +51,7 @@ public class GUI extends JFrame {
 
 	GUI(Control c) {
 		
-		timer = new Timer (30, new ActionListener() {
+		timer = new Timer (100, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				MehetIdozitoActionEvent(e);
 			}
@@ -60,7 +66,7 @@ public class GUI extends JFrame {
 		});
 		
 		ctrl = c;
-		setSize(800, 600);
+		setSize(400, 400);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(null);
 		
@@ -112,8 +118,9 @@ public class GUI extends JFrame {
 		
 
 		drawPanel = new DrawPanel();
-		drawPanel.setBounds(0, 0, 200, 200);
+		drawPanel.setBounds(0, 0, 350, 350);
 		drawPanel.setBorder(BorderFactory.createTitledBorder("Draw"));
+		
 		add(drawPanel);
 		
 		
@@ -125,7 +132,7 @@ public class GUI extends JFrame {
 		JPanel panel_proba = new JPanel();
 		panel_proba.setName("proba");
 		panel_proba.setLayout(null);
-		panel_proba.setBounds(X, Y, 5, 5);
+		panel_proba.setBounds((X/20), (Y/2), 5, 5);
 		panel_proba.setBackground(Color.RED);
 		add(panel_proba);
 		panel_proba.repaint();
@@ -134,13 +141,20 @@ public class GUI extends JFrame {
 	private void OnKeyPressed(KeyEvent e) {
 		if(e.getKeyCode() == KeyEvent.VK_SPACE) {
 			timer.start();
+			key_state = 1;
 		}
-		if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
+		else if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
 			direction = TDirection.right;
+			key_state = 2;
 		}
-		if(e.getKeyCode() == KeyEvent.VK_LEFT) {
+		else if(e.getKeyCode() == KeyEvent.VK_LEFT) {
 			direction = TDirection.left;
+			key_state = 3;
 		}
+		else {
+			key_state = 0;
+		}
+		ctrl.sendKeyPressed(key_state);
 	}
 	private void OnKeyReleased(KeyEvent e) {
 		if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
@@ -154,8 +168,19 @@ public class GUI extends JFrame {
 	
 	private void MehetIdozitoActionEvent(ActionEvent e) {
 		
-		position.RePositioning(prvPx, prvPy, direction);
+		int[] pos_local = position.RePositioning(X, Y, direction);
+		addCircle(X, Y);
+		X = pos_local[1];
+		Y = pos_local[0];
 		
+
+	}
+	
+	void addKey(int key){
+		JLabel testLabel = new JLabel("proba");
+		drawPanel.add(testLabel);
+		add(testLabel);
+		  
 	}
 	
 	private class DrawPanel extends JPanel {

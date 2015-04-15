@@ -1,6 +1,7 @@
 package zatacka;
 
 import java.awt.Point;
+import java.awt.event.KeyEvent;
 import java.io.*;
 import java.net.*;
 
@@ -21,10 +22,10 @@ public class SerialClient extends Network {
 	private class ReceiverThread implements Runnable {
 
 		public void run() {
-			System.out.println("Waiting for points...");
+			System.out.println("Waiting for key presses...");
 			try {
 				while (true) {
-					Point received = (Point) in.readObject();
+					int received = (int) in.readObject();
 					//ctrl.clickReceived(received);
 				}
 			} catch (Exception ex) {
@@ -57,12 +58,12 @@ public class SerialClient extends Network {
 	}
 
 	@Override
-	void send(Point p) {
+	void send(int key_state) {
 		if (out == null)
 			return;
-		System.out.println("Sending point: " + p + " to Server");
+		System.out.println("Sending KeyEvent: " + key_state + " to Server");
 		try {
-			out.writeObject(p);
+			out.writeObject(key_state);
 			out.flush();
 		} catch (IOException ex) {
 			System.err.println("Send error.");

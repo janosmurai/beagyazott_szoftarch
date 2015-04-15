@@ -24,5 +24,6 @@ abstract class Network {
 
 	abstract void disconnect();
 
-	abstract void send(Point p);
+	abstract void send(int key_state);
+
 }
