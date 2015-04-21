@@ -44,6 +44,7 @@ class Controld {
 package zatacka;
 
 import javax.swing.JFrame;
+
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -55,7 +56,8 @@ import java.awt.event.KeyEvent;
 import java.awt.Point;
 
 import zatacka.GUI;
-
+import zatacka.GUI.TDirection;
+import zatacka.GUI.ColoredPoint;
 
 class Control extends JFrame {
 	
@@ -67,19 +69,19 @@ class Control extends JFrame {
 	static int x = 100;
 	static int y = 10;
 	
-				
+	private Position position = new Position();		
 	
-/*
+
 	Control() {
 		
-		
+		/*
 		panel = new JPanel();
 		panel.setBounds(280, 500, 5, 5);
 		panel.setBackground(Color.red);
-
+*/
 		
 	}
-	*/
+	
 	void setGUI(GUI g) {
 		gui = g;
 	}
@@ -88,27 +90,27 @@ class Control extends JFrame {
 	
 	
 
-	void startServer() {
+	void startServer(Color color) {
 		if (net != null)
 			net.disconnect();
 		net = new SerialServer(this);
 		net.connect("localhost");
 	}
 
-	void startClient() {
+	void startClient(Color color) {
 		if (net != null)
 			net.disconnect();
 		net = new SerialClient(this);
 		net.connect("localhost");
 	}
-/*
+
 	void sendClick(Point p) {
 		// gui.addPoint(p); //for drawing locally
 		if (net == null)
 			return;
-		net.send(p);
+		//net.send(p);
 	}
-*/	
+	
 	void sendKeyPressed(int key_state){
 		if(net == null)
 			return;
@@ -124,6 +126,19 @@ class Control extends JFrame {
 	void keyPressReceived(int received){
 		if (gui == null)
 			return;
-		gui.addKey(received);
+		//gui.addKey(received);
+	}
+	
+	
+	ColoredPoint newPosition(TDirection direction)
+	{
+		int[] pos_local=position.RePositioning(x, y, direction);
+		Color color = Color.black; // ezt majd be kell állítani a játékos színe alapján
+		ColoredPoint newPoint = new ColoredPoint(pos_local[0], pos_local[1], color);
+		return newPoint;
+	}
+	
+	void numberOfPlayers(int player_count){
+		//ide majd vmi, ami elmenti, hogy hány játékos lesz, nehogy elõbb elinduljon a játék 
 	}
 }
