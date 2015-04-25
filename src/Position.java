@@ -12,11 +12,7 @@ public class Position {
 	public int[] RePositioning(int prvPx, int prvPy, TDirection direction)
 	{
 		
-		//double szogX=(Math.toRadians(prvPx));
-		//double szogY=(Math.toRadians(prvPy));
-		//double fi=Math.acos(szogX/szogY);
-		//System.out.println(fi);
-		int alpha = 0;
+
 		double dy = 0;
 		double dx = 0;
 		
@@ -25,32 +21,20 @@ public class Position {
 		
 		if(direction == TDirection.left)
 		{
-			beta--;
+			beta=beta-7;
+
 		}
 		
 		else if(direction == TDirection.right)
 		{
-			beta++;
+			beta=beta+7;
+
+			
 		}
 		
-		if(beta < 90){
-			alpha = 90 - beta;
-		}
-		
-		else if(beta < 180){
-			alpha = beta - 90;
-		}
-		
-		else if(beta < 270){
-			alpha = 270 - beta;
-		}
-		
-		else if(beta < 360){
-			alpha = beta - 270;
-		}
-		
-		dx = 20*Math.sin(Math.toRadians(alpha));
-		dy = 20*Math.cos(Math.toRadians(alpha));
+		System.out.println(beta);
+		dx = 38*Math.cos(Math.toRadians(beta));
+		dy = 4*Math.sin(Math.toRadians(beta));
 		
 		if(prvPx == 0 || prvPy == 0 || prvPx == 600 || prvPy == 600){
 			System.out.println("Meghaltál.");
@@ -59,8 +43,7 @@ public class Position {
 		dx = Math.round(dx);
 		dy = Math.round(dy);
 		
-		System.out.println((int)dx);
-		System.out.println((int)dy);
+
 		
 		dx = dx + prvPx;
 		dy = dy + prvPy;
@@ -68,8 +51,8 @@ public class Position {
 		
 
 		
-		posArray[0] = (int)dy;
-		posArray[1] = (int)dx;
+		posArray[0] = (int)dx;
+		posArray[1] = (int)dy;
 		
 		return posArray;
 		
