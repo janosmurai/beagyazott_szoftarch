@@ -21,19 +21,18 @@ public class Position {
 		
 		if(direction == TDirection.left)
 		{
-			beta=beta-7;
+			beta=beta-5;
 
 		}
 		
 		else if(direction == TDirection.right)
 		{
-			beta=beta+7;
+			beta=beta+5;
 
 			
 		}
 		
-		System.out.println(beta);
-		dx = 38*Math.cos(Math.toRadians(beta));
+		dx = 40*Math.cos(Math.toRadians(beta));
 		dy = 4*Math.sin(Math.toRadians(beta));
 		
 		if(prvPx == 0 || prvPy == 0 || prvPx == 600 || prvPy == 600){
@@ -48,11 +47,25 @@ public class Position {
 		dx = dx + prvPx;
 		dy = dy + prvPy;
 
-		
+		System.out.println(dx);
+		System.out.println(prvPx);
 
 		
 		posArray[0] = (int)dx;
 		posArray[1] = (int)dy;
+		
+		
+		int newpositionx[] = new int [1000];
+		int newpositiony[] = new int [1000];
+			for(int i=1;i<1000;i++){
+			newpositionx[i]=(int) dx;
+			}
+		for(int j=0;j<1000;j++){
+			newpositiony[j]=(int) dy;
+		}
+		
+		for(int k=0;k<1000;k++){
+		System.out.println(newpositionx[k]);}
 		
 		return posArray;
 		
