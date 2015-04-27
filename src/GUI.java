@@ -59,7 +59,7 @@ public class GUI {
 	{
 
 		private static final long serialVersionUID = 1L;
-		private GameField gameField;
+		private GameField gameField = new GameField();
 		Timer timer;
 		
 		DrawPanel()
@@ -92,9 +92,12 @@ public class GUI {
 			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			setLayout(null);
 			setTitle("Zatacka");
-			
-			gameField = new GameField();
 		
+			gameField.setBackground(Color.black);
+			gameField.setLocation(0, 0);
+			gameField.setBounds(0, 0, getWidth(), getHeight());
+			gameField.setVisible(true);
+			add(gameField);
 			
 			addKeyListener(new KeyListener() 
 			{
@@ -108,8 +111,7 @@ public class GUI {
 				}
 				public void keyTyped(KeyEvent e) {}
 			});
-			
-			add(gameField);
+
 		}
 		
 		private class GameField extends JPanel
@@ -120,8 +122,7 @@ public class GUI {
 			GameField()
 			{
 				setBounds(0, 0, getWidth(), getHeight());
-				setBackground(Color.black);
-				
+				setOpaque(true);
 			}
 			
 			@Override
@@ -129,6 +130,7 @@ public class GUI {
 			{
 				for (ColoredPoint p : points)  
 				{
+					super.paintComponent(g);
 					g.setColor(p.color);
 					g.fillOval(p.x, p.y, 10, 10);
 				}

@@ -133,7 +133,7 @@ class Control extends JFrame {
 	ColoredPoint newPosition(TDirection direction)
 	{
 		int[] pos_local=position.RePositioning(x, y, direction);
-		Color color = Color.black; // ezt majd be kell állítani a játékos színe alapján
+		Color color = Color.white; // ezt majd be kell állítani a játékos színe alapján
 		ColoredPoint newPoint = new ColoredPoint(pos_local[0], pos_local[1], color);
 		return newPoint;
 	}
