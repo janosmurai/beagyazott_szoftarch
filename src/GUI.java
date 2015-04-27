@@ -128,9 +128,9 @@ public class GUI {
 			@Override
 			protected void paintComponent(Graphics g)
 			{
+				super.paintComponent(g);
 				for (ColoredPoint p : points)  
 				{
-					super.paintComponent(g);
 					g.setColor(p.color);
 					g.fillOval(p.x, p.y, 10, 10);
 				}
