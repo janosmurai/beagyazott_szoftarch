@@ -48,7 +48,7 @@ public class Position {
 		dy = dy + prvPy;
 
 		System.out.println(dx);
-		System.out.println(prvPx);
+		System.out.println(dy);
 
 		
 		posArray[0] = (int)dx;
@@ -64,8 +64,8 @@ public class Position {
 			newpositiony[j]=(int) dy;
 		}
 		
-		for(int k=0;k<1000;k++){
-		System.out.println(newpositionx[k]);}
+		//for(int k=0;k<1000;k++){
+		//System.out.println(newpositionx[k]);}
 		
 		return posArray;
 		

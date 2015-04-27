@@ -68,6 +68,7 @@ class Control extends JFrame {
 	private Point p2;
 	static int x = 100;
 	static int y = 10;
+	int key_state = 0;
 	
 	private Position position = new Position();		
 	
@@ -85,8 +86,6 @@ class Control extends JFrame {
 	void setGUI(GUI g) {
 		gui = g;
 	}
-	
-
 	
 	
 
@@ -128,6 +127,7 @@ class Control extends JFrame {
 			return;
 		//gui.addKey(received);
 	}
+	
 	
 	
 	ColoredPoint newPosition(TDirection direction)

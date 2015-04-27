@@ -37,6 +37,7 @@ public class GUI {
 	private PlayerCounter playerCounter;
 	private int player_count = 0;
 	int key_state = 0;
+	int tmp = 0;
 	
 	enum TDirection {left, right, nothing}
 	TDirection direction = TDirection.nothing;
@@ -65,6 +66,9 @@ public class GUI {
 		{
 			switch(player_count)
 			{
+			case 1: 
+				setSize(400, 400);
+				break;
 			case 2:
 				setSize(400, 400);
 				break;
@@ -133,6 +137,7 @@ public class GUI {
 			protected void GetNewPoint() 
 			{
 				ColoredPoint p = ctrl.newPosition(direction);
+				System.out.println(p);
 				points.add(p);	
 				gameField.repaint();
 			}
@@ -142,8 +147,11 @@ public class GUI {
 		{
 			if(e.getKeyCode() == KeyEvent.VK_SPACE) 
 			{
-				timer.start();
 				key_state = 1;
+				if(player_count == 1) {
+					startGame();
+					timer.start();
+				}
 			}
 			else if(e.getKeyCode() == KeyEvent.VK_RIGHT) 
 			{
@@ -159,7 +167,7 @@ public class GUI {
 			{
 				key_state = 0;
 			}
-			ctrl.sendKeyPressed(key_state);
+			
 		}
 		private void OnKeyReleased(KeyEvent e)
 		{
@@ -191,6 +199,7 @@ public class GUI {
 			ButtonGroup server_client_group = new ButtonGroup();
 			
 			JRadioButton serverButton= new JRadioButton("Server");
+			serverButton.setSelected(true);
 			serverButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -239,6 +248,7 @@ public class GUI {
 			});
 			
 			JRadioButton greenButton= new JRadioButton("Green");
+			greenButton.setSelected(true);
 			greenButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -269,6 +279,7 @@ public class GUI {
 					color = Color.orange;
 				}
 			});
+			
 			
 			color_group.add(greenButton);
 			color_group.add(blueButton);
@@ -321,15 +332,17 @@ public class GUI {
 		
 		void CreatePlayer()
 		{
-			if(status == 1)
-			{
-				ctrl.startServer(color);
+			if(player_count != 1){
+				
+				if(status == 1)
+				{
+					ctrl.startServer(color);
+				}
+				else if(status == 2)
+				{
+					ctrl.startClient(color);
+				}
 			}
-			else if(status == 2)
-			{
-				ctrl.startClient(color);
-			}
-			
 			mainMenu.setVisible(false);
 			
 			drawPanel.setVisible(true);
@@ -355,7 +368,7 @@ public class GUI {
 			label.setVisible(true);
 			panel.add(label);
 			
-			JTextField text = new JTextField("Enter the number of players (between 2 and 6)", 30);
+			JTextField text = new JTextField("1", 30);
 			
 			text.addActionListener(new ActionListener() {
 				@Override
@@ -392,11 +405,13 @@ public class GUI {
 	
 	void startGame()
 	{
+		System.out.println(tmp);
+		tmp++;
 		drawPanel.timer = new Timer (100, new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
-				drawPanel.gameField.GetNewPoint();
+				drawPanel.gameField.GetNewPoint();	
 			}
 		});
 	}
