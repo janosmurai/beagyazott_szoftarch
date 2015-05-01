@@ -21,30 +21,27 @@ public class Position {
 		
 		if(direction == TDirection.left)
 		{
-			beta=beta-5;
+			beta=beta-9;
 
 		}
 		
 		else if(direction == TDirection.right)
 		{
-			beta=beta+5;
+			beta=beta+9;
 
 			
 		}
 		
-		dx = 4*Math.cos(Math.toRadians(beta));
+		dx = 4.2*Math.cos(Math.toRadians(beta));
 		dy = 4*Math.sin(Math.toRadians(beta));
 		
 		//System.out.println(dx);
 		//System.out.println(dy);
 		
-		if(prvPx == 0 || prvPy == 0 || prvPx == 600 || prvPy == 600){
-			System.out.println("Meghaltál.");
-		}
 		
 		dx = Math.round(dx);
 		dy = Math.round(dy);
-		
+
 
 		
 		dx = dx + prvPx;
@@ -55,6 +52,11 @@ public class Position {
 		
 		posArray[0] = (int)dx;
 		posArray[1] = (int)dy;
+		
+		if(posArray[0] <= 0 || posArray[0] >= 380 || posArray[1] <= 0 || posArray[1] >= 355){
+			System.out.println("Meghaltál");
+			System.exit(0);
+		}
 		
 		
 		int newpositionx[] = new int [1000];

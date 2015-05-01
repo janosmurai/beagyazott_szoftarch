@@ -44,7 +44,6 @@ class Controld {
 package zatacka;
 
 import javax.swing.JFrame;
-
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -128,6 +127,16 @@ class Control extends JFrame {
 		int[] pos_local=position.RePositioning(x, y, direction);
 		ColoredPoint newPoint = new ColoredPoint(pos_local[0], pos_local[1], color);
 		return newPoint;
+	}
+	
+	void nextGame(){
+		int halal;
+		int [] koord = position.RePositioning(getX(),getY(), client_dir);
+		if(koord[0] <= 0 || koord[0] >= 380 || koord[1] <= 0 || koord[1] >= 355){
+			halal = 1;
+			}
+		else {
+			halal = 0;}
 	}
 	
 	void numberOfPlayers(int player_count){

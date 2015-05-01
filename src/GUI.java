@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.sql.ClientInfoStatus;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -44,6 +45,11 @@ public class GUI {
 	enum TDirection {left, right, nothing}
 	TDirection direction = TDirection.nothing;
 	
+	static Random randomGenerator = new Random();
+	static int randx = randomGenerator.nextInt(300);
+	static int randy = randomGenerator.nextInt(300);
+	
+	
 	public static class ColoredPoint extends Point
 	{
 		private static final long serialVersionUID = 1L;
@@ -57,8 +63,8 @@ public class GUI {
 		}
 	}
 	
-	ColoredPoint p_c = new ColoredPoint(10, 10, Color.RED);
-	ColoredPoint p_s = new ColoredPoint(10, 10, Color.RED);
+	ColoredPoint p_c = new ColoredPoint(randx, randy, Color.RED);
+	ColoredPoint p_s = new ColoredPoint(randx, randy, Color.RED);
 	
 	private class DrawPanel extends JFrame 
 	{
@@ -138,7 +144,7 @@ public class GUI {
 				for (ColoredPoint p : points)  
 				{
 					g.setColor(p.color);
-					g.fillOval(p.x, p.y, 10, 10);
+					g.fillOval(p.x, p.y, 7, 7);
 				}
 				
 			}
@@ -417,9 +423,7 @@ public class GUI {
 	
 	void startGame()
 	{
-		System.out.println(tmp);
-		tmp++;
-		drawPanel.timer = new Timer (100, new ActionListener() 
+		drawPanel.timer = new Timer (75, new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
