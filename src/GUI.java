@@ -139,7 +139,6 @@ public class GUI {
 			protected void GetNewPoint() 
 			{
 				ColoredPoint p = ctrl.newPosition(direction);
-				System.out.println(p);
 				points.add(p);	
 				gameField.repaint();
 			}
