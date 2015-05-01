@@ -66,9 +66,8 @@ class Control extends JFrame {
 	private GUI gui;
 	private Point p;
 	private Point p2;
-	static int x = 100;
-	static int y = 10;
 	int key_state = 0;
+	TDirection client_dir = TDirection.nothing;
 	
 	private Position position = new Position();		
 	
@@ -102,18 +101,11 @@ class Control extends JFrame {
 		net = new SerialClient(this);
 		net.connect("localhost");
 	}
-
-	void sendClick(Point p) {
-		// gui.addPoint(p); //for drawing locally
-		if (net == null)
-			return;
-		//net.send(p);
-	}
 	
-	void sendKeyPressed(int key_state){
+	void sendKeyPressed(TDirection direction){
 		if(net == null)
 			return;
-		net.send(key_state);
+		net.send(direction);
 	}
 
 	//void clickReceived(Point p) {
@@ -122,20 +114,18 @@ class Control extends JFrame {
 		//gui.addPoint(p);
 	//}
 	
-	void keyPressReceived(int received){
+	void keyPressReceived(TDirection dir_received){
 		if (gui == null)
 			return;
-		//gui.addKey(received);
+		//System.out.println(dir_received);
+		client_dir = dir_received;
 	}
 	
 	
 	
-	ColoredPoint newPosition(TDirection direction)
+	ColoredPoint newPosition(int x, int y, TDirection direction, Color color)
 	{
 		int[] pos_local=position.RePositioning(x, y, direction);
-		x = pos_local[0];
-		y = pos_local[1];
-		Color color = Color.white; // ezt majd be kell állítani a játékos színe alapján
 		ColoredPoint newPoint = new ColoredPoint(pos_local[0], pos_local[1], color);
 		return newPoint;
 	}

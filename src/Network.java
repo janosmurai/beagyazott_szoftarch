@@ -7,6 +7,7 @@ package zatacka;
 import java.awt.Point;
 
 import zatacka.Control;
+import zatacka.GUI.TDirection;
 
 /**
  *
@@ -24,6 +25,6 @@ abstract class Network {
 
 	abstract void disconnect();
 
-	abstract void send(int key_state);
+	abstract void send(TDirection direction);
 
 }

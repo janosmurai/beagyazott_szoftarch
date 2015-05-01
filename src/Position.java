@@ -35,8 +35,8 @@ public class Position {
 		dx = 4*Math.cos(Math.toRadians(beta));
 		dy = 4*Math.sin(Math.toRadians(beta));
 		
-		System.out.println(dx);
-		System.out.println(dy);
+		//System.out.println(dx);
+		//System.out.println(dy);
 		
 		if(prvPx == 0 || prvPy == 0 || prvPx == 600 || prvPy == 600){
 			System.out.println("Meghaltál.");

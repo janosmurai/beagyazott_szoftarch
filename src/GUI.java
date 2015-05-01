@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.sql.ClientInfoStatus;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -36,8 +37,9 @@ public class GUI {
 	private MainMenu mainMenu;
 	private PlayerCounter playerCounter;
 	private int player_count = 0;
-	int key_state = 0;
 	int tmp = 0;
+	int status = 0;
+	
 	
 	enum TDirection {left, right, nothing}
 	TDirection direction = TDirection.nothing;
@@ -54,6 +56,9 @@ public class GUI {
 			color = color_point;
 		}
 	}
+	
+	ColoredPoint p_c = new ColoredPoint(10, 10, Color.RED);
+	ColoredPoint p_s = new ColoredPoint(10, 10, Color.RED);
 	
 	private class DrawPanel extends JFrame 
 	{
@@ -118,6 +123,7 @@ public class GUI {
 		{
 			private static final long serialVersionUID = 1L;
 			private ArrayList<ColoredPoint> points = new ArrayList<ColoredPoint>();
+			private ArrayList<ColoredPoint> points_client = new ArrayList<ColoredPoint>();
 			
 			GameField()
 			{
@@ -134,13 +140,26 @@ public class GUI {
 					g.setColor(p.color);
 					g.fillOval(p.x, p.y, 10, 10);
 				}
+				
 			}
 			
 			protected void GetNewPoint() 
 			{
-				ColoredPoint p = ctrl.newPosition(direction);
-				points.add(p);	
-				gameField.repaint();
+				
+				if(status == 1)	//Server
+				{
+					System.out.println(ctrl.client_dir);
+					p_s = ctrl.newPosition(p_s.x, p_s.y, direction, Color.red);
+					p_c = ctrl.newPosition(p_c.x, p_c.y, ctrl.client_dir, Color.blue);
+					points.add(p_s);
+					points.add(p_c);
+					gameField.repaint();
+					
+				}
+				else if(status == 2) 	//Client
+				{
+					ctrl.sendKeyPressed(direction);
+				}	
 			}
 		}
 			
@@ -148,25 +167,19 @@ public class GUI {
 		{
 			if(e.getKeyCode() == KeyEvent.VK_SPACE) 
 			{
-				key_state = 1;
-				if(player_count == 1) {
 					startGame();
 					timer.start();
-				}
 			}
 			else if(e.getKeyCode() == KeyEvent.VK_RIGHT) 
 			{
 				direction = TDirection.right;
-				key_state = 2;
 			}
 			else if(e.getKeyCode() == KeyEvent.VK_LEFT)
 			{
 				direction = TDirection.left;
-				key_state = 3;
 			}
 			else 
 			{
-				key_state = 0;
 			}
 			
 		}
@@ -187,7 +200,6 @@ public class GUI {
 	{
 		private static final long serialVersionUID = 1L;
 		private JPanel sc_panel, color_panel, button_panel;
-		private int status = 0;
 		private Color color = Color.black;
 		
 		MainMenu()
@@ -200,7 +212,6 @@ public class GUI {
 			ButtonGroup server_client_group = new ButtonGroup();
 			
 			JRadioButton serverButton= new JRadioButton("Server");
-			serverButton.setSelected(true);
 			serverButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -334,7 +345,7 @@ public class GUI {
 		void CreatePlayer()
 		{
 			if(player_count != 1){
-				
+				System.out.println(status);
 				if(status == 1)
 				{
 					ctrl.startServer(color);
@@ -369,7 +380,7 @@ public class GUI {
 			label.setVisible(true);
 			panel.add(label);
 			
-			JTextField text = new JTextField("1", 30);
+			JTextField text = new JTextField("2", 30);
 			
 			text.addActionListener(new ActionListener() {
 				@Override
