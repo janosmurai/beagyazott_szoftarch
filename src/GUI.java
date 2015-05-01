@@ -40,6 +40,8 @@ public class GUI {
 	private int player_count = 0;
 	int tmp = 0;
 	int status = 0;
+	int server_beta = 0;
+	int client_beta = 0;
 	
 	
 	enum TDirection {left, right, nothing}
@@ -49,22 +51,23 @@ public class GUI {
 	static int randx = randomGenerator.nextInt(300);
 	static int randy = randomGenerator.nextInt(300);
 	
-	
 	public static class ColoredPoint extends Point
 	{
 		private static final long serialVersionUID = 1L;
-		private Color color;
+		public Color color;
+		private int beta;
 		
-		ColoredPoint(int x_coordinate, int y_coordinate, Color color_point)
+		ColoredPoint(int x_coordinate, int y_coordinate, Color color_point, int beta)
 		{
 			x = x_coordinate;
 			y = y_coordinate;
 			color = color_point;
+			this.beta = beta;
 		}
 	}
 	
-	ColoredPoint p_c = new ColoredPoint(randx, randy, Color.RED);
-	ColoredPoint p_s = new ColoredPoint(randx, randy, Color.RED);
+	ColoredPoint p_c = new ColoredPoint(randx, randy, Color.RED, 0);
+	ColoredPoint p_s = new ColoredPoint(randx, randy, Color.RED, 0);
 	
 	private class DrawPanel extends JFrame 
 	{
@@ -129,7 +132,6 @@ public class GUI {
 		{
 			private static final long serialVersionUID = 1L;
 			private ArrayList<ColoredPoint> points = new ArrayList<ColoredPoint>();
-			private ArrayList<ColoredPoint> points_client = new ArrayList<ColoredPoint>();
 			
 			GameField()
 			{
@@ -154,17 +156,22 @@ public class GUI {
 				
 				if(status == 1)	//Server
 				{
-					System.out.println(ctrl.client_dir);
-					p_s = ctrl.newPosition(p_s.x, p_s.y, direction, Color.red);
-					p_c = ctrl.newPosition(p_c.x, p_c.y, ctrl.client_dir, Color.blue);
+					p_s = ctrl.newPosition(p_s.x, p_s.y, direction, Color.red, p_s.beta);
+					p_c = ctrl.newPosition(p_c.x, p_c.y, ctrl.client_dir, Color.blue, p_c.beta);
 					points.add(p_s);
 					points.add(p_c);
 					gameField.repaint();
+					ctrl.sendNewPoint(p_c);
+					ctrl.sendNewPoint(p_s);
 					
 				}
 				else if(status == 2) 	//Client
 				{
 					ctrl.sendKeyPressed(direction);
+		
+					points.add(ctrl.red_received);
+					points.add(ctrl.blue_received);
+					gameField.repaint();
 				}	
 			}
 		}

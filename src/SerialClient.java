@@ -8,6 +8,7 @@ import java.net.*;
 import javax.swing.JOptionPane;
 
 import zatacka.Control;
+import zatacka.GUI.ColoredPoint;
 import zatacka.GUI.TDirection;
 
 public class SerialClient extends Network {
@@ -26,8 +27,8 @@ public class SerialClient extends Network {
 			System.out.println("Waiting for key presses...");
 			try {
 				while (true) {
-					int received = (int) in.readObject();
-					//ctrl.clickReceived(received);
+					ColoredPoint point_received = (ColoredPoint) in.readObject();
+					ctrl.pointReceived(point_received);
 				}
 			} catch (Exception ex) {
 				System.out.println(ex.getMessage());
@@ -65,6 +66,17 @@ public class SerialClient extends Network {
 		//System.out.println("Sending KeyEvent: " + direction + " to Server");
 		try {
 			out.writeObject(direction);
+			out.flush();
+		} catch (IOException ex) {
+			System.err.println("Send error.");
+		}
+	}
+	
+	void sendNewP(ColoredPoint p) {
+		if (out == null)
+			return;
+		try {
+			out.writeObject(p);
 			out.flush();
 		} catch (IOException ex) {
 			System.err.println("Send error.");

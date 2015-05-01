@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import zatacka.Control;
+import zatacka.GUI.ColoredPoint;
 import zatacka.GUI.TDirection;
 
 public class SerialServer extends Network {
@@ -18,7 +19,7 @@ public class SerialServer extends Network {
 	private Socket clientSocket = null;
 	private ObjectOutputStream out = null;
 	private ObjectInputStream in = null;
-
+	
 	SerialServer(Control c) {
 		super(c);
 	}
@@ -80,6 +81,17 @@ public class SerialServer extends Network {
 		//System.out.println("Sending point: " + direction + " to Client");
 		try {
 			out.writeObject(direction);
+			out.flush();
+		} catch (IOException ex) {
+			System.err.println("Send error.");
+		}
+	}
+	
+	void sendNewP(ColoredPoint p) {
+		if (out == null)
+			return;
+		try {
+			out.writeObject(p);
 			out.flush();
 		} catch (IOException ex) {
 			System.err.println("Send error.");

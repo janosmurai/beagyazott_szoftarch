@@ -7,9 +7,8 @@ import zatacka.GUI.TDirection;
 
 public class Position {
 	
-	int beta = 0;
 	
-	public int[] RePositioning(int prvPx, int prvPy, TDirection direction)
+	public int[] RePositioning(int prvPx, int prvPy, TDirection direction, int beta)
 	{
 		
 
@@ -17,7 +16,7 @@ public class Position {
 		double dx = 0;
 		
 		int[] posArray;
-		posArray = new int[2];
+		posArray = new int[3];
 		
 		if(direction == TDirection.left)
 		{
@@ -34,42 +33,26 @@ public class Position {
 		
 		dx = 4.2*Math.cos(Math.toRadians(beta));
 		dy = 4*Math.sin(Math.toRadians(beta));
-		
-		//System.out.println(dx);
-		//System.out.println(dy);
-		
+
 		
 		dx = Math.round(dx);
 		dy = Math.round(dy);
-
+		
 
 		
 		dx = dx + prvPx;
 		dy = dy + prvPy;
 
-
-
 		
 		posArray[0] = (int)dx;
 		posArray[1] = (int)dy;
+		posArray[2] = (int)beta;
 		
 		if(posArray[0] <= 0 || posArray[0] >= 380 || posArray[1] <= 0 || posArray[1] >= 355){
-			System.out.println("Meghaltál");
+			System.out.println("Meghaltal");
 			System.exit(0);
 		}
 		
-		
-		int newpositionx[] = new int [1000];
-		int newpositiony[] = new int [1000];
-			for(int i=1;i<1000;i++){
-			newpositionx[i]=(int) dx;
-			}
-		for(int j=0;j<1000;j++){
-			newpositiony[j]=(int) dy;
-		}
-		
-		//for(int k=0;k<1000;k++){
-		//System.out.println(newpositionx[k]);}
 		
 		return posArray;
 		
