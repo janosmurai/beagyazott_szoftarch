@@ -11,6 +11,7 @@ import java.awt.event.KeyListener;
 import java.sql.ClientInfoStatus;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.TimerTask;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -34,7 +35,8 @@ public class GUI {
 	
 	private static final long serialVersionUID = 1L;
 	private Control ctrl;
-	private DrawPanel drawPanel;
+	private Position pos;
+	public DrawPanel drawPanel;
 	private MainMenu mainMenu;
 	private PlayerCounter playerCounter;
 	private int player_count = 0;
@@ -42,14 +44,13 @@ public class GUI {
 	int status = 0;
 	int server_beta = 0;
 	int client_beta = 0;
+	int rand_seged = 350;
 	
 	
 	enum TDirection {left, right, nothing}
 	TDirection direction = TDirection.nothing;
 	
-	static Random randomGenerator = new Random();
-	static int randx = randomGenerator.nextInt(300);
-	static int randy = randomGenerator.nextInt(300);
+
 	
 	public static class ColoredPoint extends Point
 	{
@@ -66,14 +67,27 @@ public class GUI {
 		}
 	}
 	
-	ColoredPoint p_c = new ColoredPoint(randx, randy, Color.RED, 0);
-	ColoredPoint p_s = new ColoredPoint(randx, randy, Color.RED, 0);
+	public static int[] randomGenerator(int x){
+	int random[];
+	Random randomGenerator = new Random();
+	random= new int[12];
+	for (int i = 1; i < 12; i++){
+	random[i] = randomGenerator.nextInt(x);	
+		}
+	return random;
+	}
 	
-	private class DrawPanel extends JFrame 
+	
+	int [] random = GUI.randomGenerator(rand_seged);
+	ColoredPoint p_c = new ColoredPoint(random[1], random[2], Color.RED, 0);
+	ColoredPoint p_s = new ColoredPoint(random[3], random[4], Color.RED, 0);
+
+	
+	public class DrawPanel extends JFrame 
 	{
 
 		private static final long serialVersionUID = 1L;
-		private GameField gameField = new GameField();
+		public GameField gameField = new GameField();
 		Timer timer;
 		
 		DrawPanel()
@@ -82,24 +96,31 @@ public class GUI {
 			{
 			case 1: 
 				setSize(400, 400);
+				rand_seged=350;
 				break;
 			case 2:
 				setSize(400, 400);
+				rand_seged=350;
 				break;
 			case 3:
 				setSize(450, 450);
+				rand_seged=400;
 				break;
 			case 4:
 				setSize(500, 500);
+				rand_seged=450;
 				break;
 			case 5:
 				setSize(550, 550);
+				rand_seged=500;
 				break;
 			case 6:
 				setSize(600, 600);
+				rand_seged=550;
 				break;
 			default:
 				System.err.println("Incorrect number of players!");
+				randomGenerator(rand_seged);
 				return;
 			}
 			
@@ -128,10 +149,10 @@ public class GUI {
 
 		}
 		
-		private class GameField extends JPanel
+		public class GameField extends JPanel
 		{
 			private static final long serialVersionUID = 1L;
-			private ArrayList<ColoredPoint> points = new ArrayList<ColoredPoint>();
+			public ArrayList<ColoredPoint> points = new ArrayList<ColoredPoint>();
 			
 			GameField()
 			{
@@ -151,7 +172,7 @@ public class GUI {
 				
 			}
 			
-			protected void GetNewPoint() 
+			public void GetNewPoint() 
 			{
 				
 				if(status == 1)	//Server
@@ -176,23 +197,37 @@ public class GUI {
 			}
 		}
 			
-		private void OnKeyPressed(KeyEvent e) 
+		public void OnKeyPressed(KeyEvent e) 
 		{
 			if(e.getKeyCode() == KeyEvent.VK_SPACE) 
 			{
-					startGame();
-					timer.start();
+					if(ctrl.nextgame == 0){
+						startGame();
+						drawPanel.timer.start();
+					}
+
+					if(ctrl.nextgame == 1){
+						stopGame();
+						drawPanel.timer.stop();
+					}
+
+				
+				
 			}
 			else if(e.getKeyCode() == KeyEvent.VK_RIGHT) 
 			{
 				direction = TDirection.right;
+
 			}
 			else if(e.getKeyCode() == KeyEvent.VK_LEFT)
 			{
 				direction = TDirection.left;
+			
 			}
-			else 
+			
+			else
 			{
+				
 			}
 			
 		}
@@ -417,7 +452,7 @@ public class GUI {
 	GUI(Control c) 
 	{
 		ctrl = c;
-		
+			
 		mainMenu = new MainMenu();
 		
 		mainMenu.setVisible(false);
@@ -434,8 +469,25 @@ public class GUI {
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
+				drawPanel.gameField.GetNewPoint();
+				stopGame();
+			}
+		});
+	}
+	
+	void stopGame()
+	{
+		drawPanel.timer = new Timer (75, new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
 				drawPanel.gameField.GetNewPoint();	
 			}
 		});
+		ctrl.nextGame();
+		if (ctrl.nextgame==1){
+			//System.out.println(ctrl.nextgame);
+			drawPanel.timer.stop();
+		}
 	}
 }

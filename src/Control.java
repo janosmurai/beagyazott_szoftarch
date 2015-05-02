@@ -11,18 +11,22 @@ import java.awt.Color;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 import java.awt.Point;
+import java.util.ArrayList;
 
 import zatacka.GUI;
 import zatacka.GUI.TDirection;
 import zatacka.GUI.ColoredPoint;
+import zatacka.GUI.DrawPanel.GameField;
 
 class Control extends JFrame {
 	
 	
 	private Network net = null;
 	private GUI gui;
+	private Position pos;
 	private Point p;
 	private Point p2;
+	public int nextgame = 0;
 	int key_state = 0;
 	TDirection client_dir = TDirection.nothing;
 	ColoredPoint red_received = new ColoredPoint(10, 10, Color.red, 0);
@@ -94,15 +98,30 @@ class Control extends JFrame {
 		return newPoint;
 	}
 	
-	/*void nextGame(){
-		int halal;
-		int [] koord = position.RePositioning(getX(),getY(), client_dir);
-		if(koord[0] <= 0 || koord[0] >= 380 || koord[1] <= 0 || koord[1] >= 355){
-			halal = 1;
+	void nextGame(){
+		ArrayList<ColoredPoint> points = gui.drawPanel.gameField.points;
+		
+		ColoredPoint p_s = gui.p_s;
+		ColoredPoint p_c = gui.p_c;
+		//System.out.println(p.x);
+
+		for (ColoredPoint p : points){
+			
+			if(p.x == p_s.x || p.y == p_s.y || p.x == p_c.x || p.y == p_c.y){
+				nextgame = 1;
+				System.out.println(p.x);
+			}
+			
+		}		
+		
+		if(p_s.x <= 0 || p_s.x >= 380 || p_s.y <= 0 || p_s.y >= 355 || p_c.x <= 0 || p_c.x >= 380 || p_c.y <= 0 || p_c.y >= 355){
+			nextgame = 1;
+		System.exit(0);
 			}
 		else {
-			halal = 0;}
-	}*/
+			nextgame = 0;}
+
+}
 	
 	void numberOfPlayers(int player_count){
 		//ide majd vmi, ami elmenti, hogy hány játékos lesz, nehogy elõbb elinduljon a játék 
