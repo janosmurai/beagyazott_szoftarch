@@ -28,6 +28,7 @@ class Control extends JFrame {
 	private Point p2;
 	public int nextgame = 0;
 	int key_state = 0;
+	int seged_szamlalo;
 	TDirection client_dir = TDirection.nothing;
 	ColoredPoint red_received = new ColoredPoint(10, 10, Color.red, 0);
 	ColoredPoint blue_received = new ColoredPoint(10, 10, Color.blue, 0);
@@ -106,21 +107,22 @@ class Control extends JFrame {
 		//System.out.println(p.x);
 
 		for (ColoredPoint p : points){
-			
-			if((p.x == p_s.x && p.y == p_s.y) || (p.x == p_c.x && p.y == p_c.y))
+			if(((p.x == p_s.x) && (p.y == p_s.y)) || ((p.x == p_c.x) && (p.y == p_c.y)))
 			{
+				seged_szamlalo++;
+			}
+			else if((p_s.x <= 0) || (p_s.x >= 380) || (p_s.y <= 0) || (p_s.y >= 355) || (p_c.x <= 0) || (p_c.x >= 380) || (p_c.y <= 0) || (p_c.y >= 355)){
 				nextgame = 1;
 			}
-			//System.out.println(p_c.x == p.x);	
-			if(p_s.x <= 0 || p_s.x >= 380 || p_s.y <= 0 || p_s.y >= 355 || p_c.x <= 0 || p_c.x >= 380 || p_c.y <= 0 || p_c.y >= 355){
-				nextgame = 1;
+			else{
+				nextgame=0;
 			}
-		
-		else {
-			nextgame = 0;
+			if(seged_szamlalo > 2){
+				nextgame = 1;
+				seged_szamlalo = 0;
 			}
 		}
-
+		seged_szamlalo = 0;
 }
 	
 	void numberOfPlayers(int player_count){
