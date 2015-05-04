@@ -45,6 +45,7 @@ public class GUI {
 	int server_beta = 0;
 	int client_beta = 0;
 	int rand_seged = 350;
+	int pontszam = 0;
 	
 	
 	enum TDirection {left, right, nothing}
@@ -174,7 +175,13 @@ public class GUI {
 			
 			public void GetNewPoint() 
 			{
-				
+				stopGame();
+				if(ctrl.nextgame == 1){
+					ctrl.nextgame = 0;
+					int [] random = GUI.randomGenerator(rand_seged);
+					p_c = new ColoredPoint(random[1], random[2], Color.RED, 0);
+					p_s = new ColoredPoint(random[3], random[4], Color.RED, 0);
+					}
 				if(status == 1)	//Server
 				{
 					p_s = ctrl.newPosition(p_s.x, p_s.y, direction, Color.red, p_s.beta);
@@ -199,16 +206,13 @@ public class GUI {
 			
 		public void OnKeyPressed(KeyEvent e) 
 		{
+			
 			if(e.getKeyCode() == KeyEvent.VK_SPACE) 
 			{
 					if(ctrl.nextgame == 0){
+						drawPanel.gameField.points.clear();
 						startGame();
 						drawPanel.timer.start();
-					}
-
-					if(ctrl.nextgame == 1){
-						stopGame();
-						drawPanel.timer.stop();
 					}
 
 				
@@ -470,23 +474,16 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) 
 			{
 				drawPanel.gameField.GetNewPoint();
-				stopGame();
 			}
 		});
 	}
 	
 	void stopGame()
 	{
-		drawPanel.timer = new Timer (75, new ActionListener() 
-		{
-			public void actionPerformed(ActionEvent e) 
-			{
-				drawPanel.gameField.GetNewPoint();	
-			}
-		});
 		ctrl.nextGame();
 		if (ctrl.nextgame==1){
-			//System.out.println(ctrl.nextgame);
+			pontszam ++;
+			System.out.println(pontszam);
 			drawPanel.timer.stop();
 		}
 	}

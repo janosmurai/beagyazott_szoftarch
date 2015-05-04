@@ -107,19 +107,19 @@ class Control extends JFrame {
 
 		for (ColoredPoint p : points){
 			
-			if(p.x == p_s.x || p.y == p_s.y || p.x == p_c.x || p.y == p_c.y){
+			if((p.x == p_s.x && p.y == p_s.y) || (p.x == p_c.x && p.y == p_c.y))
+			{
 				nextgame = 1;
-				System.out.println(p.x);
 			}
-			
-		}		
+			//System.out.println(p_c.x == p.x);	
+			if(p_s.x <= 0 || p_s.x >= 380 || p_s.y <= 0 || p_s.y >= 355 || p_c.x <= 0 || p_c.x >= 380 || p_c.y <= 0 || p_c.y >= 355){
+				nextgame = 1;
+			}
 		
-		if(p_s.x <= 0 || p_s.x >= 380 || p_s.y <= 0 || p_s.y >= 355 || p_c.x <= 0 || p_c.x >= 380 || p_c.y <= 0 || p_c.y >= 355){
-			nextgame = 1;
-		System.exit(0);
-			}
 		else {
-			nextgame = 0;}
+			nextgame = 0;
+			}
+		}
 
 }
 	
