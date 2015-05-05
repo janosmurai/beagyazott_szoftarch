@@ -28,7 +28,7 @@ class Control extends JFrame {
 	private Point p2;
 	public int nextgame = 0;
 	int key_state = 0;
-	int seged_szamlalo;
+	int seged_szamlalo = 0;
 	TDirection client_dir = TDirection.nothing;
 	ColoredPoint red_received = new ColoredPoint(10, 10, Color.red, 0);
 	ColoredPoint blue_received = new ColoredPoint(10, 10, Color.blue, 0);
@@ -102,26 +102,33 @@ class Control extends JFrame {
 	void nextGame(){
 		ArrayList<ColoredPoint> points = gui.drawPanel.gameField.points;
 		
-		ColoredPoint p_s = gui.p_s;
-		ColoredPoint p_c = gui.p_c;
+		Point p_s = new Point(gui.p_s.x, gui.p_s.y);
+		Point p_c = new Point(gui.p_c.x, gui.p_c.y);
+		ArrayList<Point> point_sima = new ArrayList<Point>();
 		//System.out.println(p.x);
-
-		for (ColoredPoint p : points){
-			if(((p.x == p_s.x) && (p.y == p_s.y)) || ((p.x == p_c.x) && (p.y == p_c.y)))
+		for(ColoredPoint i:points){
+			Point pont = new Point(i.x, i.y); 
+			point_sima.add(pont);
+			
+		}
+		for (Point p : point_sima){
+			if(p.equals(p_s) || p.equals(p_c) || p_c.equals(p_s))
 			{
 				seged_szamlalo++;
 			}
-			else if((p_s.x <= 0) || (p_s.x >= 380) || (p_s.y <= 0) || (p_s.y >= 355) || (p_c.x <= 0) || (p_c.x >= 380) || (p_c.y <= 0) || (p_c.y >= 355)){
+		}
+			for (Point p : point_sima){
+			if((p_s.x <= 0) || (p_s.x >= 380) || (p_s.y <= 0) || (p_s.y >= 355) || (p_c.x <= 0) || (p_c.x >= 380) || (p_c.y <= 0) || (p_c.y >= 355)){
 				nextgame = 1;
 			}
 			else{
 				nextgame=0;
 			}
-			if(seged_szamlalo > 2){
-				nextgame = 1;
-				seged_szamlalo = 0;
-			}
 		}
+	if(seged_szamlalo > 2){
+		nextgame = 1;
+		seged_szamlalo = 0;
+	}
 		seged_szamlalo = 0;
 }
 	

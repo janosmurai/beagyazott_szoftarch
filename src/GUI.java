@@ -177,6 +177,7 @@ public class GUI {
 			{
 				stopGame();
 				if(ctrl.nextgame == 1){
+					points = new ArrayList<ColoredPoint>();
 					ctrl.nextgame = 0;
 					int [] random = GUI.randomGenerator(rand_seged);
 					p_c = new ColoredPoint(random[1], random[2], Color.RED, 0);
