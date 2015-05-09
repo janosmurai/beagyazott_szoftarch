@@ -13,10 +13,8 @@ import java.awt.event.KeyEvent;
 import java.awt.Point;
 import java.util.ArrayList;
 
-import zatacka.GUI;
+import zatacka.*;
 import zatacka.GUI.TDirection;
-import zatacka.GUI.ColoredPoint;
-import zatacka.GUI.DrawPanel.GameField;
 
 class Control extends JFrame {
 	
@@ -26,14 +24,10 @@ class Control extends JFrame {
 	private Position pos;
 	private Point p;
 	private Point p2;
-	public int nextgame = 0;
 	int key_state = 0;
-	int seged_szamlalo = 0;
 	TDirection client_dir = TDirection.nothing;
-	ColoredPoint red_received = new ColoredPoint(10, 10, Color.red, 0);
-	ColoredPoint blue_received = new ColoredPoint(10, 10, Color.blue, 0);
-	
-	private Position position = new Position();		
+	public ArrayList<Player> playerList = new ArrayList<Player>();
+	public ArrayList<ColoredPoint> receivedPoint = new ArrayList<ColoredPoint>();
 	
 
 	Control() {
@@ -48,6 +42,7 @@ class Control extends JFrame {
 	
 
 	void startServer(Color color) {
+		
 		if (net != null)
 			net.disconnect();
 		net = new SerialServer(this);
@@ -61,10 +56,10 @@ class Control extends JFrame {
 		net.connect("localhost");
 	}
 	
-	void sendKeyPressed(TDirection direction){
+	void sendPlayer(Player player){
 		if(net == null)
 			return;
-		net.send(direction);
+		net.send(player);
 	}
 
 	void sendNewPoint(ColoredPoint p){
@@ -73,66 +68,73 @@ class Control extends JFrame {
 		net.sendNewP(p);
 	}
 	
-	void keyPressReceived(TDirection dir_received){
+	void playerReceived(Player player){
 		if (gui == null)
 			return;
-		client_dir = dir_received;
+		playerList.add(player);
 	}
 	
 	void pointReceived(ColoredPoint p){
 		if (gui == null)
 			return;
-		if(p.color.getRed() == 255)
-		{
-			red_received = p;
-		}
-		else if(p.color.getBlue() == 255)
-		{
-			blue_received = p;
-		}
+		System.out.println(p.color);
+		receivedPoint.add(p);
 	}
 	
-	ColoredPoint newPosition(int x, int y, TDirection direction, Color color, int beta)
+	int collisionCheck()
 	{
-		int[] pos_local=position.RePositioning(x, y, direction, beta);
-		ColoredPoint newPoint = new ColoredPoint(pos_local[0], pos_local[1], color, pos_local[2]);
-		return newPoint;
-	}
-	
-	void nextGame(){
-		ArrayList<ColoredPoint> points = gui.drawPanel.gameField.points;
-		
-		Point p_s = new Point(gui.p_s.x, gui.p_s.y);
-		Point p_c = new Point(gui.p_c.x, gui.p_c.y);
-		ArrayList<Point> point_sima = new ArrayList<Point>();
-		//System.out.println(p.x);
-		for(ColoredPoint i:points){
-			Point pont = new Point(i.x, i.y); 
-			point_sima.add(pont);
-			
-		}
-		for (Point p : point_sima){
-			if(p.equals(p_s) || p.equals(p_c) || p_c.equals(p_s))
+		ArrayList<ColoredPoint> controlPoints = gui.drawPanel.gameField.points;
+		int dis_x = 0;
+		int dis_y = 0;
+		double distance = 0;
+		int collisionCntr = 0;
+		int gameFieldSize = gui.drawPanel.getWidth();    //Same as height
+
+		for(Player player : playerList)
+		{
+			ColoredPoint actualPoint = player.p; 
+			for (ColoredPoint storedPoint : controlPoints  )
 			{
-				seged_szamlalo++;
+		
+				dis_x = storedPoint.x - actualPoint.x;
+				dis_y = storedPoint.y - actualPoint.y;
+				distance = Math.sqrt(dis_y^2 + dis_x^2);
+				/*
+				System.out.println(dis_x);
+				System.out.println(dis_y);
+				System.out.println(distance);
+				System.out.println(storedPoint);
+				System.out.println(actualPoint);
+				*/
+				
+				if((storedPoint.color != actualPoint.color) && (distance <= (storedPoint.width + actualPoint.width)))
+				{
+					//collisionCntr++;
+				}
+				//System.out.println(collisionCntr);
+				
+				if((actualPoint.x < 0) ||
+					(actualPoint.x > gameFieldSize) ||
+					(actualPoint.y < 0) || 
+					(actualPoint.y > gameFieldSize) ||
+					(collisionCntr >= 2))
+				{
+					//System.out.println("cica");
+					gui.stopGame();
+					return 1;
+				}
+
 			}
 		}
-			for (Point p : point_sima){
-			if((p_s.x <= 0) || (p_s.x >= 380) || (p_s.y <= 0) || (p_s.y >= 355) || (p_c.x <= 0) || (p_c.x >= 380) || (p_c.y <= 0) || (p_c.y >= 355)){
-				nextgame = 1;
-			}
-			else{
-				nextgame=0;
-			}
+		return 0;
+	}
+	/*
+	void setPlayers(int player_count, ArrayList<Color> reservedColor){
+		for(int i = 0; i < player_count; i++){
+			Player player = new Player(10+i*10,10+i*10,reservedColor.get(i));
+			playerList.add(player);
 		}
-	if(seged_szamlalo > 2){
-		nextgame = 1;
-		seged_szamlalo = 0;
-	}
-		seged_szamlalo = 0;
-}
-	
-	void numberOfPlayers(int player_count){
-		//ide majd vmi, ami elmenti, hogy hány játékos lesz, nehogy elõbb elinduljon a játék 
-	}
+		
+	}*/
+
 }

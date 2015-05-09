@@ -10,7 +10,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import zatacka.Control;
-import zatacka.GUI.ColoredPoint;
 import zatacka.GUI.TDirection;
 
 public class SerialServer extends Network {
@@ -49,8 +48,8 @@ public class SerialServer extends Network {
 
 			try {
 				while (true) {
-					TDirection dir_received = (TDirection) in.readObject();
-					ctrl.keyPressReceived(dir_received);
+					Player playerReceived = (Player) in.readObject();
+					ctrl.playerReceived(playerReceived);
 				}
 			} catch (Exception ex) {
 				System.out.println(ex.getMessage());

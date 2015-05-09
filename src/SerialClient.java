@@ -8,7 +8,6 @@ import java.net.*;
 import javax.swing.JOptionPane;
 
 import zatacka.Control;
-import zatacka.GUI.ColoredPoint;
 import zatacka.GUI.TDirection;
 
 public class SerialClient extends Network {
@@ -60,12 +59,12 @@ public class SerialClient extends Network {
 	}
 
 	@Override
-	void send(TDirection direction) {
+	void send(Player player) {
 		if (out == null)
 			return;
 		//System.out.println("Sending KeyEvent: " + direction + " to Server");
 		try {
-			out.writeObject(direction);
+			out.writeObject(player);
 			out.flush();
 		} catch (IOException ex) {
 			System.err.println("Send error.");

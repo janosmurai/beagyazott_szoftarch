@@ -7,7 +7,6 @@ package zatacka;
 import java.awt.Point;
 
 import zatacka.Control;
-import zatacka.GUI.ColoredPoint;
 import zatacka.GUI.TDirection;
 
 /**
@@ -26,7 +25,7 @@ abstract class Network {
 
 	abstract void disconnect();
 
-	abstract void send(TDirection direction);
+	abstract void send(Player player);
 	
 	abstract void sendNewP(ColoredPoint p); 
 

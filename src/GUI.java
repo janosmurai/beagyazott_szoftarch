@@ -40,56 +40,25 @@ public class GUI {
 	private MainMenu mainMenu;
 	private PlayerCounter playerCounter;
 	private int player_count = 0;
-	int tmp = 0;
 	int status = 0;
-	int server_beta = 0;
-	int client_beta = 0;
-	int rand_seged = 350;
-	int pontszam = 0;
 	
+	boolean ongoingGame;
+	public ArrayList<Color> reservedColor = new ArrayList<Color>();
 	
 	enum TDirection {left, right, nothing}
 	TDirection direction = TDirection.nothing;
 	
-
+	Player player = new Player(10+i*10,10+i*10,reservedColor.get(i));
 	
-	public static class ColoredPoint extends Point
-	{
-		private static final long serialVersionUID = 1L;
-		public Color color;
-		private int beta;
-		
-		ColoredPoint(int x_coordinate, int y_coordinate, Color color_point, int beta)
-		{
-			x = x_coordinate;
-			y = y_coordinate;
-			color = color_point;
-			this.beta = beta;
-		}
-	}
-	
-	public static int[] randomGenerator(int x){
-	int random[];
-	Random randomGenerator = new Random();
-	random= new int[12];
-	for (int i = 1; i < 12; i++){
-	random[i] = randomGenerator.nextInt(x);	
-		}
-	return random;
-	}
-	
-	
-	int [] random = GUI.randomGenerator(rand_seged);
-	ColoredPoint p_c = new ColoredPoint(random[1], random[2], Color.RED, 0);
-	ColoredPoint p_s = new ColoredPoint(random[3], random[4], Color.RED, 0);
-
+	Position position = new Position();
 	
 	public class DrawPanel extends JFrame 
 	{
-
+		
 		private static final long serialVersionUID = 1L;
 		public GameField gameField = new GameField();
 		Timer timer;
+		
 		
 		DrawPanel()
 		{
@@ -97,31 +66,18 @@ public class GUI {
 			{
 			case 1: 
 				setSize(400, 400);
-				rand_seged=350;
 				break;
 			case 2:
 				setSize(400, 400);
-				rand_seged=350;
 				break;
 			case 3:
 				setSize(450, 450);
-				rand_seged=400;
 				break;
 			case 4:
 				setSize(500, 500);
-				rand_seged=450;
-				break;
-			case 5:
-				setSize(550, 550);
-				rand_seged=500;
-				break;
-			case 6:
-				setSize(600, 600);
-				rand_seged=550;
 				break;
 			default:
 				System.err.println("Incorrect number of players!");
-				randomGenerator(rand_seged);
 				return;
 			}
 			
@@ -154,6 +110,7 @@ public class GUI {
 		{
 			private static final long serialVersionUID = 1L;
 			public ArrayList<ColoredPoint> points = new ArrayList<ColoredPoint>();
+			ColoredPoint newPoint = new ColoredPoint(10, 10, Color.BLACK);
 			
 			GameField()
 			{
@@ -168,40 +125,40 @@ public class GUI {
 				for (ColoredPoint p : points)  
 				{
 					g.setColor(p.color);
-					g.fillOval(p.x, p.y, 7, 7);
+					g.fillOval(p.x, p.y, 7, 7);		//TODO: with beállítása
 				}
 				
 			}
 			
 			public void GetNewPoint() 
 			{
-				stopGame();
-				if(ctrl.nextgame == 1){
-					points = new ArrayList<ColoredPoint>();
-					ctrl.nextgame = 0;
-					int [] random = GUI.randomGenerator(rand_seged);
-					p_c = new ColoredPoint(random[1], random[2], Color.RED, 0);
-					p_s = new ColoredPoint(random[3], random[4], Color.RED, 0);
-					}
 				if(status == 1)	//Server
 				{
-					p_s = ctrl.newPosition(p_s.x, p_s.y, direction, Color.red, p_s.beta);
-					p_c = ctrl.newPosition(p_c.x, p_c.y, ctrl.client_dir, Color.blue, p_c.beta);
-					points.add(p_s);
-					points.add(p_c);
-					gameField.repaint();
-					ctrl.sendNewPoint(p_c);
-					ctrl.sendNewPoint(p_s);
+					//System.out.println(ctrl.playerList);
+					for(Player player : ctrl.playerList)
+					{
+						newPoint = position.RePositioning(player, direction);
+						points.add(newPoint);
+						ctrl.sendNewPoint(newPoint);
+						//System.out.println(player.p.color);
+					}
 					
+					gameField.repaint();
 				}
 				else if(status == 2) 	//Client
 				{
-					ctrl.sendKeyPressed(direction);
-		
-					points.add(ctrl.red_received);
-					points.add(ctrl.blue_received);
+					ctrl.sendPlayer(player);
+					//System.out.println(direction);
+					
+					for(ColoredPoint coloredPoint : ctrl.receivedPoint)
+					{
+						points.add(coloredPoint);
+					}
+					ctrl.receivedPoint.clear();
+
 					gameField.repaint();
-				}	
+				}
+				ctrl.collisionCheck();	
 			}
 		}
 			
@@ -210,13 +167,10 @@ public class GUI {
 			
 			if(e.getKeyCode() == KeyEvent.VK_SPACE) 
 			{
-					if(ctrl.nextgame == 0){
+					if(ongoingGame == false){
 						drawPanel.gameField.points.clear();
 						startGame();
-						drawPanel.timer.start();
 					}
-
-				
 				
 			}
 			else if(e.getKeyCode() == KeyEvent.VK_RIGHT) 
@@ -228,11 +182,6 @@ public class GUI {
 			{
 				direction = TDirection.left;
 			
-			}
-			
-			else
-			{
-				
 			}
 			
 		}
@@ -301,6 +250,7 @@ public class GUI {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					color = Color.blue;
+					//TODO
 				}
 			});
 			
@@ -313,7 +263,6 @@ public class GUI {
 			});
 			
 			JRadioButton greenButton= new JRadioButton("Green");
-			greenButton.setSelected(true);
 			greenButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -344,7 +293,6 @@ public class GUI {
 					color = Color.orange;
 				}
 			});
-			
 			
 			color_group.add(greenButton);
 			color_group.add(blueButton);
@@ -381,13 +329,14 @@ public class GUI {
 			button_panel.setVisible(true);
 			
 			add(button_panel);
-			
+				
 			
 			button.addActionListener(new ActionListener() 
 			{
 				@Override
 				public void actionPerformed(ActionEvent e) 
 				{
+					reservedColor.add(color);
 					CreatePlayer();
 				}
 			});
@@ -397,11 +346,19 @@ public class GUI {
 		
 		void CreatePlayer()
 		{
-			if(player_count != 1){
+			if(player_count == 1)
+			{
+				System.out.println(reservedColor);
+				ctrl.setPlayers(player_count, reservedColor);
+			}
+			else 
+			{
 				System.out.println(status);
 				if(status == 1)
 				{
 					ctrl.startServer(color);
+					reservedColor.add(color.white);
+					ctrl.playerList.add(player);
 				}
 				else if(status == 2)
 				{
@@ -440,7 +397,6 @@ public class GUI {
 				public void actionPerformed(ActionEvent e) {
 					String input = text.getText();
 					player_count = Integer.parseInt(input);
-					ctrl.numberOfPlayers(player_count);
 					setVisible(false);
 					mainMenu.setVisible(true);
 					drawPanel = new DrawPanel();
@@ -470,6 +426,7 @@ public class GUI {
 	
 	void startGame()
 	{
+		ongoingGame = true;
 		drawPanel.timer = new Timer (75, new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent e) 
@@ -477,15 +434,12 @@ public class GUI {
 				drawPanel.gameField.GetNewPoint();
 			}
 		});
+		drawPanel.timer.start();
 	}
 	
 	void stopGame()
 	{
-		ctrl.nextGame();
-		if (ctrl.nextgame==1){
-			pontszam ++;
-			System.out.println(pontszam);
-			drawPanel.timer.stop();
-		}
+		ongoingGame = false;
+		drawPanel.timer.stop();
 	}
 }

@@ -4,18 +4,16 @@
 package zatacka;
 
 
+import java.awt.Color;
+
 import zatacka.GUI.TDirection;
 
 
 public class Position {
 	
-	
-	public int nextgame = 0;
-	public int koords[];
-
-	public int[] RePositioning(int prvPx, int prvPy, TDirection direction, int beta)
+	public ColoredPoint RePositioning(Player player, TDirection direction)
 	{
-		
+		ColoredPoint localPoint = new ColoredPoint(10, 10, Color.white);
 		double dy = 0;
 		double dx = 0;
 		
@@ -24,19 +22,19 @@ public class Position {
 		
 		if(direction == TDirection.left)
 		{
-			beta=beta-9;
+			player.beta = player.beta - 9;
 
 		}
 		
 		else if(direction == TDirection.right)
 		{
-			beta=beta+9;
+			player.beta = player.beta + 9;
 
 			
 		}
 		
-		dx = 4.2*Math.cos(Math.toRadians(beta));
-		dy = 4*Math.sin(Math.toRadians(beta));
+		dx = 4.2*Math.cos(Math.toRadians(player.beta));
+		dy = 4*Math.sin(Math.toRadians(player.beta));
 
 		
 		dx = Math.round(dx);
@@ -44,25 +42,16 @@ public class Position {
 		
 
 		
-		dx = dx + prvPx;
-		dy = dy + prvPy;
+		player.p.x += dx;
+		player.p.y += dy;
 
+		localPoint.x = player.p.x;
+		localPoint.y = player.p.y;
+		localPoint.color = player.p.color;
+		System.out.println(localPoint.color);
 		
-		posArray[0] = (int)dx;
-		posArray[1] = (int)dy;
-		posArray[2] = (int)beta;
 		
-		koords=new int[2];
-		koords[0]=posArray[0];
-		koords[1]=posArray[1];
-		
-	/*if(posArray[0] <= 0 || posArray[0] >= 380 || posArray[1] <= 0 || posArray[1] >= 355){
-			System.out.println("Új kör");
-			nextgame=1;
-			
-	}*/
-			
-		return posArray;
+		return localPoint;
 		
 	}
 	
