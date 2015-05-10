@@ -20,6 +20,7 @@ public class Player extends ColoredPoint{
 	public int result = 1;
 	public int width = 1;
 	public enum TDirection {left, right, nothing}
+	public boolean ongoingGame = false;
 
 	
 	Player(int x_coordinate, int y_coordinate, Color color_point) {

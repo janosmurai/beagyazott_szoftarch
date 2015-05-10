@@ -26,6 +26,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.plaf.ProgressBarUI;
+
 import zatacka.Player.TDirection;
 
 import java.awt.font.*;
@@ -43,12 +44,12 @@ public class GUI {
 	private int player_count = 0;
 	int status = 0;
 	
-	boolean ongoingGame;
+	
 	public ArrayList<Color> reservedColor = new ArrayList<Color>();
 	
 	
 	
-	Player player = new Player(10,10,Color.black);
+	Player player = new Player((int)(Math.random() * 100),(int)(Math.random() * 100),Color.black);
 	
 	Position position = new Position();
 	
@@ -65,16 +66,16 @@ public class GUI {
 			switch(player_count)
 			{
 			case 1: 
-				setSize(400, 400);
+				setSize(600, 600);
 				break;
 			case 2:
-				setSize(400, 400);
+				setSize(600, 600);
 				break;
 			case 3:
-				setSize(450, 450);
+				setSize(900, 900);
 				break;
 			case 4:
-				setSize(500, 500);
+				setSize(1000, 1000);
 				break;
 			default:
 				System.err.println("Incorrect number of players!");
@@ -126,7 +127,7 @@ public class GUI {
 				{
 					//System.out.println(p.color);
 					g.setColor(p.color);
-					g.fillOval(p.x, p.y, 7, 7);		//TODO: with beállítása
+					g.fillOval(p.x, p.y, p.width, p.width);		//TODO: with beállítása
 				}
 				
 			}
@@ -139,18 +140,19 @@ public class GUI {
 					for(Player iplayer : ctrl.playerList)
 					{
 						iplayer = position.RePositioning(iplayer);
+						iplayer.ongoingGame = player.ongoingGame;
 						points.add(iplayer.p);
 						//System.out.println(iplayer.p.x);
 						ctrl.sendPlayer(iplayer);
 					}
 					
 					gameField.repaint();
+					ctrl.collisionCheck();	
 				}
 				else if(status == 2) 	//Client
 				{
 					Player test_player = new Player(player.p.x, player.p.y, player.p.color);
 					test_player.p.direction = player.p.direction;
-					System.out.println("1:" + test_player.p.direction);
 					ctrl.sendPlayer(test_player);
 					
 					for(ColoredPoint coloredPoint : ctrl.receivedPoint)
@@ -162,7 +164,7 @@ public class GUI {
 					
 					gameField.repaint();
 				}
-				ctrl.collisionCheck();	
+				
 			}
 		}
 			
@@ -171,9 +173,14 @@ public class GUI {
 			
 			if(e.getKeyCode() == KeyEvent.VK_SPACE) 
 			{
-					if(ongoingGame == false){
+					if(player.ongoingGame == false){
 						drawPanel.gameField.points.clear();
+						player.p.x = (int)(Math.random()*drawPanel.getWidth());
+						player.p.y = (int)(Math.random()*drawPanel.getHeight());
+						System.out.println("1:" + player.p.x);
+						System.out.println("2:" + player.p.y);
 						startGame();
+						
 					}
 				
 			}
@@ -193,7 +200,7 @@ public class GUI {
 		{
 			if(e.getKeyCode() == KeyEvent.VK_RIGHT) 
 			{
-				player.p.direction = TDirection.nothing;
+				player.p.direction = TDirection.nothing; 
 			}
 			if(e.getKeyCode() == KeyEvent.VK_LEFT) 
 			{
@@ -420,7 +427,7 @@ public class GUI {
 	
 	void startGame()
 	{
-		ongoingGame = true;
+		player.ongoingGame = true;
 		drawPanel.timer = new Timer (75, new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent e) 
@@ -433,7 +440,7 @@ public class GUI {
 	
 	void stopGame()
 	{
-		ongoingGame = false;
+		player.ongoingGame = false;
 		drawPanel.timer.stop();
 	}
 }

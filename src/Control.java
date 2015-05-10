@@ -103,6 +103,7 @@ class Control extends JFrame {
 			{
 				gui.player.p.x = playerRec.p.x;
 				gui.player.p.y = playerRec.p.y;
+				gui.player.ongoingGame = playerRec.ongoingGame;
 			}
 			
 		}
@@ -124,6 +125,7 @@ class Control extends JFrame {
 		int dis_y = 0;
 		double distance = 0;
 		int collisionCntr = 0;
+		int selfcollisionCntr = 0;
 		int gameFieldSize = gui.drawPanel.getWidth();    //Same as height
 
 		for(Player player : playerList)
@@ -134,28 +136,34 @@ class Control extends JFrame {
 		
 				dis_x = storedPoint.x - actualPoint.x;
 				dis_y = storedPoint.y - actualPoint.y;
-				distance = Math.sqrt(dis_y^2 + dis_x^2);
+				distance = Math.sqrt(Math.pow(dis_y, 2) + Math.pow(dis_x, 2));
 				/*
-				System.out.println(dis_x);
-				System.out.println(dis_y);
-				System.out.println(distance);
-				System.out.println(storedPoint);
-				System.out.println(actualPoint);
+				System.out.println("1:" + dis_x);
+				System.out.println("2:" + dis_y);
+				System.out.println("3:" + distance);
+				System.out.println("4:" + storedPoint);
+				System.out.println("5:" + actualPoint);
 				*/
 				
-				if((storedPoint.color != actualPoint.color) && (distance <= (storedPoint.width + actualPoint.width)))
+				if(!(storedPoint.color.equals(actualPoint.color)) && (distance <= (storedPoint.width + actualPoint.width)))
 				{
-					//collisionCntr++;
+					collisionCntr++;
 				}
-				//System.out.println(collisionCntr);
+				
+				if((storedPoint.color.equals(actualPoint.color)) && (distance <= (storedPoint.width + actualPoint.width)) && (distance >= actualPoint.width))
+				{
+					selfcollisionCntr++;
+					System.out.println(selfcollisionCntr);
+				}
+				//System.out.println("6:" + collisionCntr);
 				
 				if((actualPoint.x < 0) ||
 					(actualPoint.x > gameFieldSize) ||
 					(actualPoint.y < 0) || 
 					(actualPoint.y > gameFieldSize) ||
-					(collisionCntr >= 2))
+					(collisionCntr >= 2) ||
+					(selfcollisionCntr > 5))
 				{
-					//System.out.println("cica");
 					gui.stopGame();
 					return 1;
 				}
@@ -164,13 +172,6 @@ class Control extends JFrame {
 		}
 		return 0;
 	}
-	/*
-	void setPlayers(int player_count, ArrayList<Color> reservedColor){
-		for(int i = 0; i < player_count; i++){
-			Player player = new Player(10+i*10,10+i*10,reservedColor.get(i));
-			playerList.add(player);
-		}
-		
-	}*/
+
 
 }
