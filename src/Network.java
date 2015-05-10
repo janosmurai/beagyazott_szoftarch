@@ -7,7 +7,7 @@ package zatacka;
 import java.awt.Point;
 
 import zatacka.Control;
-import zatacka.GUI.TDirection;
+import zatacka.Player.TDirection;
 
 /**
  *

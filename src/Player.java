@@ -5,27 +5,35 @@ import java.awt.Point;
 
 
 
+import java.io.Serializable;
+
 import zatacka.ColoredPoint;
-import zatacka.GUI.TDirection;
 
 
 
-public class Player {
-	
+public class Player extends ColoredPoint{
 	private static final long serialVersionUID = 1L;
 	
-	public ColoredPoint p;
+	public ColoredPoint p = new ColoredPoint(10, 10, Color.white);
+	public int beta = 1;
+	public int speed = 1;
+	public int result = 1;
+	public int width = 1;
+	public enum TDirection {left, right, nothing}
+
 	
-	int beta = 1;
-	int speed = 1;
-	int result = 1;
-	int width = 1;
-	TDirection direction = TDirection.nothing;
-	
-	Player(int x, int y, Color color)
-	{
-		p = new ColoredPoint(x, y, color);
+	Player(int x_coordinate, int y_coordinate, Color color_point) {
+		super(x_coordinate, y_coordinate, color_point);
+		// TODO Auto-generated constructor stub
+		p.x = x_coordinate;
+		p.y = y_coordinate;
+		p.color = color_point;
 	}
+
+	
+
+	
+
 	
 	
 	

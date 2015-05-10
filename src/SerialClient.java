@@ -2,13 +2,16 @@ package zatacka;
 
 import java.awt.Point;
 import java.awt.event.KeyEvent;
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.*;
 
 import javax.swing.JOptionPane;
 
 import zatacka.Control;
-import zatacka.GUI.TDirection;
+import zatacka.Player.TDirection;
+import zatacka.Player;
 
 public class SerialClient extends Network {
 
@@ -26,8 +29,10 @@ public class SerialClient extends Network {
 			System.out.println("Waiting for key presses...");
 			try {
 				while (true) {
-					ColoredPoint point_received = (ColoredPoint) in.readObject();
-					ctrl.pointReceived(point_received);
+					Player playerReceived = (Player) in.readObject();
+					//System.out.println(playerReceived.p.direction);
+					//System.out.println(playerReceived.direction);
+					ctrl.playerReceived(playerReceived);
 				}
 			} catch (Exception ex) {
 				System.out.println(ex.getMessage());
@@ -63,7 +68,9 @@ public class SerialClient extends Network {
 		if (out == null)
 			return;
 		//System.out.println("Sending KeyEvent: " + direction + " to Server");
-		try {
+		try 
+		{
+			//System.out.println(player.p.direction);
 			out.writeObject(player);
 			out.flush();
 		} catch (IOException ex) {

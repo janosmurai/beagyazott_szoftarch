@@ -14,7 +14,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 
 import zatacka.*;
-import zatacka.GUI.TDirection;
+import zatacka.Player.TDirection;
 
 class Control extends JFrame {
 	
@@ -59,7 +59,9 @@ class Control extends JFrame {
 	void sendPlayer(Player player){
 		if(net == null)
 			return;
+		//System.out.println(player.direction);
 		net.send(player);
+		
 	}
 
 	void sendNewPoint(ColoredPoint p){
@@ -68,10 +70,44 @@ class Control extends JFrame {
 		net.sendNewP(p);
 	}
 	
-	void playerReceived(Player player){
+	void playerReceived(Player playerRec){
 		if (gui == null)
+		{
+			System.out.println("cica");
 			return;
-		playerList.add(player);
+		}
+		if(gui.status == 1)
+		{
+			//System.out.println(playerRec.p.x);
+			boolean isColorExist = false;
+			for(Player iteratorPlayer : playerList)
+			{
+				if(iteratorPlayer.p.color == playerRec.p.color) 
+				{
+					iteratorPlayer.p.x = playerRec.p.x;
+					iteratorPlayer.p.y = playerRec.p.y;
+					iteratorPlayer.p.direction = playerRec.p.direction;
+					isColorExist = true;
+				}
+			}
+			if(isColorExist == false)
+			{
+				playerList.add(playerRec);
+			}
+				
+		}
+		else if(gui.status == 2)
+		{
+			receivedPoint.add(playerRec.p);	
+			if(playerRec.p.color.equals(gui.player.p.color))// == gui.player.p.color)
+			{
+				gui.player.p.x = playerRec.p.x;
+				gui.player.p.y = playerRec.p.y;
+			}
+			
+		}
+		
+			
 	}
 	
 	void pointReceived(ColoredPoint p){

@@ -26,6 +26,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.plaf.ProgressBarUI;
+import zatacka.Player.TDirection;
 
 import java.awt.font.*;
 
@@ -45,10 +46,9 @@ public class GUI {
 	boolean ongoingGame;
 	public ArrayList<Color> reservedColor = new ArrayList<Color>();
 	
-	enum TDirection {left, right, nothing}
-	TDirection direction = TDirection.nothing;
 	
-	Player player = new Player(10+i*10,10+i*10,reservedColor.get(i));
+	
+	Player player = new Player(10,10,Color.black);
 	
 	Position position = new Position();
 	
@@ -124,6 +124,7 @@ public class GUI {
 				super.paintComponent(g);
 				for (ColoredPoint p : points)  
 				{
+					//System.out.println(p.color);
 					g.setColor(p.color);
 					g.fillOval(p.x, p.y, 7, 7);		//TODO: with beállítása
 				}
@@ -134,28 +135,31 @@ public class GUI {
 			{
 				if(status == 1)	//Server
 				{
-					//System.out.println(ctrl.playerList);
-					for(Player player : ctrl.playerList)
+
+					for(Player iplayer : ctrl.playerList)
 					{
-						newPoint = position.RePositioning(player, direction);
-						points.add(newPoint);
-						ctrl.sendNewPoint(newPoint);
-						//System.out.println(player.p.color);
+						iplayer = position.RePositioning(iplayer);
+						points.add(iplayer.p);
+						//System.out.println(iplayer.p.x);
+						ctrl.sendPlayer(iplayer);
 					}
 					
 					gameField.repaint();
 				}
 				else if(status == 2) 	//Client
 				{
-					ctrl.sendPlayer(player);
-					//System.out.println(direction);
+					Player test_player = new Player(player.p.x, player.p.y, player.p.color);
+					test_player.p.direction = player.p.direction;
+					System.out.println("1:" + test_player.p.direction);
+					ctrl.sendPlayer(test_player);
 					
 					for(ColoredPoint coloredPoint : ctrl.receivedPoint)
 					{
 						points.add(coloredPoint);
+						
 					}
 					ctrl.receivedPoint.clear();
-
+					
 					gameField.repaint();
 				}
 				ctrl.collisionCheck();	
@@ -175,12 +179,12 @@ public class GUI {
 			}
 			else if(e.getKeyCode() == KeyEvent.VK_RIGHT) 
 			{
-				direction = TDirection.right;
+				player.p.direction = TDirection.right;
 
 			}
 			else if(e.getKeyCode() == KeyEvent.VK_LEFT)
 			{
-				direction = TDirection.left;
+				player.p.direction = TDirection.left;
 			
 			}
 			
@@ -189,11 +193,11 @@ public class GUI {
 		{
 			if(e.getKeyCode() == KeyEvent.VK_RIGHT) 
 			{
-				direction = TDirection.nothing;
+				player.p.direction = TDirection.nothing;
 			}
 			if(e.getKeyCode() == KeyEvent.VK_LEFT) 
 			{
-				direction = TDirection.nothing;
+				player.p.direction = TDirection.nothing;
 			}
 		}
 	}
@@ -336,7 +340,7 @@ public class GUI {
 				@Override
 				public void actionPerformed(ActionEvent e) 
 				{
-					reservedColor.add(color);
+					player.p.color = color;
 					CreatePlayer();
 				}
 			});
@@ -346,25 +350,15 @@ public class GUI {
 		
 		void CreatePlayer()
 		{
-			if(player_count == 1)
-			{
-				System.out.println(reservedColor);
-				ctrl.setPlayers(player_count, reservedColor);
-			}
-			else 
-			{
-				System.out.println(status);
 				if(status == 1)
 				{
 					ctrl.startServer(color);
-					reservedColor.add(color.white);
 					ctrl.playerList.add(player);
 				}
 				else if(status == 2)
 				{
 					ctrl.startClient(color);
 				}
-			}
 			mainMenu.setVisible(false);
 			
 			drawPanel.setVisible(true);

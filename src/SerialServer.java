@@ -10,7 +10,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import zatacka.Control;
-import zatacka.GUI.TDirection;
+import zatacka.Player.TDirection;
+import zatacka.Player;
 
 public class SerialServer extends Network {
 
@@ -49,6 +50,8 @@ public class SerialServer extends Network {
 			try {
 				while (true) {
 					Player playerReceived = (Player) in.readObject();
+					//System.out.println(playerReceived.p.x);
+				//System.out.println(playerReceived.p.direction);
 					ctrl.playerReceived(playerReceived);
 				}
 			} catch (Exception ex) {
@@ -57,6 +60,8 @@ public class SerialServer extends Network {
 			} finally {
 				disconnect();
 			}
+			
+			
 		}
 	}
 
@@ -74,12 +79,12 @@ public class SerialServer extends Network {
 	}
 
 	@Override
-	void send(TDirection direction) {
+	void send(Player player) {
 		if (out == null)
 			return;
 		//System.out.println("Sending point: " + direction + " to Client");
 		try {
-			out.writeObject(direction);
+			out.writeObject(player);
 			out.flush();
 		} catch (IOException ex) {
 			System.err.println("Send error.");

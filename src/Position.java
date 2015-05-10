@@ -6,27 +6,27 @@ package zatacka;
 
 import java.awt.Color;
 
-import zatacka.GUI.TDirection;
+import zatacka.Player.TDirection;
 
 
 public class Position {
 	
-	public ColoredPoint RePositioning(Player player, TDirection direction)
+	public Player RePositioning(Player player)
 	{
-		ColoredPoint localPoint = new ColoredPoint(10, 10, Color.white);
+		Player localPlayer = new Player(10, 10, Color.white);
 		double dy = 0;
 		double dx = 0;
 		
 		int[] posArray;
 		posArray = new int[3];
 		
-		if(direction == TDirection.left)
+		if(player.p.direction == TDirection.left)
 		{
 			player.beta = player.beta - 9;
 
 		}
 		
-		else if(direction == TDirection.right)
+		else if(player.p.direction == TDirection.right)
 		{
 			player.beta = player.beta + 9;
 
@@ -45,13 +45,16 @@ public class Position {
 		player.p.x += dx;
 		player.p.y += dy;
 
-		localPoint.x = player.p.x;
-		localPoint.y = player.p.y;
-		localPoint.color = player.p.color;
-		System.out.println(localPoint.color);
+		localPlayer.p.x = player.p.x;
+		localPlayer.p.y = player.p.y;
+		localPlayer.p.color = player.p.color;
+		localPlayer.p.direction = player.p.direction;
+		localPlayer.beta = player.beta;
+		localPlayer.speed = player.speed;
+		localPlayer.width = player.width;
 		
 		
-		return localPoint;
+		return localPlayer;
 		
 	}
 	
