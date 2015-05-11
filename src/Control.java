@@ -39,7 +39,6 @@ class Control extends JFrame {
 		gui = g;
 	}
 	
-	
 
 	void startServer(Color color) {
 		
@@ -59,7 +58,10 @@ class Control extends JFrame {
 	void sendPlayer(Player player){
 		if(net == null)
 			return;
-		//System.out.println(player.direction);
+		if(gui.status == 1){
+			//System.out.println(player.ongoingGame);
+		}
+		
 		net.send(player);
 		
 	}
@@ -104,6 +106,7 @@ class Control extends JFrame {
 			{
 				gui.player.p.x = playerRec.p.x;
 				gui.player.p.y = playerRec.p.y;
+				gui.player.ongoingGame = playerRec.ongoingGame;
 			}
 			
 		}
@@ -153,6 +156,7 @@ class Control extends JFrame {
 				if((storedPoint.color.equals(actualPoint.color)) && (distance <= (storedPoint.width + actualPoint.width)) && (distance >= actualPoint.width))
 				{
 					selfcollisionCntr++;
+					//System.out.println(selfcollisionCntr);
 				}
 				//System.out.println("6:" + collisionCntr);
 				
