@@ -1,6 +1,7 @@
 package zatacka;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.LayoutManager;
 import java.awt.Point;
@@ -57,40 +58,46 @@ public class GUI {
 	{
 		
 		private static final long serialVersionUID = 1L;
-		public GameField gameField = new GameField();
+		public GameField gameField = new GameField();;
 		Timer timer;
-		
+		// @Override
+	       /* public DrawPanel getPreferredSize() {
+	            return new DrawPanel();
+	        }*/
 		
 		DrawPanel()
 		{
 			switch(player_count)
 			{
 			case 1: 
-				setSize(600, 600);
+				setPreferredSize(new Dimension(600,600));
 				break;
 			case 2:
-				setSize(600, 600);
+				setPreferredSize(new Dimension(600,600));
 				break;
 			case 3:
-				setSize(900, 900);
+				setPreferredSize(new Dimension(900,900));
 				break;
 			case 4:
-				setSize(1000, 1000);
+				setPreferredSize(new Dimension(1000,1000));
 				break;
 			default:
 				System.err.println("Incorrect number of players!");
 				return;
 			}
 			
+			gameField.setSize(getWidth(), getHeight());
+			add(gameField);
+			pack();
+			
 			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			setLayout(null);
 			setTitle("Zatacka");
-		
-			gameField.setBackground(Color.black);
-			gameField.setLocation(0, 0);
-			gameField.setBounds(0, 0, getWidth(), getHeight());
+			
+
 			gameField.setVisible(true);
-			add(gameField);
+			gameField.setBackground(Color.black);
+			gameField.setLocation(0, 0);	
 			
 			addKeyListener(new KeyListener() 
 			{
@@ -115,8 +122,8 @@ public class GUI {
 			
 			GameField()
 			{
-				setBounds(0, 0, getWidth(), getHeight());
-				setOpaque(true);
+				//setBounds(0, 0, getWidth(), getHeight());
+				//setOpaque(true);
 			}
 			
 			@Override
@@ -136,7 +143,8 @@ public class GUI {
 			{
 				if(status == 1)	//Server
 				{
-
+					ctrl.collisionCheck();
+					
 					for(Player iplayer : ctrl.playerList)
 					{
 						iplayer = position.RePositioning(iplayer);
@@ -146,8 +154,7 @@ public class GUI {
 						ctrl.sendPlayer(iplayer);
 					}
 					
-					gameField.repaint();
-					ctrl.collisionCheck();	
+					gameField.repaint();	
 				}
 				else if(status == 2) 	//Client
 				{
@@ -175,10 +182,9 @@ public class GUI {
 			{
 					if(player.ongoingGame == false){
 						drawPanel.gameField.points.clear();
+						drawPanel.gameField.repaint();
 						player.p.x = (int)(Math.random()*drawPanel.getWidth());
 						player.p.y = (int)(Math.random()*drawPanel.getHeight());
-						System.out.println("1:" + player.p.x);
-						System.out.println("2:" + player.p.y);
 						startGame();
 						
 					}
@@ -440,6 +446,7 @@ public class GUI {
 	
 	void stopGame()
 	{
+
 		player.ongoingGame = false;
 		drawPanel.timer.stop();
 	}

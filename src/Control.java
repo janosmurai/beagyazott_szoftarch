@@ -87,6 +87,7 @@ class Control extends JFrame {
 					iteratorPlayer.p.x = playerRec.p.x;
 					iteratorPlayer.p.y = playerRec.p.y;
 					iteratorPlayer.p.direction = playerRec.p.direction;
+					iteratorPlayer.ongoingGame = gui.player.ongoingGame;
 					isColorExist = true;
 				}
 			}
@@ -103,7 +104,6 @@ class Control extends JFrame {
 			{
 				gui.player.p.x = playerRec.p.x;
 				gui.player.p.y = playerRec.p.y;
-				gui.player.ongoingGame = playerRec.ongoingGame;
 			}
 			
 		}
@@ -153,7 +153,6 @@ class Control extends JFrame {
 				if((storedPoint.color.equals(actualPoint.color)) && (distance <= (storedPoint.width + actualPoint.width)) && (distance >= actualPoint.width))
 				{
 					selfcollisionCntr++;
-					System.out.println(selfcollisionCntr);
 				}
 				//System.out.println("6:" + collisionCntr);
 				
