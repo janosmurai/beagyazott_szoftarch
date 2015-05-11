@@ -410,7 +410,7 @@ public class GUI {
 			setTitle("Players");
 			
 			setLayout(new BorderLayout());
-		    setContentPane(new JLabel(new ImageIcon("C:\\design.jpg")));
+		    setContentPane(new JLabel(new ImageIcon("C:/Users/Lõrinc/workspace/zatacka/src/zatacka/Media/design.jpg")));
 		    setLayout(new FlowLayout());
 			
 			panel = new JPanel();
@@ -455,10 +455,29 @@ public class GUI {
 		
 	}
 	
+	 public void backGroundMusic() {
+		 
+	      try {
+	                 
+	          File soundFile = new File("C:/Users/Lõrinc/workspace/zatacka/src/zatacka/Media/backgroundmusic.wav"); 
+	          AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);    
+	          Clip clip = AudioSystem.getClip();
+	          clip.open(audioIn);
+	          clip.start();
+	         
+	      } catch (UnsupportedAudioFileException e) {
+	         e.printStackTrace();
+	      } catch (IOException e) {
+	         e.printStackTrace();
+	      } catch (LineUnavailableException e) {
+	         e.printStackTrace();
+	      }
+	   }
+	 
 	void startGame()
 	{
 		player.ongoingGame = true;
-		drawPanel.timer = new Timer (75, new ActionListener() 
+		drawPanel.timer = new Timer (60, new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
@@ -466,14 +485,15 @@ public class GUI {
 			}
 		});
 		drawPanel.timer.start();
+		backGroundMusic();
 	}
 	
-	 public void SoundClip() {
+	 public void crashSound() {
 		 
 	      try {
 	                 
-	          File soundFile = new File("C:/sound.wav"); 
-	          AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);              
+	          File soundFile = new File("C:/Users/Lõrinc/workspace/zatacka/src/zatacka/Media/sound.wav"); 
+	          AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);    
 	          Clip clip = AudioSystem.getClip();
 	         clip.open(audioIn);
 	         clip.start();
@@ -490,6 +510,6 @@ public class GUI {
 	{
 		player.ongoingGame = false;
 		drawPanel.timer.stop();
-		SoundClip();
+		crashSound();
 	}
 }
