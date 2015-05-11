@@ -1,7 +1,9 @@
 package zatacka;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.LayoutManager;
 import java.awt.Point;
@@ -14,8 +16,14 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.TimerTask;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -32,6 +40,8 @@ import javax.swing.plaf.ProgressBarUI;
 import zatacka.Player.TDirection;
 
 import java.awt.font.*;
+import java.io.File;
+import java.io.IOException;
 
 import zatacka.Gift;
 
@@ -395,9 +405,13 @@ public class GUI {
 		
 		PlayerCounter()
 		{
-			setSize(400, 200);
+			setSize(600, 300);
 			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			setTitle("Players");
+			
+			setLayout(new BorderLayout());
+		    setContentPane(new JLabel(new ImageIcon("C:\\design.jpg")));
+		    setLayout(new FlowLayout());
 			
 			panel = new JPanel();
 			panel.setLocation(0, 0);
@@ -454,9 +468,28 @@ public class GUI {
 		drawPanel.timer.start();
 	}
 	
+	 public void SoundClip() {
+		 
+	      try {
+	                 
+	          File soundFile = new File("C:/sound.wav"); 
+	          AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);              
+	          Clip clip = AudioSystem.getClip();
+	         clip.open(audioIn);
+	         clip.start();
+	      } catch (UnsupportedAudioFileException e) {
+	         e.printStackTrace();
+	      } catch (IOException e) {
+	         e.printStackTrace();
+	      } catch (LineUnavailableException e) {
+	         e.printStackTrace();
+	      }
+	   }
+	
 	void stopGame()
 	{
 		player.ongoingGame = false;
 		drawPanel.timer.stop();
+		SoundClip();
 	}
 }
