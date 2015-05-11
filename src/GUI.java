@@ -33,7 +33,7 @@ import zatacka.Player.TDirection;
 
 import java.awt.font.*;
 
-import zatacka.Gift;
+import zatacka.*;
 
 public class GUI {
 	
@@ -62,11 +62,10 @@ public class GUI {
 		public GameField gameField = new GameField();
 		Timer timer;
 		
-		
 		DrawPanel()
 		{
 			switch(player_count)
-
+			{
 			case 1: 
 				setPreferredSize(new Dimension(600,600));
 				break;
@@ -84,16 +83,18 @@ public class GUI {
 				return;
 			}
 			
-		gameField.setSize(getWidth(), getHeight());
+			gameField.setSize(getWidth(), getHeight());
 			add(gameField);
 			pack();
+			
 			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			setLayout(null);
 			setTitle("Zatacka");
-		
+			
+
 			gameField.setVisible(true);
 			gameField.setBackground(Color.black);
-			gameField.setLocation(0, 0);
+			gameField.setLocation(0, 0);	
 			
 			addKeyListener(new KeyListener() 
 			{
@@ -138,20 +139,18 @@ public class GUI {
 			{
 				if(status == 1)	//Server
 				{
-					ctrl.collisionCheck();	
+					ctrl.collisionCheck();
+					
 					for(Player iplayer : ctrl.playerList)
 					{
 						iplayer = position.RePositioning(iplayer);
 						iplayer.ongoingGame = player.ongoingGame;
-						
 						points.add(iplayer.p);
 						//System.out.println(iplayer.p.x);
-						
 						ctrl.sendPlayer(iplayer);
 					}
 					
-					gameField.repaint();
-					
+					gameField.repaint();	
 				}
 				else if(status == 2) 	//Client
 				{
@@ -170,7 +169,6 @@ public class GUI {
 				}
 				
 			}
-
 		}
 			
 		public void OnKeyPressed(KeyEvent e) 
@@ -183,7 +181,6 @@ public class GUI {
 						drawPanel.gameField.repaint();
 						player.p.x = (int)(Math.random()*drawPanel.getWidth());
 						player.p.y = (int)(Math.random()*drawPanel.getHeight());
-		
 						startGame();
 						
 					}
@@ -348,7 +345,7 @@ public class GUI {
 				
 			
 			button.addActionListener(new ActionListener() 
-		{
+			{
 				@Override
 				public void actionPerformed(ActionEvent e) 
 				{
@@ -456,6 +453,7 @@ public class GUI {
 	
 	void stopGame()
 	{
+
 		player.ongoingGame = false;
 		drawPanel.timer.stop();
 	}
