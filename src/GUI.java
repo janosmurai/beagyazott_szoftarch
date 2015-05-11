@@ -22,6 +22,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -58,12 +59,8 @@ public class GUI {
 	{
 		
 		private static final long serialVersionUID = 1L;
-		public GameField gameField = new GameField();;
+		public GameField gameField = new GameField();
 		Timer timer;
-		// @Override
-	       /* public DrawPanel getPreferredSize() {
-	            return new DrawPanel();
-	        }*/
 		
 		DrawPanel()
 		{
@@ -122,8 +119,7 @@ public class GUI {
 			
 			GameField()
 			{
-				//setBounds(0, 0, getWidth(), getHeight());
-				//setOpaque(true);
+
 			}
 			
 			@Override
@@ -353,8 +349,19 @@ public class GUI {
 				@Override
 				public void actionPerformed(ActionEvent e) 
 				{
-					player.p.color = color;
-					CreatePlayer();
+					if(status == 0)
+					{
+						JOptionPane.showMessageDialog(null, "You have to choose server or client mode!");
+					}
+					if(color.equals(Color.black))
+					{
+						JOptionPane.showMessageDialog(null, "You have to choose a color!");
+					}
+					else
+					{
+						player.p.color = color;
+						CreatePlayer();
+					}
 				}
 			});
 			
