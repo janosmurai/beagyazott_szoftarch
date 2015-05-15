@@ -19,6 +19,7 @@ import java.util.TimerTask;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.BorderFactory;
@@ -55,6 +56,9 @@ public class GUI {
 	private PlayerCounter playerCounter;
 	private int player_count = 0;
 	int status = 0;
+	int cntr = 0;
+	File soundFile = new File("C:/Users/Lõrinc/workspace/zatacka/src/zatacka/Media/backgroundmusic.wav");
+
 	
 	
 	public ArrayList<Color> reservedColor = new ArrayList<Color>();
@@ -456,15 +460,13 @@ public class GUI {
 	}
 	
 	 public void backGroundMusic() {
-		 
-	      try {
-	                 
-	          File soundFile = new File("C:/Users/Lõrinc/workspace/zatacka/src/zatacka/Media/backgroundmusic.wav"); 
+		    try {
 	          AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);    
 	          Clip clip = AudioSystem.getClip();
 	          clip.open(audioIn);
 	          clip.start();
-	         
+	          cntr++;
+	
 	      } catch (UnsupportedAudioFileException e) {
 	         e.printStackTrace();
 	      } catch (IOException e) {
@@ -472,7 +474,7 @@ public class GUI {
 	      } catch (LineUnavailableException e) {
 	         e.printStackTrace();
 	      }
-	   }
+	 }
 	 
 	void startGame()
 	{
@@ -485,7 +487,9 @@ public class GUI {
 			}
 		});
 		drawPanel.timer.start();
+		if(cntr < 1){
 		backGroundMusic();
+		}
 	}
 	
 	 public void crashSound() {
@@ -494,9 +498,9 @@ public class GUI {
 	                 
 	          File soundFile = new File("C:/Users/Lõrinc/workspace/zatacka/src/zatacka/Media/sound.wav"); 
 	          AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);    
-	          Clip clip = AudioSystem.getClip();
-	         clip.open(audioIn);
-	         clip.start();
+	          Clip clip2 = AudioSystem.getClip();
+	         clip2.open(audioIn);
+	         clip2.start();
 	      } catch (UnsupportedAudioFileException e) {
 	         e.printStackTrace();
 	      } catch (IOException e) {
