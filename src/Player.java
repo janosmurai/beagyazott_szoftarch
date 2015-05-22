@@ -21,7 +21,6 @@ public class Player extends ColoredPoint{
 	public int result = 1;
 	public enum TDirection {left, right, nothing}
 	public boolean ongoingGame = false;
-	gift_type gift;
 
 	
 	Player(int x_coordinate, int y_coordinate, Color color_point) {
@@ -31,7 +30,7 @@ public class Player extends ColoredPoint{
 		p.color = color_point;
 	}
 
-	public void handleGift()
+	public void handleGift(gift_type gift)
 	{
 		switch (gift)
 		{

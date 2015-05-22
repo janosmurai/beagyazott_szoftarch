@@ -2,6 +2,8 @@ package zatacka;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Container;
+import java.awt.Desktop.Action;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
@@ -12,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowListener;
 import java.sql.ClientInfoStatus;
 import java.util.ArrayList;
 import java.util.Random;
@@ -23,10 +26,12 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -36,6 +41,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.Timer;
 import javax.swing.plaf.ProgressBarUI;
 
@@ -100,12 +106,14 @@ public class GUI {
 				return;
 			}
 			
+			setUndecorated(true);
 		gameField.setSize(getWidth(), getHeight());
 			add(gameField);
 			pack();
 			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			setLayout(null);
-			setTitle("Zatacka");
+			//setTitle("Zatacka");
+			setLocationRelativeTo(null);
 		
 			gameField.setVisible(true);
 			gameField.setBackground(Color.black);
@@ -123,6 +131,16 @@ public class GUI {
 				}
 				public void keyTyped(KeyEvent e) {}
 			});
+
+KeyStroke escapeKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0, false);
+			AbstractAction escapeAction = new AbstractAction() {
+						private static final long serialVersionUID = 1L;
+						public void actionPerformed(ActionEvent e) {
+							System.exit(getDefaultCloseOperation());
+						}
+					};
+			getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(escapeKeyStroke,"ESCAPE");
+			getRootPane().getActionMap().put("ESCAPE", escapeAction);
 
 		}
 		
@@ -247,7 +265,7 @@ public class GUI {
 	private class MainMenu extends JFrame
 	{
 		private static final long serialVersionUID = 1L;
-		private JPanel sc_panel, color_panel, button_panel;
+		private JPanel sc_panel, color_panel, button_panel/*, panel*/;
 		private Color color = Color.black;
 		
 		MainMenu()
@@ -255,11 +273,19 @@ public class GUI {
 			setSize(225, 300);
 			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			setLayout(null);
-			setTitle("Main menu");
-			
+	//setTitle("Main menu");
+			setUndecorated(true);
+			setLocationRelativeTo(null);
+			//panel = new JPanel();
+			//panel.setSize(getWidth(), getHeight());
+			//panel.setBackground(Color.black);
+			//add(panel);
+		
 			ButtonGroup server_client_group = new ButtonGroup();
 			
 			JRadioButton serverButton= new JRadioButton("Server");
+			//serverButton.setBackground(Color.black);
+			//serverButton.setForeground(Color.white);
 			serverButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -269,6 +295,8 @@ public class GUI {
 			
 			
 			JRadioButton clientButton= new JRadioButton("Client");
+			//clientButton.setBackground(Color.black);
+			//clientButton.setForeground(Color.white);
 			clientButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -287,11 +315,14 @@ public class GUI {
 			
 			sc_panel.setVisible(true);
 			sc_panel.setLocation(5, 5);
+			//sc_panel.setBackground(Color.black);
 			add(sc_panel);
 			
 			ButtonGroup color_group = new ButtonGroup();
 			
 			JRadioButton blueButton= new JRadioButton("Blue");
+			//blueButton.setBackground(Color.black);
+			//blueButton.setForeground(Color.white);
 			blueButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -301,6 +332,8 @@ public class GUI {
 			});
 			
 			JRadioButton yellowButton= new JRadioButton("Yellow");
+			//yellowButton.setBackground(Color.black);
+			//yellowButton.setForeground(Color.white);
 			yellowButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -309,6 +342,8 @@ public class GUI {
 			});
 			
 			JRadioButton greenButton= new JRadioButton("Green");
+			//greenButton.setBackground(Color.black);
+			//greenButton.setForeground(Color.white);
 			greenButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -317,6 +352,8 @@ public class GUI {
 			});
 			
 			JRadioButton redButton= new JRadioButton("Red");
+			//redButton.setBackground(Color.black);
+			//redButton.setForeground(Color.white);
 			redButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -325,6 +362,8 @@ public class GUI {
 			});
 			
 			JRadioButton whiteButton= new JRadioButton("White");
+			//whiteButton.setBackground(Color.black);
+			//whiteButton.setForeground(Color.white);
 			whiteButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -333,6 +372,8 @@ public class GUI {
 			});
 			
 			JRadioButton orangeButton= new JRadioButton("Orange");
+			//orangeButton.setBackground(Color.black);
+			//orangeButton.setForeground(Color.white);
 			orangeButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -360,12 +401,14 @@ public class GUI {
 			
 			color_panel.setVisible(true);
 			color_panel.setLocation(5, 75);
+			//color_panel.setBackground(Color.black);
 			add(color_panel);
 			
 			JButton button = new JButton("Ready!");
 			button_panel = new JPanel();
 			
 			button.setVisible(true);
+			//button.setBackground(Color.black);
 			button_panel.add(button);
 			button_panel.setVisible(true);
 			button_panel.setBounds(this.getWidth(), this.getHeight(), 200, 70);
@@ -373,7 +416,7 @@ public class GUI {
 			
 			button_panel.setLocation(5,185);
 			button_panel.setVisible(true);
-			
+			//button_panel.setBackground(Color.black);
 			add(button_panel);
 				
 			
@@ -397,6 +440,15 @@ public class GUI {
 					}
 				}
 			});
+			KeyStroke escapeKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0, false);
+			AbstractAction escapeAction = new AbstractAction() {
+						private static final long serialVersionUID = 1L;
+						public void actionPerformed(ActionEvent e) {
+							System.exit(getDefaultCloseOperation());
+						}
+					};
+			getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(escapeKeyStroke,"ESCAPE");
+			getRootPane().getActionMap().put("ESCAPE", escapeAction);
 			
 			
 		}
@@ -433,11 +485,11 @@ public class GUI {
 		
 		PlayerCounter()
 		{
-			setSize(600, 300);
+			setSize(600, 250);
 			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			setTitle("Players");
+			setUndecorated(true);
 			
-			setLayout(new BorderLayout());
+			
 		    setContentPane(new JLabel(new ImageIcon("C:/Users/Lõrinc/workspace/zatacka/src/zatacka/Media/design.jpg")));
 		    setLayout(new FlowLayout());
 			
@@ -466,6 +518,17 @@ public class GUI {
 			panel.add(text);
 			add(panel);
 			setVisible(true);
+			setLocationRelativeTo(null);
+
+			KeyStroke escapeKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0, false);
+			AbstractAction escapeAction = new AbstractAction() {
+						private static final long serialVersionUID = 1L;
+						public void actionPerformed(ActionEvent e) {
+							System.exit(getDefaultCloseOperation());
+						}
+					};
+			getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(escapeKeyStroke,"ESCAPE");
+			getRootPane().getActionMap().put("ESCAPE", escapeAction);
 		}
 	}
 
@@ -508,7 +571,7 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) 
 			{
 				drawPanel.gameField.GetNewPoint();
-				if(Math.random() > 0.98)
+				if(Math.random() > 0.94)
 				{
 					drawPanel.gameField.getNewGift();
 				}

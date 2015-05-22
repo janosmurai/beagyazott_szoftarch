@@ -188,7 +188,7 @@ class Control extends JFrame {
 				{
 					if(gift.g_effect == effect_on.self)
 					{
-						//player.gift.g_type = gift.g_type;
+						player.handleGift(gift.g_type);
 					}
 					else if(gift.g_effect == effect_on.enemy)
 					{

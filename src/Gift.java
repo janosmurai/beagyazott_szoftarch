@@ -124,7 +124,7 @@ public class Gift extends JPanel{
     
     private void loadImage() {
 
-        img = new ImageIcon("c:/Users/murai/Documents/vik_bme_msc/beagyazott_rendszerek_szoftvertechnologiaja/hazi_feladat/src/Media/" + g_type + "_" + g_effect + ".jpg").getImage();
+        img = new ImageIcon("c:/Users/murai/workspace/zatacka/zatacka/zatacka/Media/" + g_type + "_" + g_effect + ".png").getImage();
     }
     
     public void setGiftSize()
