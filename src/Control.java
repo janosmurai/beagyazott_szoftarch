@@ -14,6 +14,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 
 import zatacka.*;
+import zatacka.Gift.effect_on;
 import zatacka.Player.TDirection;
 
 class Control extends JFrame {
@@ -140,13 +141,6 @@ class Control extends JFrame {
 				dis_x = storedPoint.x - actualPoint.x;
 				dis_y = storedPoint.y - actualPoint.y;
 				distance = Math.sqrt(Math.pow(dis_y, 2) + Math.pow(dis_x, 2));
-				/*
-				System.out.println("1:" + dis_x);
-				System.out.println("2:" + dis_y);
-				System.out.println("3:" + distance);
-				System.out.println("4:" + storedPoint);
-				System.out.println("5:" + actualPoint);
-				*/
 				
 				if(!(storedPoint.color.equals(actualPoint.color)) && (distance <= (storedPoint.width + actualPoint.width)))
 				{
@@ -156,9 +150,7 @@ class Control extends JFrame {
 				if((storedPoint.color.equals(actualPoint.color)) && (distance <= (storedPoint.width + actualPoint.width)) && (distance >= actualPoint.width))
 				{
 					selfcollisionCntr++;
-					//System.out.println(selfcollisionCntr);
 				}
-				//System.out.println("6:" + collisionCntr);
 				
 				if((actualPoint.x < 0) ||
 					(actualPoint.x > gameFieldSize) ||
@@ -174,6 +166,43 @@ class Control extends JFrame {
 			}
 		}
 		return 0;
+	}
+	
+	void catchGift()
+	{
+		int dis_x;
+		int dis_y;
+		double distance;
+		
+		ArrayList<Gift> existing_gift = gui.drawPanel.gameField.gifts;
+		for(Player player : playerList)
+		{
+			ColoredPoint actualPoint = player.p;
+			for(Gift gift : existing_gift)
+			{
+				dis_x = (gift.pos_x + (gift.getWidth()/2)) - actualPoint.x;
+				dis_y = (gift.pos_y + (gift.getHeight()/2)) - actualPoint.y;
+				distance = Math.sqrt(Math.pow(dis_x, 2) + Math.pow(dis_y, 2));
+				
+				if(distance < (gift.getHeight()/2))
+				{
+					if(gift.g_effect == effect_on.self)
+					{
+						//player.gift.g_type = gift.g_type;
+					}
+					else if(gift.g_effect == effect_on.enemy)
+					{
+						// TODO: Effect on other palyers
+					}
+					else
+					{
+						//TODO: Effect on gamefield
+					}
+					remove(gift);
+				}
+			}
+			//player.handleGift();
+		}
 	}
 
 

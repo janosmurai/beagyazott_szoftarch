@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.LayoutManager;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -41,6 +42,7 @@ import javax.swing.plaf.ProgressBarUI;
 import zatacka.Player.TDirection;
 
 import java.awt.font.*;
+import java.awt.image.ImageObserver;
 import java.io.File;
 import java.io.IOException;
 
@@ -50,13 +52,13 @@ public class GUI {
 	
 	private static final long serialVersionUID = 1L;
 	private Control ctrl;
-	private Position pos;
 	public DrawPanel drawPanel;
 	private MainMenu mainMenu;
 	private PlayerCounter playerCounter;
 	private int player_count = 0;
 	int status = 0;
 	int cntr = 0;
+
 	File soundFile = new File("C:/Users/Lõrinc/workspace/zatacka/src/zatacka/Media/backgroundmusic.wav");
 
 	
@@ -128,6 +130,7 @@ public class GUI {
 		{
 			private static final long serialVersionUID = 1L;
 			public ArrayList<ColoredPoint> points = new ArrayList<ColoredPoint>();
+			public ArrayList<Gift> gifts = new ArrayList<Gift>();
 			ColoredPoint newPoint = new ColoredPoint(10, 10, Color.BLACK);
 			
 			GameField()
@@ -145,6 +148,11 @@ public class GUI {
 					g.setColor(p.color);
 					g.fillOval(p.x, p.y, p.width, p.width);		//TODO: with beállítása
 				}
+				Graphics2D g2d = (Graphics2D) g;
+				for (Gift gift : gifts)
+				{
+					g2d.drawImage(gift.img, gift.pos_x, gift.pos_y, null);
+				}
 				
 			}
 			
@@ -153,6 +161,7 @@ public class GUI {
 				if(status == 1)	//Server
 				{
 					ctrl.collisionCheck();	
+					ctrl.catchGift();
 					for(Player iplayer : ctrl.playerList)
 					{
 						iplayer = position.RePositioning(iplayer);
@@ -184,6 +193,12 @@ public class GUI {
 				}
 				
 			}
+			
+			public void getNewGift()
+			{
+				Gift new_gift = new Gift(drawPanel.gameField.getHeight(), drawPanel.gameField.getWidth());
+				gifts.add(new_gift);
+			}
 
 		}
 			
@@ -206,6 +221,7 @@ public class GUI {
 			else if(e.getKeyCode() == KeyEvent.VK_RIGHT) 
 			{
 				player.p.direction = TDirection.right;
+				
 
 			}
 			else if(e.getKeyCode() == KeyEvent.VK_LEFT)
@@ -387,6 +403,8 @@ public class GUI {
 		
 		void CreatePlayer()
 		{
+			if(player_count != 1)
+			{
 				if(status == 1)
 				{
 					ctrl.startServer(color);
@@ -396,6 +414,12 @@ public class GUI {
 				{
 					ctrl.startClient(color);
 				}
+			}
+			else
+			{
+				ctrl.playerList.add(player);
+			}
+			
 			mainMenu.setVisible(false);
 			
 			drawPanel.setVisible(true);
@@ -425,7 +449,7 @@ public class GUI {
 			label.setVisible(true);
 			panel.add(label);
 			
-			JTextField text = new JTextField("2", 30);
+			JTextField text = new JTextField("1", 30);
 			
 			text.addActionListener(new ActionListener() {
 				@Override
@@ -484,11 +508,15 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) 
 			{
 				drawPanel.gameField.GetNewPoint();
+				if(Math.random() > 0.98)
+				{
+					drawPanel.gameField.getNewGift();
+				}
 			}
 		});
 		drawPanel.timer.start();
 		if(cntr < 1){
-		backGroundMusic();
+		//backGroundMusic();
 		}
 	}
 	

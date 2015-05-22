@@ -17,8 +17,6 @@ public class Position {
 		double dy = 0;
 		double dx = 0;
 		
-		int[] posArray;
-		posArray = new int[3];
 		
 		if(player.p.direction == TDirection.left)
 		{
@@ -33,8 +31,8 @@ public class Position {
 			
 		}
 		
-		dx = 4.2*Math.cos(Math.toRadians(player.beta));
-		dy = 4*Math.sin(Math.toRadians(player.beta));
+		dx = player.speed*1.05*Math.cos(Math.toRadians(player.beta));
+		dy = player.speed*Math.sin(Math.toRadians(player.beta));
 
 		
 		dx = Math.round(dx);
