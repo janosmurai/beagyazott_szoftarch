@@ -142,7 +142,7 @@ public class GUI {
 				public void keyTyped(KeyEvent e) {}
 			});
 
-KeyStroke escapeKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0, false);
+			KeyStroke escapeKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0, false);
 			AbstractAction escapeAction = new AbstractAction() {
 						private static final long serialVersionUID = 1L;
 						public void actionPerformed(ActionEvent e) {
@@ -604,6 +604,7 @@ KeyStroke escapeKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0, false);
 		}
 		else
 		{
+			player.reset();
 			player.ongoingGame = true;
 		drawPanel.timer = new Timer (30, new ActionListener() 
 		{

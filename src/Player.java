@@ -33,6 +33,12 @@ public class Player extends ColoredPoint{
 		p.width = width;
 	}
 
+	public void reset()
+	{
+		beta = 1;
+		speed = speed_type.medium;
+		p.width = 7;
+	}
 	public void handleGift(gift_type gift)
 	{
 	
