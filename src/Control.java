@@ -109,8 +109,6 @@ class Control extends JFrame
 					iteratorPlayer.clear = clear;
 					iteratorPlayer.flying_head = playerRec.flying_head;
 					isColorExist = true;
-					
-					
 				}
 			}
 			clear = false;
@@ -132,17 +130,19 @@ class Control extends JFrame
 				gui.player.flying_head = playerRec.flying_head;
 			}
 			
-			if(playerRec.flying_head = true)
+			if(playerRec.flying_head == true)
 			{
+				ArrayList<ColoredPoint> tmp_pointList = new ArrayList<ColoredPoint>();
 				for(ColoredPoint tmp_point: receivedPoint)
 				{
-					if(tmp_point.color == playerRec.p.color)
+					if(tmp_point.color != playerRec.p.color)
 					{
-						int i = receivedPoint.indexOf(tmp_point);
-						receivedPoint.remove(i);
-						System.out.println("cica");
+						tmp_pointList.add(tmp_point);
+
 					}
 				}
+				receivedPoint.clear();
+				receivedPoint.addAll(tmp_pointList);
 			}
 		}
 		

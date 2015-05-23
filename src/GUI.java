@@ -263,8 +263,8 @@ public class GUI {
 					if(player.ongoingGame == false){
 						drawPanel.gameField.points.clear();
 						drawPanel.gameField.repaint();
-						player.p.x = (int)(Math.random()*drawPanel.getWidth());
-						player.p.y = (int)(Math.random()*drawPanel.getHeight());
+						player.p.x = (int)(100+Math.random()*(drawPanel.getWidth()-100));
+						player.p.y = (int)(100+Math.random()*(drawPanel.getHeight()-100));
 		
 						startGame();
 						
@@ -645,7 +645,7 @@ public class GUI {
 		 
 	      try {
 	                 
-	          File soundFile = new File("C:/Users/Lõrinc/workspace/zatacka/src/zatacka/Media/sound.wav"); 
+	          File soundFile = new File("C:/workspace/zatacka/src/zatacka/Media/sound.wav"); 
 	          AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);    
 	          Clip clip2 = AudioSystem.getClip();
 	         clip2.open(audioIn);
