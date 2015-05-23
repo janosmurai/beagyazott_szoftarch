@@ -27,6 +27,7 @@ class Control extends JFrame {
 	TDirection client_dir = TDirection.nothing;
 	public ArrayList<Player> playerList = new ArrayList<Player>();
 	public ArrayList<ColoredPoint> receivedPoint = new ArrayList<ColoredPoint>();
+	public boolean clear = false;
 	Timer timer = new Timer (200, new ActionListener() 
 	{
 		public void actionPerformed(ActionEvent e) 
@@ -97,9 +98,13 @@ class Control extends JFrame {
 					iteratorPlayer.p.y = playerRec.p.y;
 					iteratorPlayer.p.direction = playerRec.p.direction;
 					iteratorPlayer.ongoingGame = gui.player.ongoingGame;
+					iteratorPlayer.clear = clear;
 					isColorExist = true;
 				}
 			}
+			
+			clear = false;
+			
 			if(isColorExist == false)
 			{
 				playerList.add(playerRec);
@@ -114,6 +119,7 @@ class Control extends JFrame {
 				gui.player.p.x = playerRec.p.x;
 				gui.player.p.y = playerRec.p.y;
 				gui.player.ongoingGame = playerRec.ongoingGame;
+				gui.player.clear = playerRec.clear;
 			}
 			
 		}
@@ -249,8 +255,7 @@ class Control extends JFrame {
 					{
 						if(gift.g_type == Gift.gift_type.clear)
 						{
-							
-							gui.drawPanel.gameField.points.clear();
+							clear = true;
 						}
 						if(gift.g_type == Gift.gift_type.dark)
 						{

@@ -64,7 +64,7 @@ public class GUI {
 	private int player_count = 0;
 	int status = 0;
 	int cntr = 0;
-	int rounds = 5;
+	int rounds = 10;
 	File soundFile = new File("C:/Users/Lõrinc/workspace/zatacka/src/zatacka/Media/backgroundmusic.wav");
 
 	
@@ -217,7 +217,10 @@ KeyStroke escapeKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0, false);
 					
 					gameField.repaint();
 				}
-				
+				if(player.clear == true)
+				{
+					drawPanel.gameField.points.clear();
+				}
 			}
 			
 			public void getNewGift()
@@ -610,6 +613,7 @@ KeyStroke escapeKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0, false);
 		if(cntr < 1){
 		//backGroundMusic();
 		}
+	}
 	}
 	/*
 	 public void crashSound() {
