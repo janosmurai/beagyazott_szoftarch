@@ -16,8 +16,8 @@ public class Player extends ColoredPoint{
 	private static final long serialVersionUID = 1L;
 	
 	public ColoredPoint p = new ColoredPoint(10, 10, Color.white);
-	public int beta = 1;
-	public int speed = 1;
+	public double beta = 1;
+	public double speed = 1;
 	public int result = 1;
 	public enum TDirection {left, right, nothing}
 	public boolean ongoingGame = false;

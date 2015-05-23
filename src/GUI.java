@@ -566,7 +566,7 @@ KeyStroke escapeKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0, false);
 	void startGame()
 	{
 		player.ongoingGame = true;
-		drawPanel.timer = new Timer (10, new ActionListener() 
+		drawPanel.timer = new Timer (20, new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent e) 
 			{

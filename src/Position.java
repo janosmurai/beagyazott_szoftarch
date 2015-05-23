@@ -20,19 +20,21 @@ public class Position {
 		
 		if(player.p.direction == TDirection.left)
 		{
-			player.beta = player.beta - 2;
+			player.beta = player.beta - 0.1;
 
 		}
 		
 		else if(player.p.direction == TDirection.right)
 		{
-			player.beta = player.beta + 2;
+			player.beta = player.beta + 0.1;
 
 			
 		}
 		
-		dx = player.speed*1.05*Math.cos(Math.toRadians(player.beta));
-		dy = player.speed*Math.sin(Math.toRadians(player.beta));
+		
+		dx = player.speed*1.05*Math.cos(player.beta);
+		dy = player.speed*Math.sin(player.beta);
+		System.out.println(dx);
 
 		
 		dx = Math.round(dx);

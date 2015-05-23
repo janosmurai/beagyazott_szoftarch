@@ -129,7 +129,7 @@ class Control extends JFrame {
 		int collisionCntr = 0;
 		int selfcollisionCntr = 0;
 		int gameFieldSize = gui.drawPanel.getWidth();    //Same as height
-		int i = controlPoints.size();
+		int i = 0;
 
 		for(Player player : playerList)
 		{
@@ -147,36 +147,29 @@ class Control extends JFrame {
 					collisionCntr++;
 				}
 				
-				//TODO: Ezt gondold át friss aggyal!
 				if((storedPoint.color.equals(actualPoint.color)) &&
 						(distance <= (storedPoint.width + actualPoint.width)) &&
-						(distance >= actualPoint.width) && 
-						(i > (controlPoints.size() - 50)))
+						(distance >= actualPoint.width) &&
+						(i < (controlPoints.size() - 100)))
 				{
-					System.out.println("distance: " + distance);
-					System.out.println("stored + actual: " + (storedPoint.width + actualPoint.width));
-					System.out.println("actual: " + actualPoint.width);
 					selfcollisionCntr++;
 				}
-				else
-				{
-					//System.out.println(selfcollisionCntr);
-				}
+
 				
 				if((actualPoint.x < 0) ||
 					(actualPoint.x > gameFieldSize) ||
 					(actualPoint.y < 0) || 
 					(actualPoint.y > gameFieldSize) ||
-					(collisionCntr >= 2) ||
-					(selfcollisionCntr > 5))
+					(collisionCntr > 1) ||
+					(selfcollisionCntr > 1))
 				{
 					//gui.stopGame();
-					//System.out.println(selfcollisionCntr);
+					System.out.println(selfcollisionCntr);
 					return 1;
 					
 				}
 				//System.out.println(i);
-				i -= 1;
+				i += 1;
 			}
 		}
 		return 0;
