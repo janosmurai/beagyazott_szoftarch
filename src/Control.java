@@ -28,7 +28,7 @@ class Control extends JFrame {
 	public ArrayList<Player> playerList = new ArrayList<Player>();
 	public ArrayList<ColoredPoint> receivedPoint = new ArrayList<ColoredPoint>();
 	public boolean clear = false;
-	Timer timer = new Timer (200, new ActionListener() 
+	Timer timer = new Timer (1000, new ActionListener() 
 	{
 		public void actionPerformed(ActionEvent e) 
 		{
@@ -259,6 +259,8 @@ class Control extends JFrame {
 						{
 							timer.stop();
 							timer.start();
+							gui.drawPanel.panel.setBackground(Color.black);
+							pack();
 							gui.drawPanel.panel.setVisible(true);
 							gui.drawPanel.gameField.setVisible(false);
 						}

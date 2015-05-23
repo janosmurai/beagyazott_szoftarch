@@ -22,6 +22,7 @@ public class Player extends ColoredPoint{
 	public enum TDirection {left, right, nothing};
 	public boolean ongoingGame = false;
 	public enum speed_type {slow, medium, fast};
+	public boolean clear = false;
 
 	
 	Player(int x_coordinate, int y_coordinate, Color color_point, int width) {

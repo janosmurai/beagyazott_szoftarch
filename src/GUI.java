@@ -110,10 +110,12 @@ public class GUI {
 
 			panel = new JPanel();
 			panel.setSize(getWidth(), getHeight());
-			panel.setBackground(Color.black);
-			panel.setVisible(false);
 			add(panel);
 			pack();
+			panel.setBackground(Color.black);
+			panel.setVisible(false);
+			panel.setLocation(0, 0);
+	
 			//setUndecorated(true);
 			gameField.setSize(getWidth(), getHeight());
 			add(gameField);
@@ -200,6 +202,7 @@ KeyStroke escapeKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0, false);
 						
 						ctrl.sendPlayer(tmp_player);
 					}
+					player.clear = ctrl.clear;
 					
 					gameField.repaint();
 					
@@ -219,8 +222,12 @@ KeyStroke escapeKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0, false);
 					
 					gameField.repaint();
 				}
-				
-			}
+				if(player.clear == true)
+				{
+					drawPanel.gameField.points.clear();
+					ctrl.clear = false;
+				}
+	
 			
 			public void getNewGift()
 			{
