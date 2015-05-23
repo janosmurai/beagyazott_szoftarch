@@ -20,13 +20,13 @@ public class Position {
 		
 		if(player.p.direction == TDirection.left)
 		{
-			player.beta = player.beta - 9;
+			player.beta = player.beta - 2;
 
 		}
 		
 		else if(player.p.direction == TDirection.right)
 		{
-			player.beta = player.beta + 9;
+			player.beta = player.beta + 2;
 
 			
 		}

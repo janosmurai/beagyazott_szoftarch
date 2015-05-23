@@ -12,6 +12,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import zatacka.*;
 import zatacka.Gift.effect_on;
@@ -22,9 +23,6 @@ class Control extends JFrame {
 	
 	private Network net = null;
 	private GUI gui;
-	private Position pos;
-	private Point p;
-	private Point p2;
 	int key_state = 0;
 	TDirection client_dir = TDirection.nothing;
 	public ArrayList<Player> playerList = new ArrayList<Player>();
@@ -131,25 +129,38 @@ class Control extends JFrame {
 		int collisionCntr = 0;
 		int selfcollisionCntr = 0;
 		int gameFieldSize = gui.drawPanel.getWidth();    //Same as height
+		int i = controlPoints.size();
 
 		for(Player player : playerList)
 		{
 			ColoredPoint actualPoint = player.p; 
 			for (ColoredPoint storedPoint : controlPoints  )
 			{
-		
+				
 				dis_x = storedPoint.x - actualPoint.x;
 				dis_y = storedPoint.y - actualPoint.y;
 				distance = Math.sqrt(Math.pow(dis_y, 2) + Math.pow(dis_x, 2));
 				
-				if(!(storedPoint.color.equals(actualPoint.color)) && (distance <= (storedPoint.width + actualPoint.width)))
+				if(!(storedPoint.color.equals(actualPoint.color)) &&
+						(distance <= (storedPoint.width + actualPoint.width)))
 				{
 					collisionCntr++;
 				}
 				
-				if((storedPoint.color.equals(actualPoint.color)) && (distance <= (storedPoint.width + actualPoint.width)) && (distance >= actualPoint.width))
+				//TODO: Ezt gondold át friss aggyal!
+				if((storedPoint.color.equals(actualPoint.color)) &&
+						(distance <= (storedPoint.width + actualPoint.width)) &&
+						(distance >= actualPoint.width) && 
+						(i > (controlPoints.size() - 50)))
 				{
+					System.out.println("distance: " + distance);
+					System.out.println("stored + actual: " + (storedPoint.width + actualPoint.width));
+					System.out.println("actual: " + actualPoint.width);
 					selfcollisionCntr++;
+				}
+				else
+				{
+					//System.out.println(selfcollisionCntr);
 				}
 				
 				if((actualPoint.x < 0) ||
@@ -159,10 +170,13 @@ class Control extends JFrame {
 					(collisionCntr >= 2) ||
 					(selfcollisionCntr > 5))
 				{
-					gui.stopGame();
+					//gui.stopGame();
+					//System.out.println(selfcollisionCntr);
 					return 1;
+					
 				}
-
+				//System.out.println(i);
+				i -= 1;
 			}
 		}
 		return 0;
@@ -173,6 +187,7 @@ class Control extends JFrame {
 		int dis_x;
 		int dis_y;
 		double distance;
+		int i = 0;
 		
 		ArrayList<Gift> existing_gift = gui.drawPanel.gameField.gifts;
 		for(Player player : playerList)
@@ -180,11 +195,11 @@ class Control extends JFrame {
 			ColoredPoint actualPoint = player.p;
 			for(Gift gift : existing_gift)
 			{
-				dis_x = (gift.pos_x + (gift.getWidth()/2)) - actualPoint.x;
-				dis_y = (gift.pos_y + (gift.getHeight()/2)) - actualPoint.y;
+				dis_x = (gift.pos_x + (gift.img_r/2)) - actualPoint.x;
+				dis_y = (gift.pos_y + (gift.img_r/2)) - actualPoint.y;
 				distance = Math.sqrt(Math.pow(dis_x, 2) + Math.pow(dis_y, 2));
 				
-				if(distance < (gift.getHeight()/2))
+				if(distance < (gift.img_r/2))
 				{
 					if(gift.g_effect == effect_on.self)
 					{
@@ -198,10 +213,11 @@ class Control extends JFrame {
 					{
 						//TODO: Effect on gamefield
 					}
-					remove(gift);
+					existing_gift.remove(i);
 				}
+				i += 1;
 			}
-			//player.handleGift();
+			i = 0;
 		}
 	}
 

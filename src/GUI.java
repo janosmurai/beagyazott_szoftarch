@@ -566,12 +566,12 @@ KeyStroke escapeKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0, false);
 	void startGame()
 	{
 		player.ongoingGame = true;
-		drawPanel.timer = new Timer (60, new ActionListener() 
+		drawPanel.timer = new Timer (10, new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
 				drawPanel.gameField.GetNewPoint();
-				if(Math.random() > 0.94)
+				if(Math.random() > 0.98)
 				{
 					drawPanel.gameField.getNewGift();
 				}
@@ -582,7 +582,7 @@ KeyStroke escapeKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0, false);
 		//backGroundMusic();
 		}
 	}
-	
+	/*
 	 public void crashSound() {
 		 
 	      try {
@@ -599,12 +599,12 @@ KeyStroke escapeKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0, false);
 	      } catch (LineUnavailableException e) {
 	         e.printStackTrace();
 	      }
-	   }
+	   }*/
 	
 	void stopGame()
 	{
 		player.ongoingGame = false;
 		drawPanel.timer.stop();
-		crashSound();
+		//crashSound();
 	}
 }

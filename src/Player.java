@@ -17,7 +17,7 @@ public class Player extends ColoredPoint{
 	
 	public ColoredPoint p = new ColoredPoint(10, 10, Color.white);
 	public int beta = 1;
-	public int speed = 4;
+	public int speed = 1;
 	public int result = 1;
 	public enum TDirection {left, right, nothing}
 	public boolean ongoingGame = false;
@@ -32,12 +32,14 @@ public class Player extends ColoredPoint{
 
 	public void handleGift(gift_type gift)
 	{
+	
 		switch (gift)
 		{
 			case slow:
 				speed /= 2;
 				break;
 			case fast:
+				System.out.println(gift);
 				speed *= 2;
 				break;
 			case thin:

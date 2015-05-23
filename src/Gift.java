@@ -24,6 +24,7 @@ public class Gift extends JPanel{
 	public Image img;
 	public int pos_x;
 	public int pos_y;
+	public int img_r;
 	
 	public enum gift_type 
 	{
@@ -133,6 +134,7 @@ public class Gift extends JPanel{
         d.width = img.getWidth(null);
         d.height = img.getHeight(null);
         setPreferredSize(d);        
+        img_r = img.getWidth(null);
     }
     
     public void setGiftPos(int game_field_height, int game_field_width)
