@@ -5,7 +5,11 @@ import java.awt.Point;
 
 
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.Serializable;
+
+import javax.swing.Timer;
 
 import zatacka.ColoredPoint;
 import zatacka.Gift.gift_type;
@@ -23,6 +27,7 @@ public class Player extends ColoredPoint{
 	public boolean ongoingGame = false;
 	public enum speed_type {slow, medium, fast};
 	public boolean clear = false;
+	public boolean invert = false;
 
 	
 	Player(int x_coordinate, int y_coordinate, Color color_point, int width) {
@@ -38,9 +43,18 @@ public class Player extends ColoredPoint{
 		beta = 1;
 		speed = speed_type.medium;
 		p.width = 7;
+		invert = false;
+		clear = false;
 	}
 	public void handleGift(gift_type gift)
 	{
+		Timer timer = new Timer (5000, new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+				invert = false;
+			}
+		});
 	
 		switch (gift)
 		{
@@ -58,7 +72,9 @@ public class Player extends ColoredPoint{
 				p.width *= 2;
 				break;
 			case invert:
-				//Ezzel még baj lesz
+				invert = true;
+				timer.stop();
+				timer.start();
 				break;
 			case bonus_point:
 				score -= 1;

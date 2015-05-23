@@ -38,6 +38,10 @@ public class Position {
 			break;
 		}
 		
+		if (player.invert == true)
+		{
+			dbeta *= -1;
+		}
 		if(player.p.direction == TDirection.left)
 		{
 			player.beta = player.beta + dbeta;
@@ -71,6 +75,8 @@ public class Position {
 		localPlayer.beta = player.beta;
 		localPlayer.speed = player.speed;
 		localPlayer.width = player.width;
+		localPlayer.clear = player.clear;
+		localPlayer.invert = player.invert;
 		
 		
 		return localPlayer;
