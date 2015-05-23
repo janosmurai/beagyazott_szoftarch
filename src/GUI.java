@@ -65,8 +65,7 @@ public class GUI {
 	int status = 0;
 	int cntr = 0;
 	int rounds = 5;
-
-	File soundFile = new File("c:/workspace/zatacka/src/zatacka/Media/backgroundmusic.wav");
+	File soundFile = new File("C:/Users/Lõrinc/workspace/zatacka/src/zatacka/Media/backgroundmusic.wav");
 
 	
 	
@@ -105,12 +104,10 @@ public class GUI {
 			default:
 				System.err.println("Incorrect number of players!");
 				return;
-				
 			}
 			
-			
 			setUndecorated(true);
-			gameField.setSize(getWidth(), getHeight());
+		gameField.setSize(getWidth(), getHeight());
 			add(gameField);
 			pack();
 			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -134,8 +131,8 @@ public class GUI {
 				}
 				public void keyTyped(KeyEvent e) {}
 			});
-			
-			KeyStroke escapeKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0, false);
+
+KeyStroke escapeKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0, false);
 			AbstractAction escapeAction = new AbstractAction() {
 						private static final long serialVersionUID = 1L;
 						public void actionPerformed(ActionEvent e) {
@@ -158,8 +155,6 @@ public class GUI {
 			{
 
 			}
-			
-			
 			
 			@Override
 			protected void paintComponent(Graphics g)
@@ -275,17 +270,17 @@ public class GUI {
 		
 		MainMenu()
 		{
-			setSize(210, 260);
+			setSize(225, 300);
 			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			setLayout(null);
-			//setTitle("Main menu");
+	//setTitle("Main menu");
 			setUndecorated(true);
 			setLocationRelativeTo(null);
 			//panel = new JPanel();
 			//panel.setSize(getWidth(), getHeight());
 			//panel.setBackground(Color.black);
 			//add(panel);
-			
+		
 			ButtonGroup server_client_group = new ButtonGroup();
 			
 			JRadioButton serverButton= new JRadioButton("Server");
@@ -487,21 +482,21 @@ public class GUI {
 	{
 		private static final long serialVersionUID = 1L;
 		private JPanel panel;
-	
+		
 		PlayerCounter()
 		{
 			setSize(600, 250);
 			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			setUndecorated(true);
-
 			
-		    setContentPane(new JLabel(new ImageIcon("c:/workspace/zatacka/src/zatacka/Media/design.jpg")));
+			
+		    setContentPane(new JLabel(new ImageIcon("C:/Users/Lõrinc/workspace/zatacka/src/zatacka/Media/design.jpg")));
 		    setLayout(new FlowLayout());
 			
 			panel = new JPanel();
 			panel.setLocation(0, 0);
 			panel.setBounds(0, 0, getWidth(), getHeight());
-
+			
 			JLabel label = new JLabel("Number of players will be:");
 			label.setVisible(true);
 			panel.add(label);
@@ -570,46 +565,24 @@ public class GUI {
 	 
 	void startGame()
 	{
-		for (Player others : ctrl.playerList)
+		player.ongoingGame = true;
+		drawPanel.timer = new Timer (10, new ActionListener() 
 		{
-			if(others.color == player.color) 
+			public void actionPerformed(ActionEvent e) 
 			{
-				player.score = others.score;
-			}
-		}
-		if(rounds == 0)
-		{
-			String result = " You won! :)";
-			for (Player others : ctrl.playerList)
-			{
-				if(others.score < player.score)
+				drawPanel.gameField.GetNewPoint();
+				if(Math.random() > 0.98)
 				{
-					result = " You lose. :(";
+					drawPanel.gameField.getNewGift();
 				}
 			}
-			JOptionPane.showMessageDialog(null, "End of game, your score: " + player.score + result);
-		}
-		else
-		{
-			player.ongoingGame = true;
-		drawPanel.timer = new Timer (20, new ActionListener() 
-			{
-				public void actionPerformed(ActionEvent e) 
-				{
-					drawPanel.gameField.GetNewPoint();
-					if(Math.random() > 0.98)
-					{
-						drawPanel.gameField.getNewGift();
-					}
-				}
-			});
-			drawPanel.timer.start();
-			if(cntr < 1){
-			//backGroundMusic();
-			}
+		});
+		drawPanel.timer.start();
+		if(cntr < 1){
+		//backGroundMusic();
 		}
 	}
-	
+	/*
 	 public void crashSound() {
 		 
 	      try {
@@ -626,13 +599,13 @@ public class GUI {
 	      } catch (LineUnavailableException e) {
 	         e.printStackTrace();
 	      }
-	   }
+	   }*/
 	
 	void stopGame()
 	{
 		player.ongoingGame = false;
 		drawPanel.timer.stop();
-		crashSound();
 		rounds--;
+		//crashSound();
 	}
 }

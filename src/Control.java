@@ -130,27 +130,32 @@ class Control extends JFrame {
 		int selfcollisionCntr = 0;
 		int gameFieldSize = gui.drawPanel.getWidth();    //Same as height
 		Color hitman_color = Color.black;
-                int i = 0;
+		int i = 0;
+
 		for(Player player : playerList)
 		{
 			ColoredPoint actualPoint = player.p; 
 			for (ColoredPoint storedPoint : controlPoints  )
 			{
-		
+				
 				dis_x = storedPoint.x - actualPoint.x;
 				dis_y = storedPoint.y - actualPoint.y;
 				distance = Math.sqrt(Math.pow(dis_y, 2) + Math.pow(dis_x, 2));
 				
-				if(!(storedPoint.color.equals(actualPoint.color)) && (distance <= (storedPoint.width + actualPoint.width)))
+				if(!(storedPoint.color.equals(actualPoint.color)) &&
+						(distance <= (storedPoint.width + actualPoint.width)))
 				{
 					collisionCntr++;
-					if (collisionCntr >= 2)
+					if (collisionCntr > 1)
 					{
 						hitman_color = actualPoint.color;
 					}
+
 				}
 				
-				if((storedPoint.color.equals(actualPoint.color)) && (distance <= (storedPoint.width + actualPoint.width)) && (distance >= actualPoint.width)&&
+				if((storedPoint.color.equals(actualPoint.color)) &&
+						(distance <= (storedPoint.width + actualPoint.width)) &&
+						(distance >= actualPoint.width) &&
 						(i < (controlPoints.size() - 100)))
 				{
 					selfcollisionCntr++;
@@ -158,32 +163,39 @@ class Control extends JFrame {
 					{
 						hitman_color = actualPoint.color;
 					}
+
 				}
+
 				
 				if((actualPoint.x < 0) ||
 					(actualPoint.x > gameFieldSize) ||
 					(actualPoint.y < 0) || 
-					(actualPoint.y > gameFieldSize))
-				{
-					hitman_color = actualPoint.color;
-				}
-				
-				if(hitman_color != Color.black)
-				{
-					
-					for(Player hitman: playerList)
+					(actualPoint.y > gameFieldSize) ||
+					(collisionCntr > 1) ||
+					(selfcollisionCntr > 1))
 					{
-						System.out.println(hitman.color);
-						if (hitman.color == hitman_color)
-						{
-							hitman.score = hitman.score + 1;
-						}
-						System.out.println(hitman.score);
-						
+						hitman_color = actualPoint.color;
 					}
+					
+				if(hitman_color != Color.black)
+					{
+						
+						for(Player hitman: playerList)
+						{
+							System.out.println(hitman.color);
+							if (hitman.color == hitman_color)
+							{
+								hitman.score = hitman.score + 1;
+							}
+							System.out.println(hitman.score);
+							
+						}
+
 					gui.stopGame();
+					System.out.println(selfcollisionCntr);
 					return 1;
-				}
+					
+					}
 				i += 1;
 			}
 		}
@@ -195,7 +207,11 @@ class Control extends JFrame {
 		int dis_x;
 		int dis_y;
 		double distance;
-		int i = 0;
+		int gift_i = 0;
+		int player_i = 0;
+		int player_j = 0;
+		int pick_up_index = 0;
+		boolean pick_up = false;
 		
 		ArrayList<Gift> existing_gift = gui.drawPanel.gameField.gifts;
 		for(Player player : playerList)
@@ -203,7 +219,7 @@ class Control extends JFrame {
 			ColoredPoint actualPoint = player.p;
 			for(Gift gift : existing_gift)
 			{
-			dis_x = (gift.pos_x + (gift.img_r/2)) - actualPoint.x;
+				dis_x = (gift.pos_x + (gift.img_r/2)) - actualPoint.x;
 				dis_y = (gift.pos_y + (gift.img_r/2)) - actualPoint.y;
 				distance = Math.sqrt(Math.pow(dis_x, 2) + Math.pow(dis_y, 2));
 				
@@ -215,17 +231,31 @@ class Control extends JFrame {
 					}
 					else if(gift.g_effect == effect_on.enemy)
 					{
-						// TODO: Effect on other palyers
+						for(Player sub_player : playerList)
+						{
+							if(player_i != player_j)
+							{
+								sub_player.handleGift(gift.g_type);
+							}
+							player_j += 1;
+						}
 					}
 					else
 					{
 						//TODO: Effect on gamefield
 					}
-					existing_gift.remove(i);
+					pick_up = true;
+					pick_up_index = gift_i;
 				}
-				i += 1;
+				gift_i += 1;
 			}
-			i = 0;
+			if(pick_up == true)
+			{
+				System.out.println("cica");
+				existing_gift.remove(pick_up_index);
+				pick_up = false;
+			}
+			player_i += 1;
 		}
 	}
 
