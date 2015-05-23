@@ -8,6 +8,7 @@ import java.awt.Point;
 import java.io.Serializable;
 
 import zatacka.ColoredPoint;
+import zatacka.Gift;
 import zatacka.Gift.gift_type;
 
 
@@ -19,6 +20,7 @@ public class Player extends ColoredPoint{
 	public double beta = 1;
 	public double speed = 1;
 	public int result = 1;
+	public int score ;
 	public enum TDirection {left, right, nothing}
 	public boolean ongoingGame = false;
 
@@ -28,18 +30,17 @@ public class Player extends ColoredPoint{
 		p.x = x_coordinate;
 		p.y = y_coordinate;
 		p.color = color_point;
+		score = 0;
 	}
 
-	public void handleGift(gift_type gift)
+	public void handleGift(Gift.gift_type gift)
 	{
-	
 		switch (gift)
 		{
 			case slow:
 				speed /= 2;
 				break;
 			case fast:
-				System.out.println(gift);
 				speed *= 2;
 				break;
 			case thin:

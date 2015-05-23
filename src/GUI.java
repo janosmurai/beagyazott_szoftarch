@@ -64,8 +64,9 @@ public class GUI {
 	private int player_count = 0;
 	int status = 0;
 	int cntr = 0;
+	int rounds = 5;
 
-	File soundFile = new File("C:/Users/Lõrinc/workspace/zatacka/src/zatacka/Media/backgroundmusic.wav");
+	File soundFile = new File("c:/workspace/zatacka/src/zatacka/Media/backgroundmusic.wav");
 
 	
 	
@@ -104,10 +105,12 @@ public class GUI {
 			default:
 				System.err.println("Incorrect number of players!");
 				return;
+				
 			}
 			
+			
 			setUndecorated(true);
-		gameField.setSize(getWidth(), getHeight());
+			gameField.setSize(getWidth(), getHeight());
 			add(gameField);
 			pack();
 			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -131,8 +134,8 @@ public class GUI {
 				}
 				public void keyTyped(KeyEvent e) {}
 			});
-
-KeyStroke escapeKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0, false);
+			
+			KeyStroke escapeKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0, false);
 			AbstractAction escapeAction = new AbstractAction() {
 						private static final long serialVersionUID = 1L;
 						public void actionPerformed(ActionEvent e) {
@@ -155,6 +158,8 @@ KeyStroke escapeKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0, false);
 			{
 
 			}
+			
+			
 			
 			@Override
 			protected void paintComponent(Graphics g)
@@ -270,17 +275,17 @@ KeyStroke escapeKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0, false);
 		
 		MainMenu()
 		{
-			setSize(225, 300);
+			setSize(210, 260);
 			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			setLayout(null);
-	//setTitle("Main menu");
+			//setTitle("Main menu");
 			setUndecorated(true);
 			setLocationRelativeTo(null);
 			//panel = new JPanel();
 			//panel.setSize(getWidth(), getHeight());
 			//panel.setBackground(Color.black);
 			//add(panel);
-		
+			
 			ButtonGroup server_client_group = new ButtonGroup();
 			
 			JRadioButton serverButton= new JRadioButton("Server");
@@ -482,21 +487,21 @@ KeyStroke escapeKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0, false);
 	{
 		private static final long serialVersionUID = 1L;
 		private JPanel panel;
-		
+	
 		PlayerCounter()
 		{
 			setSize(600, 250);
 			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			setUndecorated(true);
+
 			
-			
-		    setContentPane(new JLabel(new ImageIcon("C:/Users/Lõrinc/workspace/zatacka/src/zatacka/Media/design.jpg")));
+		    setContentPane(new JLabel(new ImageIcon("c:/workspace/zatacka/src/zatacka/Media/design.jpg")));
 		    setLayout(new FlowLayout());
 			
 			panel = new JPanel();
 			panel.setLocation(0, 0);
 			panel.setBounds(0, 0, getWidth(), getHeight());
-			
+
 			JLabel label = new JLabel("Number of players will be:");
 			label.setVisible(true);
 			panel.add(label);
@@ -565,24 +570,46 @@ KeyStroke escapeKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0, false);
 	 
 	void startGame()
 	{
-		player.ongoingGame = true;
-		drawPanel.timer = new Timer (20, new ActionListener() 
+		for (Player others : ctrl.playerList)
 		{
-			public void actionPerformed(ActionEvent e) 
+			if(others.color == player.color) 
 			{
-				drawPanel.gameField.GetNewPoint();
-				if(Math.random() > 0.98)
+				player.score = others.score;
+			}
+		}
+		if(rounds == 0)
+		{
+			String result = " You won! :)";
+			for (Player others : ctrl.playerList)
+			{
+				if(others.score < player.score)
 				{
-					drawPanel.gameField.getNewGift();
+					result = " You lose. :(";
 				}
 			}
-		});
-		drawPanel.timer.start();
-		if(cntr < 1){
-		//backGroundMusic();
+			JOptionPane.showMessageDialog(null, "End of game, your score: " + player.score + result);
+		}
+		else
+		{
+			player.ongoingGame = true;
+		drawPanel.timer = new Timer (20, new ActionListener() 
+			{
+				public void actionPerformed(ActionEvent e) 
+				{
+					drawPanel.gameField.GetNewPoint();
+					if(Math.random() > 0.98)
+					{
+						drawPanel.gameField.getNewGift();
+					}
+				}
+			});
+			drawPanel.timer.start();
+			if(cntr < 1){
+			//backGroundMusic();
+			}
 		}
 	}
-	/*
+	
 	 public void crashSound() {
 		 
 	      try {
@@ -599,12 +626,13 @@ KeyStroke escapeKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0, false);
 	      } catch (LineUnavailableException e) {
 	         e.printStackTrace();
 	      }
-	   }*/
+	   }
 	
 	void stopGame()
 	{
 		player.ongoingGame = false;
 		drawPanel.timer.stop();
-		//crashSound();
+		crashSound();
+		rounds--;
 	}
 }

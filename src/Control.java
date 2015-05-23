@@ -129,46 +129,61 @@ class Control extends JFrame {
 		int collisionCntr = 0;
 		int selfcollisionCntr = 0;
 		int gameFieldSize = gui.drawPanel.getWidth();    //Same as height
-		int i = 0;
-
+		Color hitman_color = Color.black;
+                int i = 0;
 		for(Player player : playerList)
 		{
 			ColoredPoint actualPoint = player.p; 
 			for (ColoredPoint storedPoint : controlPoints  )
 			{
-				
+		
 				dis_x = storedPoint.x - actualPoint.x;
 				dis_y = storedPoint.y - actualPoint.y;
 				distance = Math.sqrt(Math.pow(dis_y, 2) + Math.pow(dis_x, 2));
 				
-				if(!(storedPoint.color.equals(actualPoint.color)) &&
-						(distance <= (storedPoint.width + actualPoint.width)))
+				if(!(storedPoint.color.equals(actualPoint.color)) && (distance <= (storedPoint.width + actualPoint.width)))
 				{
 					collisionCntr++;
+					if (collisionCntr >= 2)
+					{
+						hitman_color = actualPoint.color;
+					}
 				}
 				
-				if((storedPoint.color.equals(actualPoint.color)) &&
-						(distance <= (storedPoint.width + actualPoint.width)) &&
-						(distance >= actualPoint.width) &&
+				if((storedPoint.color.equals(actualPoint.color)) && (distance <= (storedPoint.width + actualPoint.width)) && (distance >= actualPoint.width)&&
 						(i < (controlPoints.size() - 100)))
 				{
 					selfcollisionCntr++;
+					if (selfcollisionCntr > 1)
+					{
+						hitman_color = actualPoint.color;
+					}
 				}
-
 				
 				if((actualPoint.x < 0) ||
 					(actualPoint.x > gameFieldSize) ||
 					(actualPoint.y < 0) || 
-					(actualPoint.y > gameFieldSize) ||
-					(collisionCntr > 1) ||
-					(selfcollisionCntr > 1))
+					(actualPoint.y > gameFieldSize))
 				{
-					//gui.stopGame();
-					System.out.println(selfcollisionCntr);
-					return 1;
-					
+					hitman_color = actualPoint.color;
 				}
-				//System.out.println(i);
+				
+				if(hitman_color != Color.black)
+				{
+					
+					for(Player hitman: playerList)
+					{
+						System.out.println(hitman.color);
+						if (hitman.color == hitman_color)
+						{
+							hitman.score = hitman.score + 1;
+						}
+						System.out.println(hitman.score);
+						
+					}
+					gui.stopGame();
+					return 1;
+				}
 				i += 1;
 			}
 		}
@@ -188,7 +203,7 @@ class Control extends JFrame {
 			ColoredPoint actualPoint = player.p;
 			for(Gift gift : existing_gift)
 			{
-				dis_x = (gift.pos_x + (gift.img_r/2)) - actualPoint.x;
+			dis_x = (gift.pos_x + (gift.img_r/2)) - actualPoint.x;
 				dis_y = (gift.pos_y + (gift.img_r/2)) - actualPoint.y;
 				distance = Math.sqrt(Math.pow(dis_x, 2) + Math.pow(dis_y, 2));
 				
