@@ -227,6 +227,7 @@ KeyStroke escapeKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0, false);
 					drawPanel.gameField.points.clear();
 					ctrl.clear = false;
 				}
+			}
 	
 			
 			public void getNewGift()
