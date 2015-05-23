@@ -28,6 +28,7 @@ public class Player extends ColoredPoint{
 	public enum speed_type {slow, medium, fast};
 	public boolean clear = false;
 	public boolean invert = false;
+	public boolean flying_head = false;
 
 	
 	Player(int x_coordinate, int y_coordinate, Color color_point, int width) {
@@ -42,9 +43,10 @@ public class Player extends ColoredPoint{
 	{
 		beta = 1;
 		speed = speed_type.medium;
-		p.width = 7;
+		p.width = 8;
 		invert = false;
 		clear = false;
+		flying_head = false;
 	}
 	public void handleGift(gift_type gift)
 	{
@@ -52,7 +54,14 @@ public class Player extends ColoredPoint{
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
-				invert = false;
+				if (invert == true)
+				{
+					invert = false;
+				}
+				else if(flying_head == true)
+				{
+					flying_head = false;
+				}
 			}
 		});
 	
@@ -66,9 +75,11 @@ public class Player extends ColoredPoint{
 				speed = speed_type.fast;
 				break;
 			case thin:
+				if(p.width > 3)
 				p.width /= 2;
 				break;
 			case thick:
+				if(p.width < 14)
 				p.width *= 2;
 				break;
 			case invert:
@@ -76,7 +87,13 @@ public class Player extends ColoredPoint{
 				timer.stop();
 				timer.start();
 				break;
+			case fly:
+				timer.stop();
+				timer.start();
+				flying_head = true;
+				break;
 			case bonus_point:
+				if(score > 0)
 				score -= 1;
 				break;
 			default:

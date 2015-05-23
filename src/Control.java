@@ -18,7 +18,8 @@ import zatacka.*;
 import zatacka.Gift.effect_on;
 import zatacka.Player.TDirection;
 
-class Control extends JFrame {
+class Control extends JFrame 
+{
 	
 	
 	private Network net = null;
@@ -38,17 +39,20 @@ class Control extends JFrame {
 	});
 	
 
-	Control() {
+	Control() 
+	{
 		
 		
 	}
 	
-	void setGUI(GUI g) {
+	void setGUI(GUI g) 
+	{
 		gui = g;
 	}
 	
 
-	void startServer(Color color) {
+	void startServer(Color color) 
+	{
 		
 		if (net != null)
 			net.disconnect();
@@ -56,14 +60,16 @@ class Control extends JFrame {
 		net.connect("localhost");
 	}
 
-	void startClient(Color color) {
+	void startClient(Color color) 
+	{
 		if (net != null)
 			net.disconnect();
 		net = new SerialClient(this);
 		net.connect("localhost");
 	}
 	
-	void sendPlayer(Player player){
+	void sendPlayer(Player player)
+	{
 		if(net == null)
 			return;
 		if(gui.status == 1){
@@ -74,13 +80,15 @@ class Control extends JFrame {
 		
 	}
 
-	void sendNewPoint(ColoredPoint p){
+	void sendNewPoint(ColoredPoint p)
+	{
 		if(net == null)
 			return;
 		net.sendNewP(p);
 	}
 	
-	void playerReceived(Player playerRec){
+	void playerReceived(Player playerRec)
+	{
 		if (gui == null)
 		{
 			System.out.println("cica");
@@ -99,7 +107,10 @@ class Control extends JFrame {
 					iteratorPlayer.p.direction = playerRec.p.direction;
 					iteratorPlayer.ongoingGame = gui.player.ongoingGame;
 					iteratorPlayer.clear = clear;
+					iteratorPlayer.flying_head = playerRec.flying_head;
 					isColorExist = true;
+					
+					
 				}
 			}
 			clear = false;
@@ -112,14 +123,27 @@ class Control extends JFrame {
 		else if(gui.status == 2)
 		{
 			receivedPoint.add(playerRec.p);	
-			if(playerRec.p.color.equals(gui.player.p.color))// == gui.player.p.color)
+			if(playerRec.p.color.equals(gui.player.p.color))
 			{
 				gui.player.p.x = playerRec.p.x;
 				gui.player.p.y = playerRec.p.y;
 				gui.player.ongoingGame = playerRec.ongoingGame;
 				gui.player.clear = playerRec.clear;
+				gui.player.flying_head = playerRec.flying_head;
 			}
 			
+			if(playerRec.flying_head = true)
+			{
+				for(ColoredPoint tmp_point: receivedPoint)
+				{
+					if(tmp_point.color == playerRec.p.color)
+					{
+						int i = receivedPoint.indexOf(tmp_point);
+						receivedPoint.remove(i);
+						System.out.println("cica");
+					}
+				}
+			}
 		}
 		
 			
@@ -168,7 +192,7 @@ class Control extends JFrame {
 				if((storedPoint.color.equals(actualPoint.color)) &&
 						(distance <= (storedPoint.width + actualPoint.width)) &&
 						(distance >= actualPoint.width) &&
-						(i < (controlPoints.size() - 100)))
+						(i < (controlPoints.size() - 15)))
 				{
 					selfcollisionCntr++;
 					if (selfcollisionCntr > 1)
@@ -272,7 +296,7 @@ class Control extends JFrame {
 			}
 			if(pick_up == true)
 			{
-				System.out.println("cica");
+				//System.out.println("cica");
 				existing_gift.remove(pick_up_index);
 				pick_up = false;
 			}

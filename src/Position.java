@@ -1,6 +1,3 @@
-//Ide kéne valami cucc ami tárolja, hogy éppen mely pontok vannak foglalva.
-//A szerver gépen mindig ezzel a class-al kéne kiszámolni az egyes játékos adatait
-//Vagy lehet külön class kéne a lefoglalt tömböknek és külön az újrapozícionálásnak.
 package zatacka;
 
 
@@ -77,6 +74,7 @@ public class Position {
 		localPlayer.width = player.width;
 		localPlayer.clear = player.clear;
 		localPlayer.invert = player.invert;
+		localPlayer.flying_head = player.flying_head;
 		
 		
 		return localPlayer;

@@ -64,8 +64,8 @@ public class GUI {
 	private int player_count = 0;
 	int status = 0;
 	int cntr = 0;
-	int rounds = 5;
-	File soundFile = new File("C:/Users/Lõrinc/workspace/zatacka/src/zatacka/Media/backgroundmusic.wav");
+	int rounds = 15;
+	File soundFile = new File("C:/workspace/zatacka/src/zatacka/Media/backgroundmusic.wav");
 
 	
 	
@@ -73,7 +73,7 @@ public class GUI {
 	
 	
 	
-	Player player = new Player((int)(Math.random() * 100),(int)(Math.random() * 100),Color.black, 7);
+	Player player = new Player((int)(Math.random() * 100),(int)(Math.random() * 100),Color.black, 8);
 	
 	Position position = new Position();
 	
@@ -196,11 +196,28 @@ public class GUI {
 						tmp_player = position.RePositioning(iplayer);
 						tmp_player.ongoingGame = player.ongoingGame;
 						tmp_player.p.width = iplayer.p.width;
-						System.out.println(tmp_player.p.width + " " + iplayer.p.width);
+						
+						if(iplayer.flying_head == true)
+						{
+							ArrayList<ColoredPoint> tmp_pointList = new ArrayList<ColoredPoint>();
+							for(ColoredPoint tmp_point: points)
+							{
+								if(tmp_point.color != iplayer.p.color)
+								{
+									tmp_pointList.add(tmp_point);
+
+								}
+							}
+							points.clear();
+							points.addAll(tmp_pointList);
+						}
+						
 						points.add(tmp_player.p);
-						//System.out.println(iplayer.p.x);
+						
+						
 						
 						ctrl.sendPlayer(tmp_player);
+						
 					}
 					player.clear = ctrl.clear;
 					
@@ -508,7 +525,7 @@ public class GUI {
 			setUndecorated(true);
 			
 			
-		    setContentPane(new JLabel(new ImageIcon("C:/Users/Lõrinc/workspace/zatacka/src/zatacka/Media/design.jpg")));
+		    setContentPane(new JLabel(new ImageIcon("C:/workspace/zatacka/src/zatacka/Media/design.jpg")));
 		    setLayout(new FlowLayout());
 			
 			panel = new JPanel();
@@ -619,11 +636,11 @@ public class GUI {
 		});
 		drawPanel.timer.start();
 		if(cntr < 1){
-		//backGroundMusic();
+		backGroundMusic();
 		}
 	}
 	}
-	/*
+	
 	 public void crashSound() {
 		 
 	      try {
@@ -640,13 +657,13 @@ public class GUI {
 	      } catch (LineUnavailableException e) {
 	         e.printStackTrace();
 	      }
-	   }*/
+	   }
 	
 	void stopGame()
 	{
 		player.ongoingGame = false;
 		drawPanel.timer.stop();
 		rounds--;
-		//crashSound();
+		crashSound();
 	}
 }
