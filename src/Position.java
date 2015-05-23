@@ -44,20 +44,20 @@ public class Position {
 		}
 		if(player.p.direction == TDirection.left)
 		{
-			player.beta = player.beta + dbeta;
+			player.beta = player.beta - dbeta;
 
 		}
 		
 		else if(player.p.direction == TDirection.right)
 		{
-			player.beta = player.beta - dbeta;
+			player.beta = player.beta + dbeta;
 
 			
 		}
 		
 		
-		dx = speed*3.2*Math.cos(player.beta);
-		dy = speed*3*Math.sin(player.beta);
+		dx = speed*3.2*Math.cos(Math.toRadians(player.beta));
+		dy = speed*3*Math.sin(Math.toRadians(player.beta));
 
 		
 		dx = Math.round(dx);
