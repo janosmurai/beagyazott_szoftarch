@@ -27,6 +27,14 @@ class Control extends JFrame {
 	TDirection client_dir = TDirection.nothing;
 	public ArrayList<Player> playerList = new ArrayList<Player>();
 	public ArrayList<ColoredPoint> receivedPoint = new ArrayList<ColoredPoint>();
+	Timer timer = new Timer (200, new ActionListener() 
+	{
+		public void actionPerformed(ActionEvent e) 
+		{
+			gui.drawPanel.panel.setVisible(false);
+			gui.drawPanel.gameField.setVisible(true);
+		}
+	});
 	
 
 	Control() {
@@ -181,18 +189,15 @@ class Control extends JFrame {
 					{
 						
 						for(Player hitman: playerList)
-						{
-							System.out.println(hitman.color);
-							if (hitman.color == hitman_color)
+					{
+						if (hitman.p.color == hitman_color)
 							{
 								hitman.score = hitman.score + 1;
 							}
-							System.out.println(hitman.score);
 							
 						}
 
 					gui.stopGame();
-					System.out.println(selfcollisionCntr);
 					return 1;
 					
 					}
@@ -242,7 +247,18 @@ class Control extends JFrame {
 					}
 					else
 					{
-						//TODO: Effect on gamefield
+						if(gift.g_type == Gift.gift_type.clear)
+						{
+							
+							gui.drawPanel.gameField.points.clear();
+						}
+						if(gift.g_type == Gift.gift_type.dark)
+						{
+							timer.stop();
+							timer.start();
+							gui.drawPanel.panel.setVisible(true);
+							gui.drawPanel.gameField.setVisible(false);
+						}
 					}
 					pick_up = true;
 					pick_up_index = gift_i;

@@ -18,7 +18,7 @@ public class Player extends ColoredPoint{
 	public ColoredPoint p = new ColoredPoint(10, 10, Color.white);
 	public double beta = 1;
 	public double speed = 0.5;
-	public int score = 1;
+	public int score = 0;
 	public enum TDirection {left, right, nothing}
 	public boolean ongoingGame = false;
 
@@ -28,7 +28,6 @@ public class Player extends ColoredPoint{
 		p.x = x_coordinate;
 		p.y = y_coordinate;
 		p.color = color_point;
-	}
 
 	public void handleGift(gift_type gift)
 	{
@@ -52,7 +51,7 @@ public class Player extends ColoredPoint{
 				//Ezzel még baj lesz
 				break;
 			case bonus_point:
-				score += 1;
+				score -= 1;
 				break;
 			default:
 				break;

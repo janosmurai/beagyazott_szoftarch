@@ -81,6 +81,7 @@ public class GUI {
 	{
 		
 		private static final long serialVersionUID = 1L;
+		public JPanel panel;
 		public GameField gameField = new GameField();
 		Timer timer;
 		
@@ -106,13 +107,20 @@ public class GUI {
 				return;
 			}
 			
-			setUndecorated(true);
-		gameField.setSize(getWidth(), getHeight());
+
+			panel = new JPanel();
+			panel.setSize(getWidth(), getHeight());
+			panel.setBackground(Color.black);
+			panel.setVisible(false);
+			add(panel);
+			pack();
+			//setUndecorated(true);
+			gameField.setSize(getWidth(), getHeight());
 			add(gameField);
 			pack();
 			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			setLayout(null);
-			//setTitle("Zatacka");
+			setTitle("Zatacka");
 			setLocationRelativeTo(null);
 		
 			gameField.setVisible(true);
@@ -270,7 +278,7 @@ KeyStroke escapeKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0, false);
 		
 		MainMenu()
 		{
-			setSize(225, 300);
+			setSize(210, 260);
 			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			setLayout(null);
 	//setTitle("Main menu");
@@ -565,7 +573,28 @@ KeyStroke escapeKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0, false);
 	 
 	void startGame()
 	{
-		player.ongoingGame = true;
+		for (Player others : ctrl.playerList)
+		{
+			if(others.color == player.color) 
+			{
+				player.score = others.score;
+			}
+		}
+		if(rounds == 0)
+		{
+			String result = " You won! :)";
+			for (Player others : ctrl.playerList)
+			{
+				if(others.score < player.score)
+				{
+					result = " You lose. :(";
+				}
+			}
+			JOptionPane.showMessageDialog(null, "End of game, your score: " + player.score + result);
+		}
+		else
+		{
+			player.ongoingGame = true;
 		drawPanel.timer = new Timer (10, new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent e) 
