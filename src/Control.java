@@ -102,9 +102,7 @@ class Control extends JFrame {
 					isColorExist = true;
 				}
 			}
-			
 			clear = false;
-			
 			if(isColorExist == false)
 			{
 				playerList.add(playerRec);

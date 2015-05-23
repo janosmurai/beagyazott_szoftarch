@@ -15,22 +15,22 @@ import zatacka.Gift.gift_type;
 public class Player extends ColoredPoint{
 	private static final long serialVersionUID = 1L;
 	
-	public ColoredPoint p = new ColoredPoint(10, 10, Color.white);
+	public ColoredPoint p = new ColoredPoint(10, 10, Color.white, 7);
 	public double beta = 1;
-	public double speed = 0.5;
+	public speed_type speed = speed_type.medium;
 	public int score = 0;
-	public enum TDirection {left, right, nothing}
+	public enum TDirection {left, right, nothing};
 	public boolean ongoingGame = false;
-	public boolean clear = false;
+	public enum speed_type {slow, medium, fast};
 
 	
-	Player(int x_coordinate, int y_coordinate, Color color_point) {
-		super(x_coordinate, y_coordinate, color_point);
+	Player(int x_coordinate, int y_coordinate, Color color_point, int width) {
+		super(x_coordinate, y_coordinate, color_point, width);
 		p.x = x_coordinate;
 		p.y = y_coordinate;
 		p.color = color_point;
+		p.width = width;
 	}
-
 
 	public void handleGift(gift_type gift)
 	{
@@ -38,11 +38,11 @@ public class Player extends ColoredPoint{
 		switch (gift)
 		{
 			case slow:
-				speed /= 2;
+				speed = speed_type.slow;
 				break;
 			case fast:
 				System.out.println(gift);
-				speed *= 2;
+				speed = speed_type.fast;
 				break;
 			case thin:
 				p.width /= 2;

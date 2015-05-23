@@ -64,7 +64,7 @@ public class GUI {
 	private int player_count = 0;
 	int status = 0;
 	int cntr = 0;
-	int rounds = 10;
+	int rounds = 5;
 	File soundFile = new File("C:/Users/Lõrinc/workspace/zatacka/src/zatacka/Media/backgroundmusic.wav");
 
 	
@@ -73,7 +73,7 @@ public class GUI {
 	
 	
 	
-	Player player = new Player((int)(Math.random() * 100),(int)(Math.random() * 100),Color.black);
+	Player player = new Player((int)(Math.random() * 100),(int)(Math.random() * 100),Color.black, 7);
 	
 	Position position = new Position();
 	
@@ -157,7 +157,7 @@ KeyStroke escapeKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0, false);
 			private static final long serialVersionUID = 1L;
 			public ArrayList<ColoredPoint> points = new ArrayList<ColoredPoint>();
 			public ArrayList<Gift> gifts = new ArrayList<Gift>();
-			ColoredPoint newPoint = new ColoredPoint(10, 10, Color.BLACK);
+			ColoredPoint newPoint = new ColoredPoint(10, 10, Color.BLACK, 7);
 			
 			GameField()
 			{
@@ -190,13 +190,15 @@ KeyStroke escapeKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0, false);
 					ctrl.catchGift();
 					for(Player iplayer : ctrl.playerList)
 					{
-						iplayer = position.RePositioning(iplayer);
-						iplayer.ongoingGame = player.ongoingGame;
-						
-						points.add(iplayer.p);
+						Player tmp_player = new Player(10, 10, Color.black, 7);
+						tmp_player = position.RePositioning(iplayer);
+						tmp_player.ongoingGame = player.ongoingGame;
+						tmp_player.p.width = iplayer.p.width;
+						System.out.println(tmp_player.p.width + " " + iplayer.p.width);
+						points.add(tmp_player.p);
 						//System.out.println(iplayer.p.x);
 						
-						ctrl.sendPlayer(iplayer);
+						ctrl.sendPlayer(tmp_player);
 					}
 					
 					gameField.repaint();
@@ -204,7 +206,7 @@ KeyStroke escapeKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0, false);
 				}
 				else if(status == 2) 	//Client
 				{
-					Player test_player = new Player(player.p.x, player.p.y, player.p.color);
+					Player test_player = new Player(player.p.x, player.p.y, player.p.color, 7);
 					test_player.p.direction = player.p.direction;
 					ctrl.sendPlayer(test_player);
 					
@@ -217,10 +219,7 @@ KeyStroke escapeKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0, false);
 					
 					gameField.repaint();
 				}
-				if(player.clear == true)
-				{
-					drawPanel.gameField.points.clear();
-				}
+				
 			}
 			
 			public void getNewGift()
@@ -598,7 +597,7 @@ KeyStroke escapeKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0, false);
 		else
 		{
 			player.ongoingGame = true;
-		drawPanel.timer = new Timer (10, new ActionListener() 
+		drawPanel.timer = new Timer (30, new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent e) 
 			{

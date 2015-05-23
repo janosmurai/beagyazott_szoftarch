@@ -13,27 +13,47 @@ public class Position {
 	
 	public Player RePositioning(Player player)
 	{
-		Player localPlayer = new Player(10, 10, Color.white);
+		Player localPlayer = new Player(10, 10, Color.white, 7);
 		double dy = 0;
 		double dx = 0;
+		int dbeta = 0;
+		double speed = 0;
 		
+		switch (player.speed) {
+		case slow:
+			dbeta = 4;
+			speed = 0.75;
+			break;
+		case medium:
+			dbeta = 6;
+			speed = 1;
+			break;
+		case fast:
+			dbeta = 8;
+			speed = 1.25;
+			break;
+		default:
+			dbeta = 6;
+			speed = 1;
+			break;
+		}
 		
 		if(player.p.direction == TDirection.left)
 		{
-			player.beta = player.beta - (0.1*player.speed);
+			player.beta = player.beta + dbeta;
 
 		}
 		
 		else if(player.p.direction == TDirection.right)
 		{
-			player.beta = player.beta + (0.1*player.speed);
+			player.beta = player.beta - dbeta;
 
 			
 		}
 		
 		
-		dx = player.speed*3.2*Math.cos(player.beta);
-		dy = player.speed*3*Math.sin(player.beta);
+		dx = speed*3.2*Math.cos(player.beta);
+		dy = speed*3*Math.sin(player.beta);
 
 		
 		dx = Math.round(dx);

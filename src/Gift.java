@@ -125,7 +125,7 @@ public class Gift extends JPanel{
     
     private void loadImage() {
 
-        img = new ImageIcon("c:/workspace/zatacka/src/zatacka/Media/" + g_type + "_" + g_effect + ".png").getImage();
+        img = new ImageIcon("c:/Users/murai/workspace/zatacka/zatacka/zatacka/Media/" + g_type + "_" + g_effect + ".png").getImage();
     }
     
     public void setGiftSize()
