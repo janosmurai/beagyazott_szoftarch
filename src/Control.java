@@ -30,7 +30,7 @@ class Control extends JFrame
 	public ArrayList<Player> playerList = new ArrayList<Player>();
 	public ArrayList<ColoredPoint> receivedPoint = new ArrayList<ColoredPoint>();
 	public ArrayList<Gift> receivedGift = new ArrayList<Gift>();
-	public boolean clear = false;
+	public boolean clearing = false;
 	Timer timer = new Timer (1000, new ActionListener() 
 	{
 		public void actionPerformed(ActionEvent e) 
@@ -87,7 +87,7 @@ class Control extends JFrame
 		giftRecLoc.pos_x = giftRec.x;
 		giftRecLoc.pos_y = giftRec.y;
 		
-		giftRecLoc.img = new ImageIcon("c:/Users/murai/workspace/zatacka/zatacka/zatacka/Media/" + giftRec.g_type + "_" + giftRec.g_effect + ".png").getImage();
+		giftRecLoc.img = new ImageIcon("c:/workspace/zatacka/src/zatacka/Media/" + giftRec.g_type + "_" + giftRec.g_effect + ".png").getImage();
 		
 		receivedGift.add(giftRecLoc);
 	}
@@ -101,7 +101,6 @@ class Control extends JFrame
 		}
 		if(gui.status == 1)
 		{
-			//System.out.println(playerRec.p.x);
 			boolean isColorExist = false;
 			for(Player iteratorPlayer : playerList)
 			{
@@ -111,16 +110,17 @@ class Control extends JFrame
 					iteratorPlayer.p.y = playerRec.p.y;
 					iteratorPlayer.p.direction = playerRec.p.direction;
 					iteratorPlayer.ongoingGame = gui.player.ongoingGame;
-					iteratorPlayer.clear = clear;
+					iteratorPlayer.clear = clearing;
 					iteratorPlayer.flying_head = playerRec.flying_head;
 					isColorExist = true;
 				}
 			}
-			clear = false;
+			
 			if(isColorExist == false)
 			{
 				playerList.add(playerRec);
 			}
+			clearing = false;
 				
 		}
 		else if(gui.status == 2)
@@ -262,7 +262,7 @@ class Control extends JFrame
 					{
 						if(gift.g_type == Gift.gift_type.clear)
 						{
-							clear = true;
+							clearing = true;
 						}
 						if(gift.g_type == Gift.gift_type.dark)
 						{

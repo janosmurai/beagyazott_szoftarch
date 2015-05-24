@@ -193,12 +193,14 @@ public class GUI {
 				{
 					ctrl.collisionCheck();	
 					ctrl.catchGift();
+					player.clear = ctrl.clearing;
 					for(Player iplayer : ctrl.playerList)
 					{
 						Player tmp_player = new Player(10, 10, Color.black, 7);
 						tmp_player = position.RePositioning(iplayer);
 						tmp_player.ongoingGame = player.ongoingGame;
 						tmp_player.p.width = iplayer.p.width;
+						tmp_player.clear = player.clear;
 						
 						if(iplayer.flying_head == true)
 						{
@@ -222,37 +224,40 @@ public class GUI {
 						ctrl.send(socket_player);
 						
 					}
-					player.clear = ctrl.clear;
 					
 					gameField.repaint();
 					
 				}
 				else if(status == 2) 	//Client
 				{
+					Color flying_head_color = Color.black;
 					Player tmp_player = new Player(player.p.x, player.p.y, player.p.color, 7);
 					tmp_player.p.direction = player.p.direction;
 					GiftDummy not_used_gift = new GiftDummy(gift_type.fast, effect_on.self, 10,10); 
 					SendSocket socket_player = new SendSocket(tmp_player, not_used_gift, socket_type.player);
 					ctrl.send(socket_player);
 					
-					Color flying_head_color = Color.black;
-					for(Player playerRec: ctrl.playerList){
-						if(playerRec.flying_head == true)
+					for(Player old_players: ctrl.playerList)
+					{
+						//System.out.println(players.flying_head);
+
+						if(old_players.flying_head == true)
 						{
 							ArrayList<ColoredPoint> tmp_pointList = new ArrayList<ColoredPoint>();
-							for(ColoredPoint tmp_point: points)
+							for(ColoredPoint old_point: points)
 							{
-								if(tmp_point.color != playerRec.p.color)
+								if(old_point.color != old_players.p.color)
 								{
-									tmp_pointList.add(tmp_point);
+									tmp_pointList.add(old_point);
 	
 								}
-								flying_head_color = playerRec.p.color;
+								flying_head_color = old_players.p.color;
 							}
 							points.clear();
 							points.addAll(tmp_pointList);
 						}
 					}
+
 					if(flying_head_color == Color.black)
 					{
 						for(ColoredPoint coloredPoint : ctrl.receivedPoint)
@@ -281,7 +286,7 @@ public class GUI {
 				if(player.clear == true)
 				{
 					drawPanel.gameField.points.clear();
-					ctrl.clear = false;
+					//ctrl.clearing = false;
 				}
 			}
 	
@@ -299,10 +304,10 @@ public class GUI {
 				}
 				else if(status == 2)
 				{
-					for(Gift cica : ctrl.receivedGift)
+					/*for(Gift cica : ctrl.receivedGift)
 					{
 						System.out.println(cica.g_type);
-					}
+					}*/
 						gifts.addAll(ctrl.receivedGift);
 						ctrl.receivedGift.clear();
 				}
@@ -690,7 +695,7 @@ public class GUI {
 				}
 			}
 			player.ongoingGame = true;
-			drawPanel.timer = new Timer (30, new ActionListener() 
+			drawPanel.timer = new Timer (100, new ActionListener() 
 			{
 				public void actionPerformed(ActionEvent e) 
 				{
