@@ -65,7 +65,7 @@ public class GUI {
 	int status = 0;
 	int cntr = 0;
 	int rounds = 15;
-	File soundFile = new File("C:/Users/murai/workspace/zatacka/zatacka/zatacka/Media/backgroundmusic.wav");
+	File soundFile = new File("C:/workspace/zatacka/src/zatacka/Media/backgroundmusic.wav");
 
 	
 	
@@ -159,7 +159,6 @@ public class GUI {
 			private static final long serialVersionUID = 1L;
 			public ArrayList<ColoredPoint> points = new ArrayList<ColoredPoint>();
 			public ArrayList<Gift> gifts = new ArrayList<Gift>();
-			public ArrayList<Gift> receivedGift = new ArrayList<Gift>();
 			ColoredPoint newPoint = new ColoredPoint(10, 10, Color.BLACK, 7);
 			
 			GameField()
@@ -175,7 +174,7 @@ public class GUI {
 				{
 					//System.out.println(p.color);
 					g.setColor(p.color);
-					g.fillOval(p.x, p.y, p.width, p.width);	
+					g.fillOval(p.x, p.y, p.width, p.width);		//TODO: with beállítása
 				}
 				Graphics2D g2d = (Graphics2D) g;
 				for (Gift gift : gifts)
@@ -193,10 +192,8 @@ public class GUI {
 					ctrl.catchGift();
 					for(Player iplayer : ctrl.playerList)
 					{
-						//if(iplayer.p.color.equals(Color.BLUE)) System.out.println(iplayer.p.x);
 						Player tmp_player = new Player(10, 10, Color.black, 7);
 						tmp_player = position.RePositioning(iplayer);
-						//if(iplayer.p.color.equals(Color.BLUE)) System.out.println(tmp_player.p.x);
 						tmp_player.ongoingGame = player.ongoingGame;
 						tmp_player.p.width = iplayer.p.width;
 						
@@ -254,7 +251,6 @@ public class GUI {
 			{
 				Gift new_gift = new Gift(drawPanel.gameField.getHeight(), drawPanel.gameField.getWidth());
 				gifts.add(new_gift);
-				//ctrl.sendGift(new_gift);
 			}
 
 		}
@@ -632,7 +628,7 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) 
 			{
 				drawPanel.gameField.GetNewPoint();
-				if((Math.random() > 0.98) && (status == 1))
+				if(Math.random() > 0.98)
 				{
 					drawPanel.gameField.getNewGift();
 				}
@@ -649,7 +645,7 @@ public class GUI {
 		 
 	      try {
 	                 
-	          File soundFile = new File("C:/Users/murai/workspace/zatacka/zatacka/zatacka/Media/sound.wav"); 
+	          File soundFile = new File("C:/workspace/zatacka/src/zatacka/Media/sound.wav"); 
 	          AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);    
 	          Clip clip2 = AudioSystem.getClip();
 	         clip2.open(audioIn);

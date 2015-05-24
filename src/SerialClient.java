@@ -16,11 +16,8 @@ import zatacka.Player;
 public class SerialClient extends Network {
 
 	private Socket socket = null;
-	private Socket socketGift = null;
 	private ObjectOutputStream out = null;
 	private ObjectInputStream in = null;
-	private ObjectInputStream inGift = null;
-	private ObjectOutputStream outGift = null;		//No one uses, just for the overriding..
 
 	SerialClient(Control c) {
 		super(c);
@@ -33,11 +30,9 @@ public class SerialClient extends Network {
 			try {
 				while (true) {
 					Player playerReceived = (Player) in.readObject();
+					//System.out.println(playerReceived.p.direction);
+					//System.out.println(playerReceived.direction);
 					ctrl.playerReceived(playerReceived);
-					
-					Gift giftReceived = (Gift) inGift.readObject();
-					ctrl.giftReceived(giftReceived);
-					
 				}
 			} catch (Exception ex) {
 				System.out.println(ex.getMessage());
@@ -53,16 +48,11 @@ public class SerialClient extends Network {
 		disconnect();
 		try {
 			socket = new Socket(ip, 10007);
-			socketGift = new Socket(ip, 10008);
 
 			out = new ObjectOutputStream(socket.getOutputStream());
 			in = new ObjectInputStream(socket.getInputStream());
 			out.flush();
-			
-			outGift = new ObjectOutputStream(socketGift.getOutputStream());
-			inGift = new ObjectInputStream(socketGift.getInputStream());
-			outGift.flush();
-			
+
 			Thread rec = new Thread(new ReceiverThread());
 			rec.start();
 		} catch (UnknownHostException e) {
@@ -77,8 +67,10 @@ public class SerialClient extends Network {
 	void send(Player player) {
 		if (out == null)
 			return;
+		//System.out.println("Sending KeyEvent: " + direction + " to Server");
 		try 
 		{
+			//System.out.println(player.p.direction);
 			out.writeObject(player);
 			out.flush();
 		} catch (IOException ex) {
@@ -86,12 +78,12 @@ public class SerialClient extends Network {
 		}
 	}
 	
-	void sendNewGift(Gift gift) {
-		if (outGift == null)
+	void sendNewP(ColoredPoint p) {
+		if (out == null)
 			return;
 		try {
-			outGift.writeObject(gift);
-			outGift.flush();
+			out.writeObject(p);
+			out.flush();
 		} catch (IOException ex) {
 			System.err.println("Send error.");
 		}
