@@ -51,7 +51,7 @@ class Control extends JFrame
 	}
 	
 
-	void startServer(Color color) 
+	void startServer() 
 	{
 		
 		if (net != null)
@@ -60,7 +60,7 @@ class Control extends JFrame
 		net.connect("localhost");
 	}
 
-	void startClient(Color color) 
+	void startClient() 
 	{
 		if (net != null)
 			net.disconnect();

@@ -263,8 +263,8 @@ public class GUI {
 					if(player.ongoingGame == false){
 						drawPanel.gameField.points.clear();
 						drawPanel.gameField.repaint();
-						player.p.x = (int)(100+Math.random()*(drawPanel.getWidth()-100));
-						player.p.y = (int)(100+Math.random()*(drawPanel.getHeight()-100));
+						player.p.x = (int)(200+Math.random()*(drawPanel.getWidth()-300));
+						player.p.y = (int)(200+Math.random()*(drawPanel.getHeight()-300));
 		
 						startGame();
 						
@@ -494,12 +494,12 @@ public class GUI {
 			{
 				if(status == 1)
 				{
-					ctrl.startServer(color);
+					ctrl.startServer();
 					ctrl.playerList.add(player);
 				}
 				else if(status == 2)
 				{
-					ctrl.startClient(color);
+					ctrl.startClient();
 				}
 			}
 			else
