@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.ImageObserver;
+import java.io.Serializable;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -14,7 +15,7 @@ import zatacka.GUI;
 import zatacka.GUI.DrawPanel.GameField;
 
 
-public class Gift extends JPanel{
+public class Gift implements Serializable{
 	
 	/**
 	 * 
@@ -125,15 +126,11 @@ public class Gift extends JPanel{
     
     private void loadImage() {
 
-        img = new ImageIcon("c:/workspace/zatacka/src/zatacka/Media/" + g_type + "_" + g_effect + ".png").getImage();
+        img = new ImageIcon("c:/Users/murai/workspace/zatacka/zatacka/zatacka/Media/" + g_type + "_" + g_effect + ".png").getImage();
     }
     
     public void setGiftSize()
-    {
-    	Dimension d = new Dimension();
-        d.width = img.getWidth(null);
-        d.height = img.getHeight(null);
-        setPreferredSize(d);        
+    {      
         img_r = img.getWidth(null);
     }
     

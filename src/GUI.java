@@ -642,7 +642,7 @@ public class GUI {
 				public void actionPerformed(ActionEvent e) 
 				{
 					drawPanel.gameField.GetNewPoint();
-					if((Math.random() > 0.98) && (status == 1))
+					if((Math.random() > 0.9) && (status == 1))
 					{
 						drawPanel.gameField.getNewGift();
 					}
