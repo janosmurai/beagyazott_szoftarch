@@ -31,12 +31,20 @@ class Control extends JFrame
 	public ArrayList<ColoredPoint> receivedPoint = new ArrayList<ColoredPoint>();
 	public ArrayList<Gift> receivedGift = new ArrayList<Gift>();
 	public boolean clearing = false;
+	public boolean flying_head = false;
 	Timer timer = new Timer (1000, new ActionListener() 
 	{
 		public void actionPerformed(ActionEvent e) 
 		{
 			gui.drawPanel.panel.setVisible(false);
 			gui.drawPanel.gameField.setVisible(true);
+		}
+	});
+	Timer timer_fly = new Timer (6000, new ActionListener() 
+	{
+		public void actionPerformed(ActionEvent e) 
+		{
+			flying_head = false;
 		}
 	});
 	
@@ -111,7 +119,7 @@ class Control extends JFrame
 					iteratorPlayer.p.direction = playerRec.p.direction;
 					iteratorPlayer.ongoingGame = gui.player.ongoingGame;
 					iteratorPlayer.clear = clearing;
-					iteratorPlayer.flying_head = playerRec.flying_head;
+					iteratorPlayer.flying_head = flying_head;
 					isColorExist = true;
 				}
 			}
@@ -134,10 +142,7 @@ class Control extends JFrame
 				gui.player.clear = playerRec.clear;
 				gui.player.flying_head = playerRec.flying_head;
 			}
-			
-		}
-		
-			
+		}	
 	}
 	
 	
@@ -272,6 +277,12 @@ class Control extends JFrame
 							pack();
 							gui.drawPanel.panel.setVisible(true);
 							gui.drawPanel.gameField.setVisible(false);
+						}
+						if(gift.g_type == Gift.gift_type.fly )
+						{
+							flying_head = true;
+							timer_fly.stop();
+							timer_fly.start();
 						}
 					}
 					pick_up = true;

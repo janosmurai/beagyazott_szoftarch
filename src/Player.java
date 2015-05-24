@@ -54,14 +54,7 @@ public class Player extends ColoredPoint{
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
-				if (invert == true)
-				{
-					invert = false;
-				}
-				else if(flying_head == true)
-				{
-					flying_head = false;
-				}
+				invert = false;
 			}
 		});
 	
@@ -86,11 +79,6 @@ public class Player extends ColoredPoint{
 				invert = true;
 				timer.stop();
 				timer.start();
-				break;
-			case fly:
-				timer.stop();
-				timer.start();
-				flying_head = true;
 				break;
 			case bonus_point:
 				if(score > 0)

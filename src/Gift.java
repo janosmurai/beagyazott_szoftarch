@@ -59,7 +59,7 @@ public class Gift implements Serializable{
     }
     
     public void setType(){
-    	int type = (int)(Math.random()*14);
+    	int type = 8;//(int)(Math.random()*14);
     	switch (type) {
 		case 0:
 			g_type = gift_type.slow;
@@ -95,7 +95,7 @@ public class Gift implements Serializable{
 			break;
 		case 8:
 			g_type = gift_type.fly;
-			g_effect = effect_on.self;
+			g_effect = effect_on.game_field;
 			break;
 		case 9:
 			g_type = gift_type.thick;
