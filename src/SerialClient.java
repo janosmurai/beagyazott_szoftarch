@@ -80,7 +80,6 @@ public class SerialClient extends Network {
 	void send(SendSocket socket) {
 		if (out == null)
 			return;
-		//System.out.println("Sending KeyEvent: " + direction + " to Server");
 		try 
 		{
 			out.writeObject(socket);

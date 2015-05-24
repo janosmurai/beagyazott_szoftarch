@@ -215,8 +215,11 @@ public class GUI {
 						
 						points.add(tmp_player.p);
 						
+						//System.out.println("tmp_palyer: " + tmp_player.p.direction);
+						
 						Gift not_used_gift = new Gift(10, 10); 
 						SendSocket socket_player = new SendSocket(tmp_player, not_used_gift, socket_type.player);
+						//System.out.println("socket_palyer: " + socket_player.sendPlayer.p.direction);
 						ctrl.send(socket_player);
 						
 					}
