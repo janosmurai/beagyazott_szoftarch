@@ -28,6 +28,7 @@ class Control extends JFrame
 	TDirection client_dir = TDirection.nothing;
 	public ArrayList<Player> playerList = new ArrayList<Player>();
 	public ArrayList<ColoredPoint> receivedPoint = new ArrayList<ColoredPoint>();
+	public ArrayList<Gift> receivedGift = new ArrayList<Gift>();
 	public boolean clear = false;
 	Timer timer = new Timer (1000, new ActionListener() 
 	{
@@ -68,7 +69,7 @@ class Control extends JFrame
 		net.connect("localhost");
 	}
 	
-	void sendPlayer(Player player)
+	void send(SendSocket socket)
 	{
 		if(net == null)
 			return;
@@ -76,16 +77,15 @@ class Control extends JFrame
 			//System.out.println(player.ongoingGame);
 		}
 		
-		net.send(player);
+		net.send(socket);
 		
 	}
-
-	void sendNewPoint(ColoredPoint p)
+	
+	void giftReceived(Gift giftRec)
 	{
-		if(net == null)
-			return;
-		net.sendNewP(p);
+		//ide kéne majd az hogy az ajándékot felfûzni a helyi listára
 	}
+
 	
 	void playerReceived(Player playerRec)
 	{
@@ -149,12 +149,6 @@ class Control extends JFrame
 			
 	}
 	
-	void pointReceived(ColoredPoint p){
-		if (gui == null)
-			return;
-		System.out.println(p.color);
-		receivedPoint.add(p);
-	}
 	
 	int collisionCheck()
 	{
@@ -296,7 +290,6 @@ class Control extends JFrame
 			}
 			if(pick_up == true)
 			{
-				//System.out.println("cica");
 				ArrayList<Gift> gift_copy = new ArrayList<Gift>();
 				for (Gift tmp_gift: existing_gift)
 				{

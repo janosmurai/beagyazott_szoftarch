@@ -46,6 +46,7 @@ import javax.swing.Timer;
 import javax.swing.plaf.ProgressBarUI;
 
 import zatacka.Player.TDirection;
+import zatacka.SendSocket.socket_type;
 
 import java.awt.font.*;
 import java.awt.image.ImageObserver;
@@ -214,9 +215,9 @@ public class GUI {
 						
 						points.add(tmp_player.p);
 						
-						
-						
-						ctrl.sendPlayer(tmp_player);
+						Gift not_used_gift = new Gift(10, 10); 
+						SendSocket socket_player = new SendSocket(tmp_player, not_used_gift, socket_type.player);
+						ctrl.send(socket_player);
 						
 					}
 					player.clear = ctrl.clear;
@@ -226,9 +227,11 @@ public class GUI {
 				}
 				else if(status == 2) 	//Client
 				{
-					Player test_player = new Player(player.p.x, player.p.y, player.p.color, 7);
-					test_player.p.direction = player.p.direction;
-					ctrl.sendPlayer(test_player);
+					Player tmp_player = new Player(player.p.x, player.p.y, player.p.color, 7);
+					tmp_player.p.direction = player.p.direction;
+					Gift not_used_gift = new Gift(10, 10); 
+					SendSocket socket_player = new SendSocket(tmp_player, not_used_gift, socket_type.player);
+					ctrl.send(socket_player);
 					
 					for(ColoredPoint coloredPoint : ctrl.receivedPoint)
 					{
@@ -263,6 +266,7 @@ public class GUI {
 					if(player.ongoingGame == false){
 						drawPanel.gameField.points.clear();
 						drawPanel.gameField.repaint();
+						
 						player.p.x = (int)(200+Math.random()*(drawPanel.getWidth()-300));
 						player.p.y = (int)(200+Math.random()*(drawPanel.getHeight()-300));
 		
@@ -635,17 +639,19 @@ public class GUI {
 				public void actionPerformed(ActionEvent e) 
 				{
 					drawPanel.gameField.GetNewPoint();
-					if(Math.random() > 0.98)
+					if((Math.random() > 0.98) && (status == 1))
 					{
 						drawPanel.gameField.getNewGift();
 					}
 				}
 			});
+			
+			
 			drawPanel.timer.start();
 			if(cntr < 1){
 			backGroundMusic();
-			}
 		}
+	}
 	}
 	
 	 public void crashSound() {

@@ -1,9 +1,6 @@
 package zatacka;
 
-import java.awt.Point;
-
 import zatacka.Control;
-import zatacka.Player.TDirection;
 
 abstract class Network {
 
@@ -17,8 +14,6 @@ abstract class Network {
 
 	abstract void disconnect();
 
-	abstract void send(Player player);
-	
-	abstract void sendNewP(ColoredPoint p); 
+	abstract void send(SendSocket socket);
 
 }

@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import zatacka.Control;
 import zatacka.Player.TDirection;
 import zatacka.Player;
+import zatacka.SendSocket.socket_type;
 
 public class SerialClient extends Network {
 
@@ -29,10 +30,22 @@ public class SerialClient extends Network {
 			System.out.println("Waiting for key presses...");
 			try {
 				while (true) {
-					Player playerReceived = (Player) in.readObject();
+					SendSocket socketRecived = (SendSocket) in.readObject();
 					//System.out.println(playerReceived.p.direction);
 					//System.out.println(playerReceived.direction);
-					ctrl.playerReceived(playerReceived);
+					if(socketRecived.type == socket_type.gift)
+					{
+						ctrl.giftReceived(socketRecived.sendGift);
+					}
+					else if(socketRecived.type == socket_type.player)
+					{
+						ctrl.playerReceived(socketRecived.sendPlayer);
+				
+					}
+					else
+					{
+						System.err.println("Unknown class type");
+					}
 				}
 			} catch (Exception ex) {
 				System.out.println(ex.getMessage());
@@ -64,30 +77,19 @@ public class SerialClient extends Network {
 	}
 
 	@Override
-	void send(Player player) {
+	void send(SendSocket socket) {
 		if (out == null)
 			return;
 		//System.out.println("Sending KeyEvent: " + direction + " to Server");
 		try 
 		{
-			//System.out.println(player.p.direction);
-			out.writeObject(player);
+			out.writeObject(socket);
 			out.flush();
 		} catch (IOException ex) {
 			System.err.println("Send error.");
 		}
 	}
 	
-	void sendNewP(ColoredPoint p) {
-		if (out == null)
-			return;
-		try {
-			out.writeObject(p);
-			out.flush();
-		} catch (IOException ex) {
-			System.err.println("Send error.");
-		}
-	}
 
 	@Override
 	void disconnect() {

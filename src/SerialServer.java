@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 
 import zatacka.Control;
 import zatacka.Player.TDirection;
+import zatacka.SendSocket.socket_type;
 import zatacka.Player;
 
 public class SerialServer extends Network {
@@ -49,10 +50,22 @@ public class SerialServer extends Network {
 
 			try {
 				while (true) {
-					Player playerReceived = (Player) in.readObject();
-					//System.out.println(playerReceived.p.x);
-				//System.out.println(playerReceived.p.direction);
-					ctrl.playerReceived(playerReceived);
+					SendSocket socketRecived = (SendSocket) in.readObject();
+					//System.out.println(playerReceived.p.direction);
+					//System.out.println(playerReceived.direction);
+					if(socketRecived.type == socket_type.gift)
+					{
+						ctrl.giftReceived(socketRecived.sendGift);
+					}
+					else if(socketRecived.type == socket_type.player)
+					{
+						ctrl.playerReceived(socketRecived.sendPlayer);
+				
+					}
+					else
+					{
+						System.err.println("Unknown class type");
+					}
 				}
 			} catch (Exception ex) {
 				System.out.println(ex.getMessage());
@@ -79,28 +92,18 @@ public class SerialServer extends Network {
 	}
 
 	@Override
-	void send(Player player) {
+	void send(SendSocket socket) {
 		if (out == null)
 			return;
 		//System.out.println("Sending point: " + direction + " to Client");
 		try {
-			out.writeObject(player);
+			out.writeObject(socket);
 			out.flush();
 		} catch (IOException ex) {
 			System.err.println("Send error.");
 		}
 	}
-	
-	void sendNewP(ColoredPoint p) {
-		if (out == null)
-			return;
-		try {
-			out.writeObject(p);
-			out.flush();
-		} catch (IOException ex) {
-			System.err.println("Send error.");
-		}
-	}
+
 
 	@Override
 	void disconnect() {
