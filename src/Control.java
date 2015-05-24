@@ -290,14 +290,27 @@ class Control extends JFrame
 						}
 					}
 					pick_up = true;
-					pick_up_index = gift_i;
+					pick_up_index = existing_gift.indexOf(gift);
 				}
 				gift_i += 1;
 			}
 			if(pick_up == true)
 			{
 				//System.out.println("cica");
-				existing_gift.remove(pick_up_index);
+				ArrayList<Gift> gift_copy = new ArrayList<Gift>();
+				for (Gift tmp_gift: existing_gift)
+				{
+					if(pick_up_index != existing_gift.indexOf(tmp_gift))
+					{
+						gift_copy.add(tmp_gift);
+					}
+					else
+					{
+						/* leave out the picked up gift from the list*/
+					}
+				}
+				existing_gift.clear();
+				existing_gift.addAll(gift_copy);
 				pick_up = false;
 			}
 			player_i += 1;

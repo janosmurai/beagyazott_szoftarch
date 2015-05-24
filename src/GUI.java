@@ -582,6 +582,7 @@ public class GUI {
 	}
 	
 	 public void backGroundMusic() {
+		 /*
 		    try {
 	          AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);    
 	          Clip clip = AudioSystem.getClip();
@@ -595,7 +596,7 @@ public class GUI {
 	         e.printStackTrace();
 	      } catch (LineUnavailableException e) {
 	         e.printStackTrace();
-	      }
+	      }*/
 	 }
 	 
 	void startGame()
@@ -621,28 +622,34 @@ public class GUI {
 		}
 		else
 		{
-			player.reset();
-			player.ongoingGame = true;
-		drawPanel.timer = new Timer (30, new ActionListener() 
-		{
-			public void actionPerformed(ActionEvent e) 
+			if(status == 1)
 			{
-				drawPanel.gameField.GetNewPoint();
-				if(Math.random() > 0.98)
+				for(Player players : ctrl.playerList)
 				{
-					drawPanel.gameField.getNewGift();
+					players.reset();
 				}
 			}
-		});
-		drawPanel.timer.start();
-		if(cntr < 1){
-		backGroundMusic();
+			player.ongoingGame = true;
+			drawPanel.timer = new Timer (30, new ActionListener() 
+			{
+				public void actionPerformed(ActionEvent e) 
+				{
+					drawPanel.gameField.GetNewPoint();
+					if(Math.random() > 0.98)
+					{
+						drawPanel.gameField.getNewGift();
+					}
+				}
+			});
+			drawPanel.timer.start();
+			if(cntr < 1){
+			backGroundMusic();
+			}
 		}
-	}
 	}
 	
 	 public void crashSound() {
-		 
+		 /*
 	      try {
 	                 
 	          File soundFile = new File("C:/workspace/zatacka/src/zatacka/Media/sound.wav"); 
@@ -656,7 +663,7 @@ public class GUI {
 	         e.printStackTrace();
 	      } catch (LineUnavailableException e) {
 	         e.printStackTrace();
-	      }
+	      }*/
 	   }
 	
 	void stopGame()
