@@ -288,8 +288,28 @@ public class GUI {
 			
 			public void getNewGift()
 			{
-				Gift new_gift = new Gift(drawPanel.gameField.getHeight(), drawPanel.gameField.getWidth());
-				gifts.add(new_gift);
+				if(status == 1)
+				{
+					Gift new_gift = new Gift(drawPanel.gameField.getHeight(), drawPanel.gameField.getWidth());
+					gifts.add(new_gift);
+					Player not_used_player = new Player(10, 10, Color.black, 1);
+					GiftDummy giftDummy = new GiftDummy(new_gift.g_type, new_gift.g_effect, new_gift.pos_x, new_gift.pos_y);
+					SendSocket socket_gift = new SendSocket(not_used_player, giftDummy, socket_type.gift);
+					ctrl.send(socket_gift);
+				}
+				else if(status == 2)
+				{
+					for(Gift cica : ctrl.receivedGift)
+					{
+						System.out.println(cica.g_type);
+					}
+						gifts.addAll(ctrl.receivedGift);
+						ctrl.receivedGift.clear();
+				}
+				else
+				{
+					System.err.println("No status set");
+				}
 			}
 
 		}
@@ -675,7 +695,7 @@ public class GUI {
 				public void actionPerformed(ActionEvent e) 
 				{
 					drawPanel.gameField.GetNewPoint();
-					if((Math.random() > 0.98) && (status == 1))
+					if(Math.random() > 0.98)
 					{
 						drawPanel.gameField.getNewGift();
 					}

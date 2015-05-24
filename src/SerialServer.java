@@ -52,7 +52,6 @@ public class SerialServer extends Network {
 				while (true) 
 				{
 					SendSocket socketRecived = (SendSocket) in.readObject();
-					System.out.println(socketRecived.sendPlayer.p.direction);
 					//System.out.println(playerReceived.direction);
 					if(socketRecived.type.equals(socket_type.gift))
 					{

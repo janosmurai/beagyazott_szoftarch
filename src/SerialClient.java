@@ -33,11 +33,11 @@ public class SerialClient extends Network {
 					SendSocket socketRecived = (SendSocket) in.readObject();
 					//System.out.println(playerReceived.p.direction);
 					//System.out.println(playerReceived.direction);
-					if(socketRecived.type == socket_type.gift)
+					if(socketRecived.type.equals(socket_type.gift))
 					{
 						ctrl.giftReceived(socketRecived.sendGift);
 					}
-					else if(socketRecived.type == socket_type.player)
+					else if(socketRecived.type.equals(socket_type.player))
 					{
 						ctrl.playerReceived(socketRecived.sendPlayer);
 				

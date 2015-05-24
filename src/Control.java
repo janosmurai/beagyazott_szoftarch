@@ -1,6 +1,7 @@
 
 package zatacka;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -73,9 +74,6 @@ class Control extends JFrame
 	{
 		if(net == null)
 			return;
-		if(gui.status == 1){
-			//System.out.println(player.ongoingGame);
-		}
 		
 		net.send(socket);
 		
@@ -83,7 +81,15 @@ class Control extends JFrame
 	
 	void giftReceived(GiftDummy giftRec)
 	{
-		//ide kéne majd az hogy az ajándékot felfûzni a helyi listára
+		Gift giftRecLoc = new Gift(10, 10);
+		giftRecLoc.g_type = giftRec.g_type;
+		giftRecLoc.g_effect = giftRec.g_effect;
+		giftRecLoc.pos_x = giftRec.x;
+		giftRecLoc.pos_y = giftRec.y;
+		
+		giftRecLoc.img = new ImageIcon("c:/Users/murai/workspace/zatacka/zatacka/zatacka/Media/" + giftRec.g_type + "_" + giftRec.g_effect + ".png").getImage();
+		
+		receivedGift.add(giftRecLoc);
 	}
 
 	
@@ -91,7 +97,6 @@ class Control extends JFrame
 	{
 		if (gui == null)
 		{
-			System.out.println("cica");
 			return;
 		}
 		if(gui.status == 1)
@@ -135,12 +140,6 @@ class Control extends JFrame
 			
 	}
 	
-	void pointReceived(ColoredPoint p){
-		if (gui == null)
-			return;
-		System.out.println(p.color);
-		receivedPoint.add(p);
-	}
 	
 	int collisionCheck()
 	{
