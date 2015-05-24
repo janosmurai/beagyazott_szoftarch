@@ -81,7 +81,7 @@ class Control extends JFrame
 		
 	}
 	
-	void giftReceived(Gift giftRec)
+	void giftReceived(GiftDummy giftRec)
 	{
 		//ide kéne majd az hogy az ajándékot felfûzni a helyi listára
 	}
@@ -130,25 +130,17 @@ class Control extends JFrame
 				gui.player.flying_head = playerRec.flying_head;
 			}
 			
-			if(playerRec.flying_head == true)
-			{
-				ArrayList<ColoredPoint> tmp_pointList = new ArrayList<ColoredPoint>();
-				for(ColoredPoint tmp_point: receivedPoint)
-				{
-					if(tmp_point.color != playerRec.p.color)
-					{
-						tmp_pointList.add(tmp_point);
-
-					}
-				}
-				receivedPoint.clear();
-				receivedPoint.addAll(tmp_pointList);
-			}
 		}
 		
 			
 	}
 	
+	void pointReceived(ColoredPoint p){
+		if (gui == null)
+			return;
+		System.out.println(p.color);
+		receivedPoint.add(p);
+	}
 	
 	int collisionCheck()
 	{

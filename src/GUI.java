@@ -45,6 +45,8 @@ import javax.swing.KeyStroke;
 import javax.swing.Timer;
 import javax.swing.plaf.ProgressBarUI;
 
+import zatacka.Gift.effect_on;
+import zatacka.Gift.gift_type;
 import zatacka.Player.TDirection;
 import zatacka.SendSocket.socket_type;
 
@@ -215,11 +217,8 @@ public class GUI {
 						
 						points.add(tmp_player.p);
 						
-						//System.out.println("tmp_palyer: " + tmp_player.p.direction);
-						
-						Gift not_used_gift = new Gift(10, 10); 
+						GiftDummy not_used_gift = new GiftDummy(gift_type.fast, effect_on.self, 10,10); 
 						SendSocket socket_player = new SendSocket(tmp_player, not_used_gift, socket_type.player);
-						//System.out.println("socket_palyer: " + socket_player.sendPlayer.p.direction);
 						ctrl.send(socket_player);
 						
 					}
@@ -232,14 +231,48 @@ public class GUI {
 				{
 					Player tmp_player = new Player(player.p.x, player.p.y, player.p.color, 7);
 					tmp_player.p.direction = player.p.direction;
-					Gift not_used_gift = new Gift(10, 10); 
+					GiftDummy not_used_gift = new GiftDummy(gift_type.fast, effect_on.self, 10,10); 
 					SendSocket socket_player = new SendSocket(tmp_player, not_used_gift, socket_type.player);
 					ctrl.send(socket_player);
 					
-					for(ColoredPoint coloredPoint : ctrl.receivedPoint)
+					Color flying_head_color = Color.black;
+					for(Player playerRec: ctrl.playerList){
+						if(playerRec.flying_head == true)
+						{
+							ArrayList<ColoredPoint> tmp_pointList = new ArrayList<ColoredPoint>();
+							for(ColoredPoint tmp_point: points)
+							{
+								if(tmp_point.color != playerRec.p.color)
+								{
+									tmp_pointList.add(tmp_point);
+	
+								}
+								flying_head_color = playerRec.p.color;
+							}
+							points.clear();
+							points.addAll(tmp_pointList);
+						}
+					}
+					if(flying_head_color == Color.black)
 					{
-						points.add(coloredPoint);
-						
+						for(ColoredPoint coloredPoint : ctrl.receivedPoint)
+						{
+							points.add(coloredPoint);
+						}
+					}
+					else
+					{
+						for(ColoredPoint coloredPoint : ctrl.receivedPoint)
+						{
+							if(coloredPoint.color != flying_head_color)
+							{
+							points.add(coloredPoint);
+							}
+							else 
+							{
+								/* leave out point */
+							}
+						}
 					}
 					ctrl.receivedPoint.clear();
 					
@@ -642,7 +675,7 @@ public class GUI {
 				public void actionPerformed(ActionEvent e) 
 				{
 					drawPanel.gameField.GetNewPoint();
-					if((Math.random() > 0.9) && (status == 1))
+					if((Math.random() > 0.98) && (status == 1))
 					{
 						drawPanel.gameField.getNewGift();
 					}

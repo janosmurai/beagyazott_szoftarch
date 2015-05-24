@@ -49,9 +49,9 @@ public class SerialServer extends Network {
 			}
 
 			try {
-				while (true) {
+				while (true) 
+				{
 					SendSocket socketRecived = (SendSocket) in.readObject();
-					System.out.println("cica");
 					System.out.println(socketRecived.sendPlayer.p.direction);
 					//System.out.println(playerReceived.direction);
 					if(socketRecived.type.equals(socket_type.gift))
@@ -64,7 +64,7 @@ public class SerialServer extends Network {
 				
 					}
 					else
-					{
+					{	
 						System.err.println("Unknown class type");
 					}
 				}
