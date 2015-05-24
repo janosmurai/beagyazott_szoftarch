@@ -149,7 +149,7 @@ class Control extends JFrame
 		double distance = 0;
 		int collisionCntr = 0;
 		int selfcollisionCntr = 0;
-		int gameFieldSize = gui.drawPanel.getWidth();    //Same as height
+		int gameFieldSize = gui.drawPanel.gameField.getWidth();    //Same as height
 		Color hitman_color = Color.black;
 		int i = 0;
 
@@ -189,9 +189,9 @@ class Control extends JFrame
 
 				
 				if((actualPoint.x < 0) ||
-					(actualPoint.x > gameFieldSize) ||
+					(actualPoint.x > (gameFieldSize - 10)) ||
 					(actualPoint.y < 0) || 
-					(actualPoint.y > gameFieldSize) ||
+					(actualPoint.y > (gameFieldSize - 30)) ||
 					(collisionCntr > 1) ||
 					(selfcollisionCntr > 1))
 					{
