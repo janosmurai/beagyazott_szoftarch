@@ -27,6 +27,6 @@ abstract class Network {
 
 	abstract void send(Player player);
 	
-	abstract void sendNewP(ColoredPoint p); 
+	abstract void sendNewGift(Gift gift); 
 
 }

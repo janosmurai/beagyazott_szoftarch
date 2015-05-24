@@ -72,31 +72,27 @@ class Control extends JFrame
 	{
 		if(net == null)
 			return;
-		if(gui.status == 1){
-			//System.out.println(player.ongoingGame);
-		}
 		
 		net.send(player);
 		
 	}
 
-	void sendNewPoint(ColoredPoint p)
+	void sendGift(Gift gift)
 	{
 		if(net == null)
 			return;
-		net.sendNewP(p);
+		net.sendNewGift(gift);
 	}
 	
 	void playerReceived(Player playerRec)
 	{
 		if (gui == null)
 		{
-			System.out.println("cica");
 			return;
 		}
 		if(gui.status == 1)
 		{
-			//System.out.println(playerRec.p.x);
+			//if(playerRec.p.color.equals(Color.BLUE)) System.out.println(playerRec.p.x);
 			boolean isColorExist = false;
 			for(Player iteratorPlayer : playerList)
 			{
@@ -149,11 +145,11 @@ class Control extends JFrame
 			
 	}
 	
-	void pointReceived(ColoredPoint p){
-		if (gui == null)
+	void giftReceived(Gift gift){
+		if (gui == null)	
 			return;
-		System.out.println(p.color);
-		receivedPoint.add(p);
+		gui.drawPanel.gameField.receivedGift.add(gift);
+		System.out.println(gift.g_type);
 	}
 	
 	int collisionCheck()
