@@ -110,10 +110,7 @@ class Control extends JFrame
 			}
 			
 		}
-		System.out.println("x: " + giftRecLoc.pos_x );
-		System.out.println("y: " + giftRecLoc.pos_y );
-		System.out.println(memberOf);
-		System.out.println(gui.drawPanel.gameField.gifts);
+
 		if(memberOf == true) 
 		{
 			gui.drawPanel.gameField.gifts.remove(delete_index);
@@ -318,8 +315,6 @@ class Control extends JFrame
 					GiftDummy giftDummy = new GiftDummy(delete_this.g_type, delete_this.g_effect, delete_this.pos_x, delete_this.pos_y);
 					SendSocket socket_gift = new SendSocket(not_used_player, giftDummy, socket_type.gift);
 					send(socket_gift);
-					System.out.println("dx: " + delete_this.pos_x );
-					System.out.println("dy: " + delete_this.pos_y );
 				}
 				gift_i += 1;
 			}			

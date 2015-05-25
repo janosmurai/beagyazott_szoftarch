@@ -67,7 +67,7 @@ public class GUI {
 	private int player_count = 0;
 	int status = 0;
 	int cntr = 0;
-	int rounds = 15;
+	int rounds = 10;
 	File soundFile = new File("C:/workspace/zatacka/src/zatacka/Media/backgroundmusic.wav");
 
 	
@@ -269,6 +269,8 @@ public class GUI {
 				if(player.clear == true)
 				{
 					drawPanel.gameField.points.clear();
+					player.clear = false;
+					ctrl.clearing = false;
 				}
 			}
 	
@@ -278,11 +280,30 @@ public class GUI {
 				if(status == 1)
 				{
 					Gift new_gift = new Gift(drawPanel.gameField.getHeight(), drawPanel.gameField.getWidth());
-					gifts.add(new_gift);
-					Player not_used_player = new Player(10, 10, Color.black, 1);
-					GiftDummy giftDummy = new GiftDummy(new_gift.g_type, new_gift.g_effect, new_gift.pos_x, new_gift.pos_y);
-					SendSocket socket_gift = new SendSocket(not_used_player, giftDummy, socket_type.gift);
-					ctrl.send(socket_gift);
+					int dis_x;
+					int dis_y;
+					double distance;
+					boolean reserved_pos = false;
+					
+					for(ColoredPoint reserved : points)
+					{
+						dis_x = (new_gift.pos_x + (new_gift.img_r/2)) - reserved.x;
+						dis_y = (new_gift.pos_y + (new_gift.img_r/2)) - reserved.y;
+						distance = Math.sqrt(Math.pow(dis_x, 2) + Math.pow(dis_y, 2));
+						
+						if(distance < (new_gift.img_r/2))
+						{
+							reserved_pos = true;
+						}
+					}
+					if(reserved_pos == false)
+					{
+						gifts.add(new_gift);
+						Player not_used_player = new Player(10, 10, Color.black, 1);
+						GiftDummy giftDummy = new GiftDummy(new_gift.g_type, new_gift.g_effect, new_gift.pos_x, new_gift.pos_y);
+						SendSocket socket_gift = new SendSocket(not_used_player, giftDummy, socket_type.gift);
+						ctrl.send(socket_gift);
+					}
 				}
 				else if(status == 2)
 				{
@@ -305,6 +326,7 @@ public class GUI {
 			{
 					if(player.ongoingGame == false){
 						drawPanel.gameField.points.clear();
+						drawPanel.gameField.gifts.clear();
 						drawPanel.gameField.repaint();
 						
 						player.p.x = (int)(200+Math.random()*(drawPanel.getWidth()-300));
@@ -675,7 +697,7 @@ public class GUI {
 			}
 			player.ongoingGame = true;
 			ctrl.flying_head = false;
-			drawPanel.timer = new Timer (100, new ActionListener() 
+			drawPanel.timer = new Timer (30, new ActionListener() 
 			{
 				public void actionPerformed(ActionEvent e) 
 				{

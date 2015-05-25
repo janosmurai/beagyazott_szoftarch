@@ -59,7 +59,7 @@ public class Gift implements Serializable{
     }
     
     public void setType(){
-    	int type = 8;//(int)(Math.random()*14);
+    	int type = (int)(Math.random()*14);
     	switch (type) {
 		case 0:
 			g_type = gift_type.slow;
