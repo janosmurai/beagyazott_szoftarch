@@ -236,6 +236,7 @@ public class GUI {
 				}
 				else if(status == 2) 	//Client
 				{
+					ctrl.catchGift();
 					if(player.flying_head == true)
 					{
 						for(ColoredPoint delete : tmp_points)
@@ -674,7 +675,7 @@ public class GUI {
 			}
 			player.ongoingGame = true;
 			ctrl.flying_head = false;
-			drawPanel.timer = new Timer (00, new ActionListener() 
+			drawPanel.timer = new Timer (100, new ActionListener() 
 			{
 				public void actionPerformed(ActionEvent e) 
 				{

@@ -18,6 +18,7 @@ import java.util.Iterator;
 import zatacka.*;
 import zatacka.Gift.effect_on;
 import zatacka.Player.TDirection;
+import zatacka.SendSocket.socket_type;
 
 class Control extends JFrame 
 {
@@ -97,7 +98,31 @@ class Control extends JFrame
 		
 		giftRecLoc.img = new ImageIcon("c:/workspace/zatacka/src/zatacka/Media/" + giftRec.g_type + "_" + giftRec.g_effect + ".png").getImage();
 		
-		receivedGift.add(giftRecLoc);
+		boolean memberOf = false;
+		int delete_index = 0;
+		for(Gift gift : gui.drawPanel.gameField.gifts)
+		{
+			if((giftRecLoc.pos_x == gift.pos_x) && (giftRecLoc.pos_y == gift.pos_y) 
+					&& (giftRecLoc.g_type == gift.g_type) && (giftRecLoc.g_effect == gift.g_effect))
+			{
+				memberOf = true;
+				delete_index = gui.drawPanel.gameField.gifts.indexOf(gift);
+			}
+			
+		}
+		System.out.println("x: " + giftRecLoc.pos_x );
+		System.out.println("y: " + giftRecLoc.pos_y );
+		System.out.println(memberOf);
+		System.out.println(gui.drawPanel.gameField.gifts);
+		if(memberOf == true) 
+		{
+			gui.drawPanel.gameField.gifts.remove(delete_index);
+			System.out.println(gui.drawPanel.gameField.gifts);
+		}
+		else
+		{
+			receivedGift.add(giftRecLoc);
+		}
 	}
 
 	
@@ -287,9 +312,17 @@ class Control extends JFrame
 					}
 					pick_up = true;
 					pick_up_index = existing_gift.indexOf(gift);
+					
+					Gift delete_this = existing_gift.get(pick_up_index);
+					Player not_used_player = new Player(10, 10, Color.black, 1);
+					GiftDummy giftDummy = new GiftDummy(delete_this.g_type, delete_this.g_effect, delete_this.pos_x, delete_this.pos_y);
+					SendSocket socket_gift = new SendSocket(not_used_player, giftDummy, socket_type.gift);
+					send(socket_gift);
+					System.out.println("dx: " + delete_this.pos_x );
+					System.out.println("dy: " + delete_this.pos_y );
 				}
 				gift_i += 1;
-			}
+			}			
 			if(pick_up == true)
 			{
 				ArrayList<Gift> gift_copy = new ArrayList<Gift>();
