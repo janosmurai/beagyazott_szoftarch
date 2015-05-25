@@ -236,7 +236,6 @@ public class GUI {
 				}
 				else if(status == 2) 	//Client
 				{
-					ctrl.catchGift();
 					if(player.flying_head == true)
 					{
 						for(ColoredPoint delete : tmp_points)
@@ -253,15 +252,12 @@ public class GUI {
 					SendSocket socket_player = new SendSocket(tmp_player, not_used_gift, socket_type.player);
 					ctrl.send(socket_player);
 
-					
-					//for(ColoredPoint coloredPoint : ctrl.receivedPoint)
+					points.addAll(ctrl.receivedPoint);
+					if(player.flying_head == true)
 					{
-						points.addAll(ctrl.receivedPoint);
-						if(player.flying_head == true)
-						{
 							tmp_points.addAll(ctrl.receivedPoint);
-						}
 					}
+
 					gameField.repaint();				
 					
 					ctrl.receivedPoint.clear();

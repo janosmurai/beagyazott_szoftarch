@@ -204,7 +204,7 @@ class Control extends JFrame
 				if((storedPoint.color.equals(actualPoint.color)) &&
 						(distance <= (storedPoint.width + actualPoint.width)) &&
 						(distance >= actualPoint.width) &&
-						(i < (controlPoints.size() - 15)))
+						(i < (controlPoints.size() - 13)))
 				{
 					selfcollisionCntr++;
 					if (selfcollisionCntr > 1)
